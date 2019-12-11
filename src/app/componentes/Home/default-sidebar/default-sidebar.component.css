@@ -1,0 +1,55 @@
+.sidenav-container {
+  position: fixed;
+  height: 100%;
+
+}
+
+.sidenav {
+
+  margin-top: 4%;
+  width: 20%;
+
+}
+
+.nav-item {
+  width: 90%;
+  margin-top: 3%;
+}
+
+.nav-icon {
+  margin-right: 10%;
+}
+
+.nav-link {
+  width: 50%;
+  margin-top: 3%;
+  margin-left: 3%;
+
+}
+
+.nav-modoUser{
+
+  margin-top: 10%;
+  margin-left:5%;
+  margin-right: 5%;
+}
+
+.nav-modoUser p{
+  margin-top: 10%;
+  margin-left: 30%;
+
+}
+
+mat-button-toggle-group{
+width: 100%;
+
+}
+mat-button-toggle{
+  width: 33%;
+  font-size: 14px;
+}
+
+
+
+
+

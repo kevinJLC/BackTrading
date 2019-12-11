@@ -1,0 +1,29 @@
+#toolbar{
+  width: 100%;
+}
+
+mat-form-field{
+  margin: 20px 10px 5px 10px;
+}
+
+.spacer{
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+mat-toolbar{
+  z-index: 200;
+  position: fixed;
+  top: 0%;
+  height: 10%;
+  width: 100%;
+  font-style: inherit;
+}

@@ -1,0 +1,23 @@
+mat-card{
+  width: auto;
+  height: auto;
+
+
+}
+.galeria{
+  position: absolute;
+  display: float;
+  top: 13%;
+  left: 21%;
+  right: 1%;
+  padding-bottom: 7%;
+  text-align: center;
+}
+mat-grid-list{
+}
+
+mat-grid-tile{
+position: absolute;
+}
+
+

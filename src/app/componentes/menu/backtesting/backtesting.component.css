@@ -1,0 +1,27 @@
+mat-card{
+  position: absolute;
+
+  top: 12%;
+  left: 21%;
+  right: 1%;
+
+  padding-bottom: 7%;
+
+
+}
+
+
+
+footer{
+  position: absolute;
+  bottom: 0;
+  bottom: -1px;
+}
+
+button{
+  margin-right: 5%;
+}
+
+mat-form-field{
+  width: 27%;
+}

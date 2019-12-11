@@ -1,0 +1,61 @@
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav class="mat-elevation-z9" #drawer class="sidenav" fixedInViewport="true" opened>
+    <mat-divider></mat-divider>
+    <mat-nav-list class="nav-list">
+      <div class="nav-item">
+            <a class="nav-link" mat-list-item routerLink="/sistemas">
+              <mat-icon class="nav-icon">attach_money</mat-icon>
+              Sistemas de trading
+            </a>
+      </div>
+      <div class="nav-item">
+          <a class="nav-link" mat-list-item routerLink="/trading">
+            <mat-icon class="nav-icon">text_rotation_angleup</mat-icon>
+            Trading automático
+          </a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link" mat-list-item routerLink="/backtesting" routerLinkActive="active-list-item">
+          <mat-icon class="nav-icon">timeline</mat-icon>
+          Backtesting
+        </a>
+      </div>
+      <div class="nav-item">
+        <div></div>
+        <a class="nav-link" mat-list-item routerLink="/introduccion" routerLinkActive="active-list-item">
+          <mat-icon class="nav-icon">school</mat-icon>
+          Introducción
+        </a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link" mat-list-item routerLink="/tutorial" routerLinkActive="active-list-item">
+          <mat-icon class="nav-icon">ondemand_video</mat-icon>
+          Tutorial
+        </a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link" mat-list-item routerLink="/guia" routerLinkActive="active-list-item">
+          <mat-icon class="nav-icon">menu_book</mat-icon>
+          Guía de uso
+        </a>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link" mat-list-item routerLink="/indicadores" routerLinkActive="active-list-item">
+          <mat-icon class="nav-icon">trending_up</mat-icon>
+          Indicadores
+        </a>
+      </div>
+      <div class="nav-modoUser">
+        <p>Modo Usuario</p>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" appearance="Legacy" >
+          <mat-button-toggle value="novato">Novato</mat-button-toggle>
+          <mat-button-toggle value="aprendiz">Aprendiz</mat-button-toggle>
+          <mat-button-toggle value="pro">Pro</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+<router-outlet></router-outlet>
+
+</mat-sidenav-container>

@@ -1,0 +1,19 @@
+table{
+  position: absolute;
+  top: 12%;
+  left: 21%;
+  right: 1%;
+  bottom: 12%;
+  width: 77%;
+  padding-bottom: 5%;
+  
+}
+.example-viewport {
+  height: 100%;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.example-item {
+  height: 50px;
+}

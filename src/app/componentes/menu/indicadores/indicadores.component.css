@@ -1,0 +1,30 @@
+mat-accordion{
+  position: absolute;
+
+  top: 12%;
+  left: 21%;
+  right: 1%;
+
+  padding-bottom: 7%;
+}
+article{
+
+}
+mat-panel-description{
+  position: absolute;
+  left: 40%;
+}
+
+mat-panel-expansion{
+  position: absolute;
+}
+mat-expansion-panel-header{
+  height: auto;
+  padding-bottom: 10px;
+  background-color: rgb(207, 207, 207);
+
+}
+
+#obv{
+  font-size: 80%;
+}

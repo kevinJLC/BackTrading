@@ -1,0 +1,11 @@
+.cuadro{
+  position: absolute;
+
+  top: 12%;
+  left: 23%;
+  right: 20%;
+
+  padding-bottom: 7%;
+  justify-content: left;
+
+}

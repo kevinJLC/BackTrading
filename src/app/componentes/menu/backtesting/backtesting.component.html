@@ -1,0 +1,73 @@
+<div id="FormRegistro" >
+    <mat-card style="text-align:justify">
+        <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
+        
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>Seleccione un sistema</mat-label>
+                <mat-select required>
+                  <mat-option>--</mat-option>
+                  <mat-option>
+                    System32
+                  </mat-option>
+                  <mat-option>
+                     bLackWin3r
+                    </mat-option>
+                    <mat-option>
+                        LaSolteraDeORO
+                      </mat-option>
+                </mat-select>
+
+              </mat-form-field>
+            <p>
+                <mat-form-field appearance="outline">
+                  <mat-label>Rendimiento</mat-label>
+                  <input matInput placeholder="2.3%">
+                  <mat-icon matSuffix>attach_money</mat-icon>
+                  <mat-hint>menores al 3% </mat-hint>
+
+                </mat-form-field>
+              </p>
+              <p>
+                  <mat-form-field appearance="outline">
+                    <mat-label>StopLoss</mat-label>
+                    <input matInput type="number" placeholder="-1.5%">
+                    <mat-icon matSuffix>money_off</mat-icon>
+
+                  </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Rango de operación</mat-label>
+                      <input matInput type="number" placeholder="3 días">
+                      <mat-icon matSuffix> date_range</mat-icon>
+                      <mat-hint>max 100 días</mat-hint>
+
+                    </mat-form-field>
+                  </p>
+                  <p>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Día de inicio</mat-label>
+                        <input matInput type="date">
+                        <mat-icon matSuffix>calendar_today</mat-icon>
+                        <mat-hint></mat-hint>
+                      </mat-form-field>
+                    </p>
+
+                    <p>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Día de Finalización</mat-label>
+                          <input matInput type="date">
+                          <mat-icon matSuffix>calendar_today</mat-icon>
+                          <mat-hint>No mayor al día de finalización</mat-hint>
+                        </mat-form-field>
+                      </p>
+
+                    <button mat-raised-button color="warm" >Guardar cambios</button>
+                    <button mat-raised-button color="primary" >Ejecutar backtesting</button>
+
+        </mat-card-content>
+      </mat-card>
+
+</div>
+
