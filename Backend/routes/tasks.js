@@ -68,5 +68,7 @@ router.put('/tasks/:id', (req, res, next) =>{
   }
   
 });
-
+router.post('api',(req,res,next)=>{
+  
+})
 module.exports=router;

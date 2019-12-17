@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../../../servicios/login.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -9,7 +10,12 @@ import { NgForm } from '@angular/forms';
 export class InicioSesionComponent implements OnInit {
 
 
-  constructor() { }
+  constructor(private login: LoginService) {
+    this.login.getUsuarios().
+    subscribe(users => {
+      console.log(users);
+    });
+   }
 
   ngOnInit() {
   }

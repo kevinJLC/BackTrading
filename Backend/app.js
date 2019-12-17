@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors=require('cors');
-const routes = require('./routes/routes');
+//const routes = require('./routes/routes');
 const tasks = require('./routes/tasks');
-const app= express(); 
+
+const path=require('path');
+const app= express();
 
 //conexión a la base de datos [test] con la contraseña [WIcXuhhUUE0V4Oeu]
 mongoose.connect("mongodb+srv://kevin:WIcXuhhUUE0V4Oeu@cluster0-yqqtj.mongodb.net/test?retryWrites=true&w=majority").
@@ -29,10 +31,14 @@ then(()=>{
   });
 
 //Rutas
-app.use(routes);
-app.use('/api',tasks);
+//app.use(routes);
+app.use(tasks);
 
 app.use(express.json()); //Body Parser desde express
 app.use(express.urlencoded({extended: false}))
+
+
+//static files
+app.use(express.static(path.join(__dirname,'dist')));
 
 module.exports=app;
