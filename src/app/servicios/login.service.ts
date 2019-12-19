@@ -7,15 +7,16 @@ import { Usuario } from '../usuario';
   providedIn: 'root'
 })
 export class LoginService {
-  domain = 'http://localhost:3000';
+  domain: string = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
+  
   getUsuarios() {
     return this.http.get<Usuario[]>( `${this.domain}/usuarios`).pipe(map(res => res));
   }
 
-  postUsuario( newUsuario: Usuario) {
-    return this.http.post(`${this.domain}/usuarios`, newUsuario).pipe(map(res => res));
+  postUsuario(newUsuario: Usuario) {
+    return this.http.post<Usuario>(`${this.domain}/usuarios`, newUsuario).pipe(map(res => res));
   }
 
   deleteUsuario(id) {
@@ -23,6 +24,6 @@ export class LoginService {
   }
 
   putUsuario(newUsuario) {
-    return this.http.put(`${this.domain}/usuarios/${newUsuario.id}`, newUsuario).pipe(map(res=>res));
+    return this.http.put(`${this.domain}/usuarios/${newUsuario.id}`, newUsuario).pipe(map(res => res));
   }
 }

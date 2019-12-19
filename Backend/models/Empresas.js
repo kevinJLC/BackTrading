@@ -1,5 +1,6 @@
 const mongoose = require ('mongoose');
-const empresaSchema=mongoose.Schema({
+const EmpresaSchema=mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   nombre: {type: String, required: true},
   apertura: {type: Number,required: true},
   cierre: {type: Number,required: true},
@@ -9,4 +10,4 @@ const empresaSchema=mongoose.Schema({
   ajuste: {type: Number,required: true}
 });
 
-module.exports=mongoose.model('Empresas', empresaSchema);
+module.exports=mongoose.model('Empresa', EmpresaSchema);

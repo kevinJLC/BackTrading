@@ -1,5 +1,6 @@
 const mongoose = require ('mongoose');
-const sistemaSchema=mongoose.Schema({
+const SistemaSchema=mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   nombre: {type: String, required: true},
   rendimiento: {type: Number, required: true },
   StopLoss: {type: Number, required: true},
@@ -9,4 +10,4 @@ const sistemaSchema=mongoose.Schema({
   Condicion: {type: Array, required: true}
 });
 
-module.exports= mongoose.model('Sistemas',sistemaSchema);
+module.exports= mongoose.model('Sistema',SistemaSchema);
