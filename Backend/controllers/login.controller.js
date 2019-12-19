@@ -3,14 +3,12 @@ const controller = {};
 
   controller.getUsuarios=async (req,res)=>{
     const usuarios= await Usuario.find();
-    res.json(usuarios)
+    res.json(usuarios);
   }
   controller.postUser= async (req,res) =>{
-    const usuario=new Usuario(req.body)
+    const usuario=new Usuario(req.body);
     await usuario.save();
-    res.json({
-      status: 'Usuario agregado'
-    });
+    res.json(usuario);
   };
   controller.getUsuario=async (req,res) =>{
     const usuario= await Usuario.findById(req.params.id);
@@ -30,6 +28,6 @@ const controller = {};
     })
   };
 
-  
+
 
 module.exports=controller;

@@ -10,8 +10,9 @@ import { Usuario } from 'src/app/usuario';
 })
 export class InicioSesionComponent implements OnInit {
 
-  borra: string;
+
   usuarios: Usuario[];
+
   nombre: string;
   correo: string;
   pass: string;
@@ -20,8 +21,7 @@ export class InicioSesionComponent implements OnInit {
   constructor(private login: LoginService) {
     this.login.getUsuarios().
     subscribe(users => {
-      this.usuarios = users;
-      console.log(this.usuarios);
+      console.log(users);
     });
    }
 
@@ -35,22 +35,17 @@ export class InicioSesionComponent implements OnInit {
     // nuevo objeto usuario
 
     const newUser: Usuario = {
+      id: null,
       nombre: this.nombre,
       correo: this.correo,
       contraseña: this.pass,
       nacimiento: this.fecha
+
     };
-
-    console.log(newUser.nombre);
-    console.log(newUser.correo);
-    console.log(newUser.contraseña);
-    console.log(newUser.nacimiento);
-
     // función proveniente del servicio
-    this.login.postUsuario(newUser).subscribe(users => {
-      this.usuarios.push(newUser);
-      console.log(this.usuarios);
+    this.login.postUsuario(newUser).
+    subscribe(user => {
+      console.log(user);
     });
   }
-
 }

@@ -22,7 +22,7 @@ then(()=>{
 
 //Middlewares
 
-  app.use((req, res, next) => {
+/*  app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
@@ -34,6 +34,8 @@ then(()=>{
     );
     next();
   });
+*/
+app.use(cors({origin: 'http://localhost:4200'}));
 app.use(morgan('dev'));
 app.use(express.json()); //Body Parser desde express incluido para usar req.body
 app.use(express.urlencoded({extended: false}))
