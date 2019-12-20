@@ -23,10 +23,8 @@
   height: 35%;
   width: 22%;
 }
-
-#logoToolbar{
-  height: auto;
-  width: 5%;
+.back{
+  margin-left: 20%;
 }
 
 #toolbar{
