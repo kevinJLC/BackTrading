@@ -1,24 +1,35 @@
   <img id="fondo" src="../../../../assets/fondo_Inicio.jpg" alt="fondo" >
   <img id="logo" src="">
-  <div id="toolbar">
-      <mat-toolbar color="warm">
+
+
+
+      <mat-toolbar id="toolbar" color="warm">
           <mat-toolbar-row>
           <span> BackTrading </span>
               <span class="example-fill-remaining-space"></span>
-              <form>
+
+              <form [formGroup]="loginForm" (submit)="onLogin(loginForm)">
+                <!--Correo electrónico-->
+
                   <mat-form-field appearance="fill" [style.fontSize.px]=12>
                     <mat-label>Email</mat-label>
-                    <input matInput type="email">
+                    <input matInput formControlName="email" type="email"  >
                     <mat-icon matSuffix>account_circle</mat-icon>
+                    <mat-hint  *ngIf="email.invalid && (email.dirty || email.touched)">
+                        <mat-hint class="errores" *ngIf="email.errors.required"> Ingresa un correo</mat-hint>
+                        <mat-hint class="errores" *ngIf="email.errors.pattern"> Correo no válido</mat-hint>
+                    </mat-hint>
                   </mat-form-field>
-
+                <!--Contraseña-->
                   <mat-form-field appearance="fill" [style.fontSize.px]=12>
-                      <mat-label>Password</mat-label>
-                    <input matInput type="password">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" type="password" >
+                    <mat-error *ngIf="true"></mat-error>
                     <mat-icon matSuffix>visibility_off</mat-icon>
+
                   </mat-form-field>
 
-                  <button mat-button type="submit" [style.bottom.px]=6 routerLink="/sistemas"> Iniciar sesión </button>
+                  <button mat-button type="submit" [style.bottom.px]=6 > Iniciar sesión </button>
                   <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
@@ -40,64 +51,10 @@
             </mat-toolbar-row>
           </mat-toolbar>
 
-        </div>
 
-  <form (submit)="addUser($event)">
-    <div id="FormRegistro" >
-      <mat-card style="text-align: center;">
-          <mat-card-title>Regístrate</mat-card-title>
-          <mat-card-content>
-              <p>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Nombre usuario</mat-label>
-                    <input matInput placeholder="kevin23" name="nombre" [(ngModel)]="nombre">
-                    <mat-icon matSuffix>face</mat-icon>
-                    <mat-hint>6-20 caracteres</mat-hint>
 
-                  </mat-form-field>
-                </p>
-                <p>
-                    <mat-form-field appearance="outline">
-                      <mat-label>Correo electrónico</mat-label>
-                      <input matInput placeholder="example@example.com" name="correo" [(ngModel)]="correo">
-                      <mat-icon matSuffix>email</mat-icon>
 
-                    </mat-form-field>
-                  </p>
-                  <p>
-                      <mat-form-field appearance="outline">
-                        <mat-label>Contraseña</mat-label>
-                        <input matInput type="password" placeholder="password" name="pass" [(ngModel)]="pass">
-                        <mat-icon matSuffix>lock</mat-icon>
-                        <mat-hint>7-10 caracteres</mat-hint>
 
-                      </mat-form-field>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="outline">
-                          <mat-label>Fecha de nacimiento</mat-label>
-                          <input matInput type="date" name="fecha" [(ngModel)]="fecha">
-                          <mat-icon matSuffix>date_range</mat-icon>
-                          <mat-hint>7-10 caracteres</mat-hint>
-                        </mat-form-field>
-                      </p>
-
-                    <button mat-raised-button color="primary" type="submit">Registrarse</button>
-
-          </mat-card-content>
-        </mat-card>
-
-  </div>
-
-  </form>
-
-  <footer>
-      <mat-toolbar color="warm" id="footer">
-        <span class="spacer"></span>
-          <h2> @ copyright Angular App 2019</h2>
-        <span class="spacer"></span>
-      </mat-toolbar>
-    </footer>
 
 
 

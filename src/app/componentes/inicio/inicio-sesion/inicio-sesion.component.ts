@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { LoginService } from '../../../servicios/login.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
 
 @Component({
@@ -11,41 +12,43 @@ import { Usuario } from 'src/app/usuario';
 export class InicioSesionComponent implements OnInit {
 
 
-  usuarios: Usuario[];
+  listado;
 
-  nombre: string;
-  correo: string;
-  pass: string;
-  fecha: Date;
+  loginForm: FormGroup;
+  correoTrue: any = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+
+  createFormGroup() {
+    return new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.pattern(this.correoTrue)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+    });
+  }
+
 
   constructor(private login: LoginService) {
-    this.login.getUsuarios().
-    subscribe(users => {
-      console.log(users);
-    });
+    this.loginForm = this.createFormGroup();
    }
+
+
 
   ngOnInit() {
   }
 
-  // función sobre el evento submit
-  addUser(event) {
-    // para no recargar página
-    event.preventDefault();
-    // nuevo objeto usuario
+  onLogin(formulario: FormGroup) {
+    if (this.loginForm.valid) {
+      console.log('hola');
+      this.onReset();
+    } else {
+      console.log('campos invalido');
+    }
 
-    const newUser: Usuario = {
-      id: null,
-      nombre: this.nombre,
-      correo: this.correo,
-      contraseña: this.pass,
-      nacimiento: this.fecha
-
-    };
-    // función proveniente del servicio
-    this.login.postUsuario(newUser).
-    subscribe(user => {
-      console.log(user);
-    });
   }
+  onReset() {
+    this.loginForm.reset();
+  }
+  // función sobre el evento submit
+
+
+  get email() {return this.loginForm.get('email'); }
+  get password() {return this.loginForm.get('password'); }
 }

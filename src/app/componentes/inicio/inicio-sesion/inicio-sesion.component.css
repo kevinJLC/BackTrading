@@ -1,10 +1,10 @@
-#FormRegistro{
-  z-index: 100;
-  position: absolute;
-  width: 34%;
-  top: 14%;
-  left: 61%;
+
+.errores{
+  color: red;
+
 }
+
+
 #fondo{
   z-index: 1;
   position: absolute;
@@ -28,18 +28,7 @@
   width: 100%;
   top: 0%;
 }
-#footer{
-  z-index: 300;
-  position: absolute;
-  width: 100%;
-  top: 110%;
-}
 
-.spacer{
-  -webkit-box-flex: 1;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
 
 
 .example-fill-remaining-space {
@@ -49,5 +38,12 @@
 }
 
 mat-form-field{
-  margin: 20px 10px 5px 10px;
+  margin-left: 2%;
+
 }
+mat-toolbar-row{
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+
+

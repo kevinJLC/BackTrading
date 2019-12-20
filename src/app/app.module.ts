@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, FormControl } from '@angular/Forms';
+import { FormsModule, FormControl, ControlContainer, NgControl, FormGroup, ReactiveFormsModule } from '@angular/Forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatInputModule,
@@ -22,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { InicioSesionComponent } from './componentes/inicio/inicio-sesion/inicio-sesion.component';
+import { RegistroComponent} from './componentes/inicio/registro/registro.component';
 
 import { HomeModule} from './componentes/Home/home/home.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -42,6 +43,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     InicioComponent,
     InicioSesionComponent,
+    RegistroComponent,
     SistemasComponent,
     BacktestingComponent,
     IntroduccionComponent,
@@ -69,8 +71,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatSelectModule,
     ScrollingModule,
     HomeModule,
-    HttpClientModule
-
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]

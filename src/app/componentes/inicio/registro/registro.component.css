@@ -1,3 +1,21 @@
+#FormRegistro{
+  z-index: 100;
+  position: absolute;
+  width: 34%;
+  top: 14%;
+  left: 61%;
+}
+#footer{
+  z-index: 300;
+  position: absolute;
+  width: 100%;
+  top: 110%;
+}
 
+.spacer{
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
 
 
