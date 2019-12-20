@@ -26,8 +26,13 @@
                   <mat-form-field appearance="fill" [style.fontSize.px]=12>
                     <mat-label>Password</mat-label>
                     <input matInput formControlName="password" type="password" >
-                    <mat-error *ngIf="true"></mat-error>
                     <mat-icon matSuffix>visibility_off</mat-icon>
+
+                    <mat-hint  *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <mat-hint class="errores" *ngIf="password.errors.minlength"> Contraseña menor a 6 caracteres </mat-hint>
+                        <mat-hint class="errores" *ngIf="password.errors.required"> Ingresa una contraseña</mat-hint>
+                        
+                    </mat-hint>
 
                   </mat-form-field>
 
@@ -40,7 +45,7 @@
                   <mat-icon>dialpad</mat-icon>
                   <span>Redial</span>
                 </button>
-                <button mat-menu-item disabled>
+                <button mat-menu-item>
                   <mat-icon>voicemail</mat-icon>
                   <span>Check voicemail</span>
                 </button>

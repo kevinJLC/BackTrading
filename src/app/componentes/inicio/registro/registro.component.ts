@@ -14,12 +14,26 @@ export class RegistroComponent implements OnInit {
   usuarios: Usuario[] = [];
   listado;
 
-  nombre: string;
+ /*nombre: string;
   correo: string;
   pass: string;
-  fecha: Date;
+  fecha: Date;*/
 
+
+  registroForm:FormGroup;
+  correoTrue: any = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+
+  createFormGroup() {
+    return new FormGroup({
+      nombre: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+      correo: new FormControl('', [Validators.required, Validators.pattern(this.correoTrue)]),
+      pass: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]), 
+      fecha: new FormControl('', [Validators.required])
+    });
+  }
   constructor(private login: LoginService) {
+    this.registroForm = this.createFormGroup();
+
     this.login.getUsuarios().
     subscribe(users => {
       this.listado = users;
@@ -30,7 +44,7 @@ export class RegistroComponent implements OnInit {
   ngOnInit() {
   }
 
-
+  
 
 
   addUser(event) {
@@ -38,7 +52,8 @@ export class RegistroComponent implements OnInit {
     event.preventDefault();
     // nuevo objeto usuario
 
-    const newUser: Usuario = {
+
+    /*const newUser: Usuario = {
       id: null,
       nombre: this.nombre,
       correo: this.correo,
@@ -46,7 +61,12 @@ export class RegistroComponent implements OnInit {
       nacimiento: this.fecha
 
     };
-    // función proveniente del servicio
+    // función proveniente del servicio*/
   }
+
+  get nombre() {return this.registroForm.get('nombre'); }
+  get correo() {return this.registroForm.get('correo'); }
+  get pass() { return this.registroForm.get('pass')}
+  get fecha() { return this.registroForm.get('fecha')}
 
 }

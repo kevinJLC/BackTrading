@@ -20,7 +20,7 @@ export class InicioSesionComponent implements OnInit {
   createFormGroup() {
     return new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern(this.correoTrue)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+      password: new FormControl('', [Validators.required, Validators.minLength(7)])
     });
   }
 
