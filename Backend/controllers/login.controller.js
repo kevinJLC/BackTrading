@@ -1,32 +1,39 @@
 const Usuario=require('../models/Usuarios');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const controller = {};
 
-  controller.getUsuarios=async (req,res)=>{
-    const usuarios= await Usuario.find();
-    res.json(usuarios);
-  }
-  controller.postUser= async (req,res) =>{
-    const usuario=new Usuario(req.body);
-    await usuario.save();
-    res.json(usuario);
-  };
-  controller.getUsuario=async (req,res) =>{
-    const usuario= await Usuario.findById(req.params.id);
-    res.json(usuario);
-  };
-  controller.putUsuario=async (req,res)=>{
-    const {id} = req.params;
-    const usuario={
-      nombre: req.body.nombre,
-      correo: req.body.correo,
-      contraseña: req.body.contraseña,
-      nacimiento: req.body.nacimiento
-    }
-    await Usuario.findByIdAndUpdate(id,{$set: usuario},{new:true});
-    res.json({
-      status: 'Usuario actualizado'
+controller.getUsers=async (req,res)=>{
+  const usuarios= await Usuario.find();
+  res.json(usuarios)
+}
+
+controller.postUser=(req,res) => {
+  let fetchuser;
+    Usuario.findOne( {correo: req.body.email} ).then(user=> {
+      fetchuser=user;
+      if(!user){
+        return res.status(401).json({ message: 'Autentificación inválida'});
+      }
+      return bcrypt.compare(req.body.password,user.contraseña);
+
     })
-  };
+    .then(result => {
+
+      if(!result){
+        return res.status(402).json({ message: 'Autentificación inválida'});
+      }
+      //existe el correo, existe un usuario y coinciden las contraseñas, ahora crea el token
+      const token = jwt.sign({correo: fetchuser.correo, id: fetchuser._id},'colomos2019', {expiresIn: '1h'});
+      res.json({
+        token: token,
+        expiresIn: 3600
+      });
+    })
+    .catch( err => {
+      return res.status(403).json({ message: 'Autentificación inválida'});
+    });
+}
 
 
 

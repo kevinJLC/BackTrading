@@ -16,6 +16,7 @@ import {
   MatGridListModule,
   MatSelect,
   MatSelectModule,
+  MatPaginatorModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,8 +36,10 @@ import { TutorialComponent } from './componentes/menu/tutorial/tutorial.componen
 import { GuiaComponent } from './componentes/menu/guia/guia.component';
 import { TradingComponent } from './componentes/menu/trading/trading.component';
 // servicios
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginService } from './servicios/login.service';
-import { HttpClientModule } from '@angular/common/http';
+import { RegistroService } from './servicios/registro.service';
+import { TokenService } from './servicios/token.service';
 
 @NgModule({
   declarations: [
@@ -72,9 +75,10 @@ import { HttpClientModule } from '@angular/common/http';
     ScrollingModule,
     HomeModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatPaginatorModule
   ],
-  providers: [LoginService],
+  providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

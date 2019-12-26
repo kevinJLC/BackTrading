@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
-import { LoginService } from '../../../servicios/login.service';
+import { RegistroService } from '../../../servicios/registro.service';
 import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
 
@@ -12,44 +12,53 @@ import { Usuario } from 'src/app/usuario';
 export class RegistroComponent implements OnInit {
 
   usuarios: Usuario[] = [];
+  user: Usuario = {
+    id: '',
+    nombre: 'sos12345',
+    correo: 'sos@gmail.com',
+    contraseña: 'asdasdas',
+    nacimiento: new Date()
+
+
+  };
   listado;
 
  /*nombre: string;
   correo: string;
   pass: string;
   fecha: Date;*/
+  type: string;
+  icon: string;
 
 
-  registroForm:FormGroup;
+  registroForm: FormGroup;
   correoTrue: any = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
+
+
 
   createFormGroup() {
     return new FormGroup({
       nombre: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       correo: new FormControl('', [Validators.required, Validators.pattern(this.correoTrue)]),
-      pass: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]), 
+      pass: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]),
       fecha: new FormControl('', [Validators.required])
     });
   }
-  constructor(private login: LoginService) {
+  constructor(public registro: RegistroService ) {
+    this.type = 'password';
+    this.icon = 'visibility_off';
     this.registroForm = this.createFormGroup();
-
-    this.login.getUsuarios().
-    subscribe(users => {
-      this.listado = users;
-      console.log(this.listado);
-    });
    }
 
   ngOnInit() {
   }
 
-  
 
 
-  addUser(event) {
+
+  addUser(form) {
     // para no recargar página
-    event.preventDefault();
+    // event.preventDefault();
     // nuevo objeto usuario
 
 
@@ -62,11 +71,29 @@ export class RegistroComponent implements OnInit {
 
     };
     // función proveniente del servicio*/
+
+
+    if (form.valid) {
+      this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
+    } else {
+      alert('Formulario incompleto');
+      this.registroForm.reset();
+    }
   }
 
   get nombre() {return this.registroForm.get('nombre'); }
   get correo() {return this.registroForm.get('correo'); }
-  get pass() { return this.registroForm.get('pass')}
-  get fecha() { return this.registroForm.get('fecha')}
+  get pass()   {return this.registroForm.get('pass'); }
+  get fecha()  {return this.registroForm.get('fecha'); }
 
+  // Función para visibilidad de contraseña
+  muestra() {
+    if (this.type === 'password') {
+      this.type = 'text';
+      this.icon = 'visibility';
+    } else if (this.type === 'text') {
+      this.type = 'password';
+      this.icon = 'visibility_off';
+    }
+  }
 }

@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { LoginService } from '../../../servicios/login.service';
 import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio-sesion',
   templateUrl: './inicio-sesion.component.html',
   styleUrls: ['./inicio-sesion.component.css']
 })
-export class InicioSesionComponent implements OnInit {
+export class InicioSesionComponent implements OnInit, OnDestroy {
 
 
-  listado;
+  userAuntentificado = false;
+  inicio: string = '/';
+  private authListenerSubs: Subscription;
 
+  private token: string;
   loginForm: FormGroup;
   correoTrue: any = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
 
@@ -32,21 +36,26 @@ export class InicioSesionComponent implements OnInit {
 
 
   ngOnInit() {
+    this.userAuntentificado = this.login.getAuthentication();
+    this.authListenerSubs = this.login.getAuthStatusListener().subscribe(isAuthenticated => {
+        this.userAuntentificado = isAuthenticated;
+    });
   }
 
-  onLogin(formulario: FormGroup) {
-    if (this.loginForm.valid) {
-      console.log('hola');
-      this.onReset();
+  ngOnDestroy() {
+    this.authListenerSubs.unsubscribe();
+  }
+  onLogin(form: FormGroup) {
+    if (form.valid) {
+      this.login.postUsuario(form.value);
+      this.loginForm.reset();
     } else {
-      console.log('campos invalido');
+      alert('complete el formulario');
     }
-
   }
-  onReset() {
-    this.loginForm.reset();
+  onLogout() {
+    this.login.logout();
   }
-  // función sobre el evento submit
 
 
   get email() {return this.loginForm.get('email'); }

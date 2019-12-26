@@ -1,7 +1,7 @@
-<form  [formGroup]="registroForm" (submit)="addUser($event)">
+<form  [formGroup]="registroForm" (submit)="addUser(registroForm)">
       <div id="FormRegistro" >
-        <mat-card style="text-align: center;">
-            <mat-card-title>Regístrate</mat-card-title>
+        <mat-card class="mat-card" style="text-align: center;">
+            <mat-card-title class="mat-card-title">Regístrate</mat-card-title>
             <mat-card-content>
                 <p>
                     <mat-form-field appearance="outline">
@@ -32,8 +32,9 @@
                     <p>
                         <mat-form-field appearance="outline">
                           <mat-label>Contraseña</mat-label>
-                          <input matInput type="password" placeholder="password" formControlName="pass" >
-                          <mat-icon matSuffix>lock</mat-icon>
+                          <input matInput type="{{type}}" placeholder="password" formControlName="pass" >
+                          <mat-icon matSuffix (click)="muestra()" style ="cursor: pointer;">{{icon}}</mat-icon>
+
                           <mat-hint  *ngIf="pass.invalid && (pass.dirty || pass.touched)">
                               <mat-hint class="errores" *ngIf="pass.errors.required"> Ingresa una contraseña</mat-hint>
                               <mat-hint class="errores" *ngIf="pass.errors.minlength"> contraseña menor a 7 caracteres</mat-hint>
@@ -41,6 +42,7 @@
                           </mat-hint>
 
                         </mat-form-field>
+
                       </p>
                       <p>
                           <mat-form-field appearance="outline">

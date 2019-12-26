@@ -2,8 +2,9 @@
   z-index: 100;
   position: absolute;
   width: 34%;
-  top: 14%;
+  top: 16%;
   left: 61%;
+
 }
 #footer{
   z-index: 300;
@@ -11,6 +12,7 @@
   width: 100%;
   top: 115%;
 }
+
 
 .spacer{
   -webkit-box-flex: 1;
@@ -21,4 +23,8 @@
 .errores{
   color: red;
 
+}
+
+mat-form-field{
+  width: 80%;
 }

@@ -1,4 +1,4 @@
-table{
+.table{
   position: absolute;
   top: 12%;
   left: 21%;
@@ -6,7 +6,11 @@ table{
   bottom: 12%;
   width: 77%;
   padding-bottom: 5%;
-  
+
+}
+table{
+  background-color: coral;
+  color: brown;
 }
 .example-viewport {
   height: 100%;
