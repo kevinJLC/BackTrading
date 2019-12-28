@@ -1,1 +1,53 @@
+<mat-card>
+  <mat-card-title> Crear sistemas de trading </mat-card-title>
+  <mat-card-subtitle><h4>Configure fácilmente un nuevo sistema</h4></mat-card-subtitle>
+  <form [formGroup]="sistemaForm" (submit)="onCreate(sistemaForm)">
+    <mat-card-content>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName='nombre' placeholder="My systems">
+          <mat-icon matSuffix>text_format</mat-icon>
+          <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+            <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
+          </mat-hint>
+
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Rendimiento</mat-label>
+          <input matInput formControlName='rendimiento' placeholder="2.3%">
+          <mat-icon matSuffix>attach_money</mat-icon>
+          <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
+            <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rendimiento</mat-hint>
+          </mat-hint>
+        </mat-form-field>
+      </p>
+      <p>
+          <mat-form-field appearance="outline">
+            <mat-label>StopLoss</mat-label>
+            <input matInput formControlName='stoploss' type="number" placeholder="-1.5%">
+            <mat-icon matSuffix>money_off</mat-icon>
+            <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
+              <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss</mat-hint>
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
+              <mat-label>Rango de operación</mat-label>
+              <input matInput formControlName='rango' type="number" placeholder="3 días">
+              <mat-icon matSuffix> date_range</mat-icon>
+              <mat-hint  *ngIf="rango.invalid && (rango.dirty || rango.touched)">
+                <mat-hint class="errores" *ngIf="rango.errors.required"> Ingresa un rango</mat-hint>
+              </mat-hint>
+            </mat-form-field>
+          </p>
+            <button mat-raised-button color="primary" type="submit">Añadir</button>
+
+    </mat-card-content>
+  </form>
+
+</mat-card>
 

@@ -3,7 +3,8 @@ const jwt= require('jsonwebtoken');
 module.exports = (req,res,next)=>{
 try{
   const token= req.headers.authorization.split(" ")[1];
-  jwt.verify(token, 'colomos2019');
+  const decodedToken = jwt.verify(token, 'colomos2019');
+  req.userData = {correo: decodedToken.correo, id: decodedToken.id};
   next();
 }catch(error){
   res.status(401).json({message: 'Autorización inválida'});

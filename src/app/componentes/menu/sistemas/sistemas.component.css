@@ -21,3 +21,18 @@ table{
 .example-item {
   height: 50px;
 }
+mat-card{
+  position: absolute;
+
+  top: 12%;
+  left: 21%;
+  right: 1%;
+
+  padding-bottom: 7%;
+
+
+}
+.errores{
+  color: red;
+}
+

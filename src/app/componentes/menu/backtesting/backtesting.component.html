@@ -1,21 +1,13 @@
 <div id="FormRegistro" >
     <mat-card style="text-align:justify">
         <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
-        
+
         <mat-card-content>
             <mat-form-field>
                 <mat-label>Seleccione un sistema</mat-label>
                 <mat-select required>
                   <mat-option>--</mat-option>
-                  <mat-option>
-                    System32
-                  </mat-option>
-                  <mat-option>
-                     bLackWin3r
-                    </mat-option>
-                    <mat-option>
-                        LaSolteraDeORO
-                      </mat-option>
+                  <mat-option *ngFor="let item of systems" > {{item.nombre}} </mat-option>
                 </mat-select>
 
               </mat-form-field>

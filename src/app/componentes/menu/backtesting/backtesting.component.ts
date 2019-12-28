@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { SistemasService} from '../../../servicios/Sistemas-Trading/sistemas.service';
+import { Sistema} from '../../../sistema';
 export interface Animal {
   name: string;
   sound: string;
@@ -20,7 +22,15 @@ export class BacktestingComponent implements OnInit {
     {name: 'Cow', sound: 'Moo!'},
     {name: 'Fox', sound: 'Wa-pa-pa-pa-pa-pa-pow!'},
   ];
-  constructor() { }
+  systems;
+  constructor( private sistemas: SistemasService) {
+    sistemas.getSistemas().subscribe(res => {
+      this.systems = res;
+      console.log(res);
+    });
+  }
+
+
 
   ngOnInit() {
   }
