@@ -10,7 +10,7 @@
 
               <span class="example-fill-remaining-space"></span>
 
-              <form [formGroup]="loginForm" (submit)="onLogin(loginForm)">
+              <form class="formulario" [formGroup]="loginForm" (submit)="onLogin(loginForm)">
                 <!--Correo electrónico-->
 
                   <mat-form-field appearance="fill" [style.fontSize.px]=12>
@@ -36,8 +36,10 @@
 
                   </mat-form-field>
 
-                  <button mat-button type="submit" [style.bottom.px]=6 > Iniciar sesión </button>
+                  <button mat-button type="submit" [style.bottom.px]=6> Iniciar sesión </button>
               </form>
+              <mat-progress-spinner diameter="40" strokeWidth="10"   class="mat-progress-spinner" mode="indeterminate" *ngIf="cargando"></mat-progress-spinner>
+
             </mat-toolbar-row>
 
           </mat-toolbar>

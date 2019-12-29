@@ -1,4 +1,5 @@
 const Usuario=require('../models/Usuarios');
+const jwt = require('jsonwebtoken');
 const bcrypt=require("bcrypt");
 const nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
@@ -14,9 +15,8 @@ const controller = {};
         correo: req.body.correo,
         contraseña: hash,
         nacimiento: req.body.fecha,
-        //creator: req.userData.id
       });
-      nameForm=usuario.nombre;
+      const tokentemporal= jwt.sign({correo: req.body.correo, nombre: req.body.nombre},'colomos2019', {expiresIn: '1h'});
       console.log(usuario);
 
       // Código para verificar correo
@@ -35,20 +35,17 @@ const controller = {};
 
 
 
-var email = {
+      var email = {
 
-  from: 'Coopel@mail.com',
+  from: usuario.correo,
 
-  to: 'correodeldeshecho@gmail.com',
+  to: 'lopezcarrillokevin36@gmail.com',
 
   subject: ' NoReply: Deuda pendiente folio#34728',
 
-  html: '<b> Que chingue a su madre el Monterrey y viva el América </b>'
-};
-
-
-
-client.sendMail(email, function(err, info){
+  html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ usuario.nacimiento +'"> http://localhost/activacion/ </a>'
+      };
+      client.sendMail(email, function(err, info){
 
     if (err ){
 
@@ -62,19 +59,35 @@ client.sendMail(email, function(err, info){
 
     }
 
-});
+      });
 
-      usuario.save()
-      .then(result => {res.json(usuario);})
-      .catch( err => { res.status(500).json({ err: err}); });
-
+      console.log('Ve a tu correo y verifica tu cuenta');
     })
-    .catch(err => {console.log('bcryp fallido') });
+    .catch(err => {console.log(err) });
 
 
   };
 
 
+  controller.getActivacion=(req,res) =>{
+    bcrypt.hash(req.params.password,10)
+    .then(hash => {
+      const usuario=new Usuario({
+        nombre: req.params.nombre,
+        correo: req.params.correo,
+        contraseña: hash,
+        nacimiento: req.params.nacimiento,
+      });
+
+      usuario.save()
+      .then(res.redirect('http://localhost:4200'))
+      .catch( err => { res.status(500).json({ err: err}); });
+
+
+
+    })
+    .catch(err => {console.log(err) });
+  };
 
 
 

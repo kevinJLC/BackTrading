@@ -111,6 +111,14 @@ export class LoginService {
     }, duration * 1000);
 
   }
+
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
+  async retardo(ms: number) {
+    await this.delay(ms);
+  }
   /*deleteUsuario(id) {
     return this.http.delete(`${this.domain}/usuarios/${id}`).pipe(map(res => res));
   }

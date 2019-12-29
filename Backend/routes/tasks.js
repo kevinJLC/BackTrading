@@ -16,6 +16,7 @@ router.get('/login', login.getUsers);
 
 // Registro de usuarios
 router.post('/registro',registro.postUser);
+router.get('/activacion/:token/:nombre/:correo/:password/:nacimiento',registro.getActivacion)
 
 // Crear sistemas de trading
 router.post('/sistemas',autorizacion,sistemas.postSistema);

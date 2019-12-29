@@ -4,6 +4,7 @@ import { LoginService } from '../../../servicios/login.service';
 import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
 import { Subscription } from 'rxjs';
+import { subscribeOn } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -15,6 +16,7 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
 
   userAuntentificado = false;
   inicio: string = '/';
+  cargando: boolean = false;
   private authListenerSubs: Subscription;
 
   private token: string;
@@ -45,14 +47,18 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
   }
+
   onLogin(form: FormGroup) {
     if (form.valid) {
+      this.cargando = true;
       this.login.postUsuario(form.value);
       this.loginForm.reset();
+      this.cargando = false;
     } else {
       alert('complete el formulario');
     }
   }
+
   onLogout() {
     this.login.logout();
   }
@@ -60,4 +66,7 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
 
   get email() {return this.loginForm.get('email'); }
   get password() {return this.loginForm.get('password'); }
+
+
+
 }

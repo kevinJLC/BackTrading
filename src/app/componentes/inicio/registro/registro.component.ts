@@ -75,6 +75,7 @@ export class RegistroComponent implements OnInit {
 
 
     if (form.valid) {
+      alert('Ve a tu correo y verifica tu cuenta');
       this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
     } else {
       alert('Formulario incompleto');

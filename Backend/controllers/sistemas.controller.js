@@ -3,7 +3,7 @@ const Sistema = require('../models/Sistemas');
 const controller ={};
 
 controller.getSistemas = async (req,res) => {
-  
+
   const sistemas = await Sistema.find( {creador: req.userData.id})
   .then(result => {
     res.json(result);

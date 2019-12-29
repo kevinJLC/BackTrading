@@ -6,7 +6,7 @@ const UsuarioSchema=mongoose.Schema({
   nombre: {type: String, required: true, unique: true},
   correo: {type: String, required: true, unique: true},
   contraseña: {type: String, required: true},
-  nacimiento: {type: Date, required: true}
+  nacimiento: {type: Date, required: true},
 });
 
 UsuarioSchema.plugin(uniqueValidator);
