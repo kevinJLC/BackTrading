@@ -21,6 +21,8 @@ router.get('/activacion/:token/:nombre/:correo/:password/:nacimiento',registro.g
 // Crear sistemas de trading
 router.post('/sistemas',autorizacion,sistemas.postSistema);
 router.get('/sistemas',autorizacion,sistemas.getSistemas);
+router.delete('/sistemas/:id',autorizacion, sistemas.deleteSistema);
+router.post('/sistemas/update', autorizacion,sistemas.updateSistema);
 
 
 module.exports=router;

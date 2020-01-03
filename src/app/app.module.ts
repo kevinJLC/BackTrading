@@ -16,7 +16,8 @@ import {
   MatGridListModule,
   MatSelect,
   MatSelectModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatSortModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -76,7 +77,9 @@ import { TokenService } from './servicios/token.service';
     HomeModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule
   ],
   providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]

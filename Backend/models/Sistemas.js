@@ -5,7 +5,7 @@ const SistemaSchema=mongoose.Schema({
   rendimiento: {type: Number, required: true },
   stopLoss: {type: Number, required: true},
   periodo:  {type: Number, required: true},
-  //Condicion: {type: Array, required: true},
+  condicion: {type: Array, required: true},
   creador: {type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true}
 });
 

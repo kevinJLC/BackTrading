@@ -1,12 +1,13 @@
-<mat-card>
+<mat-card class="mat-card">
   <mat-card-title> Crear sistemas de trading </mat-card-title>
   <mat-card-subtitle><h4>Configure fácilmente un nuevo sistema</h4></mat-card-subtitle>
   <form [formGroup]="sistemaForm" (submit)="onCreate(sistemaForm)">
     <mat-card-content>
       <p>
         <mat-form-field appearance="outline">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName='nombre' placeholder="My systems">
+          <mat-label *ngIf="!editando">Nombre</mat-label>
+          <mat-label *ngIf="editando" style="color:royalblue"><strong>{{selectedSystem.nombre}}</strong></mat-label>
+          <input matInput [(ngModel)]='ngNombre' formControlName='nombre' placeholder="My systems">
           <mat-icon matSuffix>text_format</mat-icon>
           <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
             <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
@@ -16,8 +17,9 @@
       </p>
       <p>
         <mat-form-field appearance="outline">
-          <mat-label>Rendimiento</mat-label>
-          <input matInput formControlName='rendimiento' placeholder="2.3%">
+            <mat-label *ngIf="!editando">Rendimiento</mat-label>
+            <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.rendimiento}}</strong></i></mat-label>
+            <input matInput [(ngModel)]='ngRendimiento' formControlName='rendimiento' type="number" placeholder="2.3%">
           <mat-icon matSuffix>attach_money</mat-icon>
           <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
             <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rendimiento</mat-hint>
@@ -26,8 +28,9 @@
       </p>
       <p>
           <mat-form-field appearance="outline">
-            <mat-label>StopLoss</mat-label>
-            <input matInput formControlName='stoploss' type="number" placeholder="-1.5%">
+              <mat-label *ngIf="!editando">StopLoss</mat-label>
+              <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.stopLoss}}</strong></i></mat-label>
+              <input matInput [(ngModel)]='ngStoploss' formControlName='stoploss' type="number" placeholder="-1.5%">
             <mat-icon matSuffix>money_off</mat-icon>
             <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
               <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss</mat-hint>
@@ -36,18 +39,84 @@
         </p>
         <p>
             <mat-form-field appearance="outline">
-              <mat-label>Rango de operación</mat-label>
-              <input matInput formControlName='rango' type="number" placeholder="3 días">
+                <mat-label *ngIf="!editando">Rango de operacion</mat-label>
+                <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.periodo}}</strong></i></mat-label>
+              <input matInput [(ngModel)]='ngRango' formControlName='rango' type="number" placeholder="3 días">
               <mat-icon matSuffix> date_range</mat-icon>
               <mat-hint  *ngIf="rango.invalid && (rango.dirty || rango.touched)">
                 <mat-hint class="errores" *ngIf="rango.errors.required"> Ingresa un rango</mat-hint>
               </mat-hint>
             </mat-form-field>
           </p>
-            <button mat-raised-button color="primary" type="submit">Añadir</button>
+          <p>
+              <mat-form-field appearance="outline">
+                  <mat-label *ngIf="!editando">Indicadores</mat-label>
+                  <mat-label *ngIf="editando" style="color:royalblue"><i><strong> Nueva condicion</strong></i></mat-label>
+                  <mat-select [(value)]='selectedvalue'  multiple>
+                    <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                  </mat-select>
+                <mat-icon matSuffix></mat-icon>
+              </mat-form-field>
+            </p>
+            <button mat-raised-button color="primary" type="submit" *ngIf="!editando">Añadir</button>
+            <button mat-raised-button color="primary" type="submit" *ngIf="editando" >Guardar</button>
 
     </mat-card-content>
   </form>
+
+  <button mat-raised-button color="primary" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+
+
+  <input (keyup)='aplicaFiltro($event.target.value)' class="filtro" mat-input placeholder="Buscar">
+  <table mat-table [dataSource]="listaDeSistemas" matSort class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="rendimiento">
+        <th mat-header-cell  *matHeaderCellDef> StopLimit </th>
+        <td mat-cell *matCellDef="let element"> {{element.rendimiento}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="stoploss">
+        <th mat-header-cell  *matHeaderCellDef> StopLoss </th>
+        <td mat-cell *matCellDef="let element"> {{element.stopLoss}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="rango">
+        <th mat-header-cell *matHeaderCellDef> Intérvalo (Días) </th>
+        <td mat-cell *matCellDef="let element"> {{element.periodo}} </td>
+      </ng-container>
+
+      <!-- acciones Column -->
+      <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>  </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)='eliminarSistema(element._id)'>
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+            <button mat-icon-button (click)='editarSistema(element)'>
+                <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
+
+
+
 
 </mat-card>
 

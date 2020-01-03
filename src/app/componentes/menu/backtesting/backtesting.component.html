@@ -1,64 +1,67 @@
 <div id="FormRegistro" >
     <mat-card style="text-align:justify">
         <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
-
+      <form [formGroup]="backtestingForm" (submit)="onCreate(backtestingForm)">
         <mat-card-content>
-            <mat-form-field>
-                <mat-label>Seleccione un sistema</mat-label>
-                <mat-select required>
-                  <mat-option>--</mat-option>
-                  <mat-option *ngFor="let item of systems" > {{item.nombre}} </mat-option>
-                </mat-select>
+          <mat-form-field>
+              <mat-label>Seleccione un sistema</mat-label>
+              <mat-select [(value)]='selectedSystem' (selectionChange)='imprimeSistema(selectedSystem)' required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let item of systems" [value]='item' > {{item.nombre}} </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+          <p>
+              <mat-form-field appearance="outline">
+                <mat-label>Rendimiento</mat-label>
+                <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento'>
+                <mat-icon matSuffix>attach_money</mat-icon>
+                <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
+                  <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rango</mat-hint>
+                </mat-hint>
 
               </mat-form-field>
+            </p>
             <p>
                 <mat-form-field appearance="outline">
-                  <mat-label>Rendimiento</mat-label>
-                  <input matInput placeholder="2.3%">
-                  <mat-icon matSuffix>attach_money</mat-icon>
-                  <mat-hint>menores al 3% </mat-hint>
+                  <mat-label>StopLoss</mat-label>
+                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="-1.5%" formControlName='stoploss'>
+                  <mat-icon matSuffix>money_off</mat-icon>
 
                 </mat-form-field>
               </p>
               <p>
                   <mat-form-field appearance="outline">
-                    <mat-label>StopLoss</mat-label>
-                    <input matInput type="number" placeholder="-1.5%">
-                    <mat-icon matSuffix>money_off</mat-icon>
+                    <mat-label>Rango de operación</mat-label>
+                    <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo'>
+                    <mat-icon matSuffix> date_range</mat-icon>
+                    <mat-hint>max 100 días</mat-hint>
 
                   </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
-                      <mat-label>Rango de operación</mat-label>
-                      <input matInput type="number" placeholder="3 días">
-                      <mat-icon matSuffix> date_range</mat-icon>
-                      <mat-hint>max 100 días</mat-hint>
-
+                      <mat-label>Día de inicio</mat-label>
+                      <input matInput type="date" formControlName='fechaInicio'>
+                      <mat-icon matSuffix>calendar_today</mat-icon>
+                      <mat-hint></mat-hint>
                     </mat-form-field>
                   </p>
+
                   <p>
                       <mat-form-field appearance="outline">
-                        <mat-label>Día de inicio</mat-label>
-                        <input matInput type="date">
+                        <mat-label>Día de Finalización</mat-label>
+                        <input matInput type="date" formControlName='fechaFinalizacion'>
                         <mat-icon matSuffix>calendar_today</mat-icon>
-                        <mat-hint></mat-hint>
+                        <mat-hint>No mayor al día de finalización</mat-hint>
                       </mat-form-field>
                     </p>
 
-                    <p>
-                        <mat-form-field appearance="outline">
-                          <mat-label>Día de Finalización</mat-label>
-                          <input matInput type="date">
-                          <mat-icon matSuffix>calendar_today</mat-icon>
-                          <mat-hint>No mayor al día de finalización</mat-hint>
-                        </mat-form-field>
-                      </p>
+                  <button mat-raised-button color="primary" >Ejecutar backtesting</button>
 
-                    <button mat-raised-button color="warm" >Guardar cambios</button>
-                    <button mat-raised-button color="primary" >Ejecutar backtesting</button>
+      </mat-card-content>
+      </form>
 
-        </mat-card-content>
       </mat-card>
 
 </div>
