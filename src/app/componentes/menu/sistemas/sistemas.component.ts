@@ -141,6 +141,7 @@ export class SistemasComponent implements OnInit {
   cancelar() {
     this.editando = false;
     this.sistemaForm.reset();
+    this.selectedvalue = [];
   }
   get nombre() {return this.sistemaForm.get('nombre'); }
   get rendimiento() {return this.sistemaForm.get('rendimiento'); }

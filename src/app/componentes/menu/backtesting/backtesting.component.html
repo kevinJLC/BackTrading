@@ -17,7 +17,7 @@
                 <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento'>
                 <mat-icon matSuffix>attach_money</mat-icon>
                 <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
-                  <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rango</mat-hint>
+                  <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rendimiento </mat-hint>
                 </mat-hint>
 
               </mat-form-field>
@@ -27,15 +27,19 @@
                   <mat-label>StopLoss</mat-label>
                   <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="-1.5%" formControlName='stoploss'>
                   <mat-icon matSuffix>money_off</mat-icon>
-
-                </mat-form-field>
+                  <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
+                    <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
+                  </mat-hint>
+                  </mat-form-field>
               </p>
               <p>
                   <mat-form-field appearance="outline">
                     <mat-label>Rango de operación</mat-label>
                     <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo'>
                     <mat-icon matSuffix> date_range</mat-icon>
-                    <mat-hint>max 100 días</mat-hint>
+                    <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched)">
+                      <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
+                    </mat-hint>
 
                   </mat-form-field>
                 </p>
@@ -44,7 +48,9 @@
                       <mat-label>Día de inicio</mat-label>
                       <input matInput type="date" formControlName='fechaInicio'>
                       <mat-icon matSuffix>calendar_today</mat-icon>
-                      <mat-hint></mat-hint>
+                      <mat-hint  *ngIf="fechaInicio.invalid && (fechaInicio.dirty || fechaInicio.touched)">
+                        <mat-hint class="errores" *ngIf="fechaInicio.errors.required"> Ingresa un día de inicio </mat-hint>
+                      </mat-hint>
                     </mat-form-field>
                   </p>
 
@@ -53,8 +59,10 @@
                         <mat-label>Día de Finalización</mat-label>
                         <input matInput type="date" formControlName='fechaFinalizacion'>
                         <mat-icon matSuffix>calendar_today</mat-icon>
-                        <mat-hint>No mayor al día de finalización</mat-hint>
-                      </mat-form-field>
+                        <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched)">
+                          <mat-hint class="errores" *ngIf="fechaFinalizacion.errors.required"> Ingresa un día de finalizacion </mat-hint>
+                        </mat-hint>
+                        </mat-form-field>
                     </p>
 
                   <button mat-raised-button color="primary" >Ejecutar backtesting</button>
