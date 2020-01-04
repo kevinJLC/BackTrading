@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
 
 @Component({
   selector: 'app-default-sidebar',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DefaultSidebarComponent implements OnInit {
 
-  constructor() { }
+  modoUsuario: string = 'pro';
 
+  constructor( private ModoUser: ModousuarioService) { }
   ngOnInit() {
+  }
+  // manda un nuevo modo de usuario al servicio que administra el modo usuario
+  setValue() {
+    this.ModoUser.actualizarModoUser(this.modoUsuario);
   }
 
 }

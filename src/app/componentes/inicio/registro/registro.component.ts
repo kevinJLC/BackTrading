@@ -22,6 +22,7 @@ export class RegistroComponent implements OnInit {
 
   };
   listado;
+  mayor_edad=true;
 
  /*nombre: string;
   correo: string;
@@ -58,29 +59,28 @@ export class RegistroComponent implements OnInit {
 
 
   addUser(form) {
-    // para no recargar página
-    // event.preventDefault();
-    // nuevo objeto usuario
-
-
-    /*const newUser: Usuario = {
-      id: null,
-      nombre: this.nombre,
-      correo: this.correo,
-      contraseña: this.pass,
-      nacimiento: this.fecha
-
-    };
-    // función proveniente del servicio*/
-
-
     if (form.valid) {
-      alert('Ve a tu correo y verifica tu cuenta');
-      this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
+      var fechaDate = new Date(form.value.fecha);
+      var now = new Date;
+      if (fechaDate.getUTCFullYear() + 18 < now.getUTCFullYear()) {
+        form.value.fecha = new Date(form.value.fecha);
+        alert('Ve a tu correo y verifica tu cuenta');
+        this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
+      }
+      else {
+        this.mayor_edad = false;
+      }
+
     } else {
       alert('Formulario incompleto');
+
       this.registroForm.reset();
     }
+
+  }
+
+  fechaValida() {
+    this.mayor_edad = true;
   }
 
   get nombre() {return this.registroForm.get('nombre'); }

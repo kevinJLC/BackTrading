@@ -3,6 +3,8 @@ import {FormControl, Validators, FormGroup, Form} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { SistemasService} from '../../../servicios/Sistemas-Trading/sistemas.service';
 import { Sistema} from '../../../sistema';
+import { Observable } from 'rxjs';
+import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
 
 @Component({
   selector: 'app-backtesting',
@@ -15,12 +17,18 @@ export class BacktestingComponent implements OnInit {
 
   backtestingForm: FormGroup;
 
+
   systems;
   selectedSystem; // almacena valores del sistema seleccionado en tiempo real
 
+  // ng model para mostrar valores en el formulario
   ngRendimiento;
   ngStoploss;
   ngRango;
+
+  // Modo Usuario
+  modoUsuario: string;
+  modoUser$: Observable<string>;
 
 
   createFormGroup() {
@@ -33,7 +41,7 @@ export class BacktestingComponent implements OnInit {
     });
   }
 
-  constructor( private sistemas: SistemasService) {
+  constructor( private sistemas: SistemasService, private usermode: ModousuarioService) {
     this.backtestingForm = this.createFormGroup();
     sistemas.getSistemas().subscribe(res => {
       this.systems = res;
@@ -50,11 +58,14 @@ export class BacktestingComponent implements OnInit {
 
 
   ngOnInit() {
+    this.modoUser$ = this.usermode.getModoUser$();
+    this.modoUser$.subscribe(modo => this.modoUsuario=modo);
   }
 
   onCreate(form: Form) {
 
   }
+
 
   get rendimiento() {return this.backtestingForm.get('rendimiento'); }
   get stoploss() {return this.backtestingForm.get('stoploss'); }

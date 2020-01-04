@@ -12,34 +12,38 @@
 
             </mat-form-field>
           <p>
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" >
                 <mat-label>Rendimiento</mat-label>
-                <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento'>
+                <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento' type='number'>
                 <mat-icon matSuffix>attach_money</mat-icon>
-                <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
-                  <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rendimiento </mat-hint>
-                </mat-hint>
-
+                <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)" class="errores">
+                    Ingresa un rendimiento
+                  </mat-hint>
+                <mat-hint *ngIf="rendimiento.value >= 3 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el rendimiento por debajo del 3% para que más operaciones se cumplan con éxito"> Rendimiento muy alto <mat-icon>help</mat-icon> </mat-hint>
               </mat-form-field>
             </p>
             <p>
                 <mat-form-field appearance="outline">
                   <mat-label>StopLoss</mat-label>
-                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="-1.5%" formControlName='stoploss'>
+                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="-1.5%" formControlName='stoploss' type='number'>
                   <mat-icon matSuffix>money_off</mat-icon>
                   <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
                     <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
                   </mat-hint>
+                  <mat-hint *ngIf="stoploss.value >= 1.5 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el stoploss por debajo de 1.5% para evitar que pierdas el capital en pocas operaciones"> Stoploss muy alto <mat-icon>help</mat-icon> </mat-hint>
                   </mat-form-field>
               </p>
               <p>
                   <mat-form-field appearance="outline">
                     <mat-label>Rango de operación</mat-label>
-                    <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo'>
+                    <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' type='number'>
                     <mat-icon matSuffix> date_range</mat-icon>
                     <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched)">
                       <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
+                      <mat-hint  name='es' *ngIf="(2 > periodo.value)  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' || modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
+
                     </mat-hint>
+                    <mat-hint *ngIf="(periodo.value > 50)  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' || modoUsuario === 'Pro') " class="errores"  matTooltip="El sistema aun no soporta backtesting mayor a 50 días"> Periodo de operación muy largo <mat-icon>help</mat-icon> </mat-hint>
 
                   </mat-form-field>
                 </p>
@@ -65,7 +69,7 @@
                         </mat-form-field>
                     </p>
 
-                  <button mat-raised-button color="primary" >Ejecutar backtesting</button>
+                  <button mat-raised-button color="primary">Ejecutar backtesting </button>
 
       </mat-card-content>
       </form>

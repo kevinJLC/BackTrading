@@ -28,3 +28,6 @@ mat-form-field{
 .errores{
   color: red;
 }
+.recomendacion{
+  color: rgb(2, 150, 150);
+}

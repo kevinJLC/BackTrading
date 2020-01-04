@@ -17,7 +17,8 @@ import {
   MatSelect,
   MatSelectModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -63,6 +64,8 @@ import { TokenService } from './servicios/token.service';
     MatInputModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
     MatToolbarModule,
     MatExpansionModule,
     FormsModule,
