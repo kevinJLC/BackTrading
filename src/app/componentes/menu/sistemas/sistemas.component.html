@@ -43,7 +43,7 @@
                 <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.periodo}}</strong></i></mat-label>
               <input matInput [(ngModel)]='ngRango' formControlName='rango' type="number" placeholder="3 días">
               <mat-icon matSuffix> date_range</mat-icon>
-              <mat-hint  *ngIf="rango.invalid && (rango.dirty || rango.touched)">
+              <mat-hint  *ngIf=" 1 > rango.value || (rango.invalid && (rango.dirty || rango.touched))">
                 <mat-hint class="errores" *ngIf="rango.errors.required"> Ingresa un rango</mat-hint>
               </mat-hint>
             </mat-form-field>

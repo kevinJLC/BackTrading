@@ -25,7 +25,7 @@
             <p>
                 <mat-form-field appearance="outline">
                   <mat-label>StopLoss</mat-label>
-                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="-1.5%" formControlName='stoploss' type='number'>
+                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="1.5% no valores negativos" formControlName='stoploss' type='number'>
                   <mat-icon matSuffix>money_off</mat-icon>
                   <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
                     <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
@@ -38,12 +38,14 @@
                     <mat-label>Rango de operación</mat-label>
                     <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' type='number'>
                     <mat-icon matSuffix> date_range</mat-icon>
-                    <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched)">
+                    <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched); else elseBlock">
                       <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
-                      <mat-hint  name='es' *ngIf="(2 > periodo.value)  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' || modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
-
                     </mat-hint>
-                    <mat-hint *ngIf="(periodo.value > 50)  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' || modoUsuario === 'Pro') " class="errores"  matTooltip="El sistema aun no soporta backtesting mayor a 50 días"> Periodo de operación muy largo <mat-icon>help</mat-icon> </mat-hint>
+                    <ng-template #elseBlock >
+                      <mat-hint *ngIf="2 > periodo.value  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
+                    </ng-template>
+                    <mat-hint *ngIf="periodo.value > 50  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="El sistema aun no soporta backtesting mayor a 50 días"> Periodo de operación muy largo <mat-icon>help</mat-icon> </mat-hint>
+
 
                   </mat-form-field>
                 </p>
@@ -61,11 +63,17 @@
                   <p>
                       <mat-form-field appearance="outline">
                         <mat-label>Día de Finalización</mat-label>
-                        <input matInput type="date" formControlName='fechaFinalizacion'>
+                        <input matInput type="date" formControlName='fechaFinalizacion' (input) = 'enTiempo(fechaFinalizacion.value)'>
                         <mat-icon matSuffix>calendar_today</mat-icon>
-                        <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched)">
+                        <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched) ; else errorFecha">
                           <mat-hint class="errores" *ngIf="fechaFinalizacion.errors.required"> Ingresa un día de finalizacion </mat-hint>
                         </mat-hint>
+                        <ng-template #errorFecha>
+                            <mat-hint *ngIf="!fechaFinalizacion.invalid && fechaInicio.value >= fechaFinalizacion.value; else validaDiaFin"  class="errores"> El día de finalización debe ser porstorior al de inicio </mat-hint>
+                        </ng-template >
+                        <ng-template #validaDiaFin>
+                            <mat-hint *ngIf="!inTime"  class="errores" matTooltip="Los backtesting se ejecutan con precios al día de ayer ( modifique su día de inicio de ser necesario )"> No existen precios para este día <mat-icon> help </mat-icon> </mat-hint>
+                        </ng-template>
                         </mat-form-field>
                     </p>
 

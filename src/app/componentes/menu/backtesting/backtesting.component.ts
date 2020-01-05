@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import {FormControl, Validators, FormGroup, Form} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { SistemasService} from '../../../servicios/Sistemas-Trading/sistemas.service';
@@ -27,8 +27,12 @@ export class BacktestingComponent implements OnInit {
   ngRango;
 
   // Modo Usuario
-  modoUsuario: string;
+  modoUsuario: string = 'pro';
   modoUser$: Observable<string>;
+
+  periodoInvalido = false
+
+  inTime: boolean = true;
 
 
   createFormGroup() {
@@ -47,6 +51,8 @@ export class BacktestingComponent implements OnInit {
       this.systems = res;
       console.log(this.systems);
     });
+    console.log(new Date());
+
   }
 
   imprimeSistema(sistema) {
@@ -59,10 +65,41 @@ export class BacktestingComponent implements OnInit {
 
   ngOnInit() {
     this.modoUser$ = this.usermode.getModoUser$();
-    this.modoUser$.subscribe(modo => this.modoUsuario=modo);
+    this.modoUser$.subscribe(modo => {this.modoUsuario = modo;
+      console.log(this.modoUsuario);
+    });
   }
 
-  onCreate(form: Form) {
+  onCreate(form) {
+    if (form.value.periodo < 2) {
+      this.periodoInvalido = true;
+    }
+  }
+
+  enTiempo(fecha: string) {
+    const año = parseInt(fecha.split('-')[0]);
+    const mes = parseInt(fecha.split('-')[1])-1; // 0 = Ene y 11 = Dic
+    const dia = parseInt(fecha.split('-')[2]);
+    const input = new Date(año, mes, dia);
+    const hoy = new Date();
+    // tslint:disable-next-line: max-line-length
+    console.log(input.getUTCFullYear());
+    if (input.getUTCFullYear() < hoy.getUTCFullYear()) {
+      this.inTime = true;
+    // tslint:disable-next-line: max-line-length
+    } else if (input.getUTCFullYear() === hoy.getUTCFullYear() && input.getUTCMonth() <= hoy.getUTCMonth()) {
+      if ( input.getUTCMonth() < hoy.getUTCMonth()) {
+        this.inTime = true;
+      } else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate()) {
+        this.inTime = true;
+        console.log((hoy.getTime() - input.getTime()) / 86400000);
+      } else {
+        this.inTime = false;
+      }
+
+    } else {
+      this.inTime = false;
+    }
 
   }
 
