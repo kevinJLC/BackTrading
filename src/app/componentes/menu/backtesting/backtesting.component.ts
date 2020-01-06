@@ -111,27 +111,46 @@ export class BacktestingComponent implements OnInit {
 
     const hoy = new Date();
     console.log(inputInicio + 'quepedo');
+    
     // tslint:disable-next-line: max-line-length
-    if (input.getUTCFullYear() < hoy.getUTCFullYear()) {
+    if (input.getUTCFullYear() < hoy.getUTCFullYear()) 
+    {
       this.inTime = true;
     // tslint:disable-next-line: max-line-length
-    } else if (input.getUTCFullYear() === hoy.getUTCFullYear() && input.getUTCMonth() <= hoy.getUTCMonth()) {
-      if ( input.getUTCMonth() < hoy.getUTCMonth()) {
-        this.inTime = true;
-      } else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate()) {
-        this.inTime = true;
-
-        // tslint:disable-next-line: max-line-length
-        if (Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000) === rango ) { this.inRango = true; } else { this.inRango = false; }
-        console.log(this.inRango + ' ' + Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
-      } else {
-        this.inTime = false;
-      }
-
-    } else {
+    } 
+    else if (input.getUTCFullYear() === hoy.getUTCFullYear() && input.getUTCMonth() <= hoy.getUTCMonth()) 
+    {
+        if ( input.getUTCMonth() < hoy.getUTCMonth()) 
+        {
+          this.inTime = true;
+        } 
+        else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate()) 
+        {
+          this.inTime = true;
+          // tslint:disable-next-line: max-line-length
+          //console.log(Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
+          console.log(this.inRango + ' ' + Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
+        } 
+        else 
+        {
+          this.inTime = false;
+        }
+      } 
+    else 
+    {
       this.inTime = false;
     }
 
+    if(this.inTime){
+      if (Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000) >= rango ) 
+      { 
+        this.inRango = true;
+      }
+      else 
+      { 
+        this.inRango = false; 
+      }
+    }
   }
 
 
