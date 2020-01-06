@@ -52,6 +52,7 @@ export class LoginService {
     this.authStatusListener.next(false);
     this.clearAuthData();
     clearTimeout(this.tokenTimer);
+    this.router.navigate(['/']);
   }
 
   getToken() {

@@ -5,6 +5,7 @@ import { SistemasService} from '../../../servicios/Sistemas-Trading/sistemas.ser
 import { Sistema} from '../../../sistema';
 import { Observable } from 'rxjs';
 import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-backtesting',
@@ -33,6 +34,10 @@ export class BacktestingComponent implements OnInit {
   periodoInvalido = false
 
   inTime: boolean = true;
+  inRango: boolean = true;
+  diaPreConfigurado: string;
+
+  MuestraCampoFechaFinalizacion = false;
 
 
   createFormGroup() {
@@ -76,14 +81,37 @@ export class BacktestingComponent implements OnInit {
     }
   }
 
-  enTiempo(fecha: string) {
+  enTiempo(fecha: string, inicio: string, rango: number) {
+    if (inicio.length === 0 || rango === undefined || rango === null || rango === 0 || rango < 2) {
+      this.MuestraCampoFechaFinalizacion = false;
+      return;
+    } else {
+       this.MuestraCampoFechaFinalizacion = true;
+     }
+
+     if(fecha.length ===0){
+       return;
+     }
+
+    // día de finalizacion
     const año = parseInt(fecha.split('-')[0]);
     const mes = parseInt(fecha.split('-')[1])-1; // 0 = Ene y 11 = Dic
     const dia = parseInt(fecha.split('-')[2]);
     const input = new Date(año, mes, dia);
+
+    // día de inicio
+    const añoInicio = parseInt(inicio.split('-')[0]);
+    const mesInicio = parseInt(inicio.split('-')[1])-1; // 0 = Ene y 11 = Dic
+    const diaInicio = parseInt(inicio.split('-')[2]);
+    const inputInicio = new Date(añoInicio, mesInicio, diaInicio);
+    var auxiliarFecha = new Date(añoInicio, mesInicio, diaInicio);
+    auxiliarFecha.setDate(auxiliarFecha.getDate() + rango);
+
+    this.diaPreConfigurado = (auxiliarFecha.getUTCFullYear() + '-' + auxiliarFecha.getUTCMonth()+1 + '-' + auxiliarFecha.getUTCDate()).toString();
+
     const hoy = new Date();
+    console.log(inputInicio + 'quepedo');
     // tslint:disable-next-line: max-line-length
-    console.log(input.getUTCFullYear());
     if (input.getUTCFullYear() < hoy.getUTCFullYear()) {
       this.inTime = true;
     // tslint:disable-next-line: max-line-length
@@ -92,7 +120,10 @@ export class BacktestingComponent implements OnInit {
         this.inTime = true;
       } else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate()) {
         this.inTime = true;
-        console.log((hoy.getTime() - input.getTime()) / 86400000);
+
+        // tslint:disable-next-line: max-line-length
+        if (Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000) === rango ) { this.inRango = true; } else { this.inRango = false; }
+        console.log(this.inRango + ' ' + Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
       } else {
         this.inTime = false;
       }

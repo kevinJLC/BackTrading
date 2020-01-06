@@ -36,7 +36,7 @@
               <p>
                   <mat-form-field appearance="outline">
                     <mat-label>Rango de operación</mat-label>
-                    <input [(ngModel)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' type='number'>
+                    <input [(ngModel)]='ngRango' [(value)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
                     <mat-icon matSuffix> date_range</mat-icon>
                     <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched); else elseBlock">
                       <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
@@ -52,7 +52,7 @@
                 <p>
                     <mat-form-field appearance="outline">
                       <mat-label>Día de inicio</mat-label>
-                      <input matInput type="date" formControlName='fechaInicio'>
+                      <input matInput type="date" formControlName='fechaInicio' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
                       <mat-icon matSuffix>calendar_today</mat-icon>
                       <mat-hint  *ngIf="fechaInicio.invalid && (fechaInicio.dirty || fechaInicio.touched)">
                         <mat-hint class="errores" *ngIf="fechaInicio.errors.required"> Ingresa un día de inicio </mat-hint>
@@ -60,19 +60,22 @@
                     </mat-form-field>
                   </p>
 
-                  <p>
+                  <p *ngIf="MuestraCampoFechaFinalizacion">
                       <mat-form-field appearance="outline">
                         <mat-label>Día de Finalización</mat-label>
-                        <input matInput type="date" formControlName='fechaFinalizacion' (input) = 'enTiempo(fechaFinalizacion.value)'>
+                        <input matInput  type="date" formControlName='fechaFinalizacion' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
                         <mat-icon matSuffix>calendar_today</mat-icon>
                         <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched) ; else errorFecha">
                           <mat-hint class="errores" *ngIf="fechaFinalizacion.errors.required"> Ingresa un día de finalizacion </mat-hint>
                         </mat-hint>
                         <ng-template #errorFecha>
-                            <mat-hint *ngIf="!fechaFinalizacion.invalid && fechaInicio.value >= fechaFinalizacion.value; else validaDiaFin"  class="errores"> El día de finalización debe ser porstorior al de inicio </mat-hint>
+                            <mat-hint *ngIf="!fechaFinalizacion.invalid && fechaInicio.value >= fechaFinalizacion.value; else validaDiaFin"  class="errores"> El día de finalización debe ser posterior al de inicio </mat-hint>
                         </ng-template >
                         <ng-template #validaDiaFin>
-                            <mat-hint *ngIf="!inTime"  class="errores" matTooltip="Los backtesting se ejecutan con precios al día de ayer ( modifique su día de inicio de ser necesario )"> No existen precios para este día <mat-icon> help </mat-icon> </mat-hint>
+                            <mat-hint *ngIf="!inTime ;else CabeRango"  class="errores" matTooltip="Los backtesting se ejecutan con precios al día de ayer ( modifique su día de inicio de ser necesario )"> No existen precios para este día <mat-icon> help </mat-icon> </mat-hint>
+                        </ng-template>
+                        <ng-template #CabeRango>
+                          <mat-hint *ngIf="!inRango"  class="errores" matTooltip="El margen de días entre inicio y fin es menor al rango de operación (modifique el rango o inicio de ser necesario) ¡No olvide que finalización no debe ser mayor al día actual! "> Rango de operación superior a la diferencia de dias<mat-icon> help </mat-icon> </mat-hint>
                         </ng-template>
                         </mat-form-field>
                     </p>
