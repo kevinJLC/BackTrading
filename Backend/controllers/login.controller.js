@@ -18,7 +18,7 @@ controller.postUser=(req,res) => {
     .then(user=> {
       fetchuser=user;
       if(!user){
-        return res.status(401).json({ message: 'Autentificación inválida'});
+        return res.json({ message: 'Autentificación inválida'});
       }
       return bcrypt.compare(req.body.password,user.contraseña);
 
@@ -74,7 +74,7 @@ controller.postUser=(req,res) => {
 
         Usuario.findByIdAndUpdate(fetchuser._id,{intentos: intentos}).then(res => {console.log(res)}).catch(err => {console.log(err)});
 
-        return res.status(402).json({ message: 'Autentificación inválida'});
+        return res.json({ message: 'Contraseña incorrecta'});
       }
       //existe el correo, existe un usuario y coinciden las contraseñas, ahora crea el token
       const token = jwt.sign({correo: fetchuser.correo, id: fetchuser._id},'colomos2019', {expiresIn: '1h'});
