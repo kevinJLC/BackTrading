@@ -41,6 +41,7 @@ export class LoginService {
         this.saveAuthData(token, expirationDate);
         this.router.navigate(['/sistemas']);
       } else {
+        alert('Correo o contraseña no existen');
         this.router.navigate(['/']);
       }
 

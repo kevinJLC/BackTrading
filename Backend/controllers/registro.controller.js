@@ -16,54 +16,72 @@ const controller = {};
         contraseña: hash,
         nacimiento: req.body.fecha,
       });
-      console.log('Del req: ' +req.body.fecha);
-      console.log('Del usuario: ' +usuario.nacimiento);
-      const tokentemporal= jwt.sign({correo: req.body.correo, nombre: req.body.nombre},'colomos2019', {expiresIn: '1h'});
-      console.log(usuario);
 
-      // Código para verificar correo
-      var options = {
-
-        auth: {
-
-          api_user: 'kevin36joel',
-
-          api_key: '333ingeniero777'
-
+      var repetido;
+      Usuario.exists({correo: usuario.correo}, (err ,result) => {
+        if(err){
+          console.log(err);
         }
 
+        if(result){
+          console.log(true);
+          res.json(true);
+        } else {
+          console.log(false);
+        console.log('Del req: ' +req.body.fecha);
+        console.log('Del usuario: ' +usuario.nacimiento);
+        const tokentemporal= jwt.sign({correo: req.body.correo, nombre: req.body.nombre},'colomos2019', {expiresIn: '1h'});
+        console.log(usuario);
+        res.json(false);
+        // Código para verificar correo
+        var options = {
+
+          auth: {
+
+            api_user: 'kevin36joel',
+
+            api_key: '333ingeniero777'
+
+          }
+
+        }
+        var client = nodemailer.createTransport(sgTransport(options));
+
+
+
+        var email = {
+
+    from: usuario.correo,
+
+    to: 'lopezcarrillokevin36@gmail.com',
+
+    subject: ' NoReply: Deuda pendiente folio#34728',
+
+    html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ req.body.fecha +'"> http://localhost/activacion/ </a>'
+        };
+        client.sendMail(email, function(err, info){
+
+      if (err ){
+
+        console.log(err);
+
       }
-      var client = nodemailer.createTransport(sgTransport(options));
+
+      else {
+
+        console.log('Message sent: ' + info.response);
+
+      }
+
+        });
+
+        console.log('Ve a tu correo y verifica tu cuenta');
+        }
+      })
 
 
 
-      var email = {
 
-  from: usuario.correo,
-
-  to: 'lopezcarrillokevin36@gmail.com',
-
-  subject: ' NoReply: Deuda pendiente folio#34728',
-
-  html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ req.body.fecha +'"> http://localhost/activacion/ </a>'
-      };
-      client.sendMail(email, function(err, info){
-
-    if (err ){
-
-      console.log(err);
-
-    }
-
-    else {
-
-      console.log('Message sent: ' + info.response);
-
-    }
-
-      });
-
-      console.log('Ve a tu correo y verifica tu cuenta');
     })
     .catch(err => {console.log(err) });
 

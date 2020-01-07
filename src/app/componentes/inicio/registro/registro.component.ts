@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { RegistroService } from '../../../servicios/registro.service';
 import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-registro',
@@ -68,8 +69,14 @@ export class RegistroComponent implements OnInit {
     const now = new Date();
     if (fechaDate.getUTCFullYear() + 18 < now.getUTCFullYear()) {
         form.value.fecha = new Date(año, mes, dia);
-        alert('Ve a tu correo y verifica tu cuenta');
-        this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
+        this.registro.postUsuario(form.value).subscribe(res => {
+          console.log(res);
+          if (res===true) {
+            alert('El correo está en uso');
+          } else {
+            alert('Ve a tu correo y verifica tu cuenta');
+          }
+        });
     } else {
         this.mayor_edad = false;
     }
