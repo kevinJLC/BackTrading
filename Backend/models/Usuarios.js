@@ -7,6 +7,7 @@ const UsuarioSchema=mongoose.Schema({
   correo: {type: String, required: true, unique: true},
   contraseña: {type: String, required: true},
   nacimiento: {type: Date, required: true},
+  intentos: {type: Number}
 });
 
 UsuarioSchema.plugin(uniqueValidator);

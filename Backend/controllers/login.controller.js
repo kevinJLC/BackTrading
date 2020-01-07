@@ -2,7 +2,7 @@ const Usuario=require('../models/Usuarios');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const controller = {};
-const intentos = 0;
+var intentos = 0;
 
 controller.getUsers=async (req,res)=>{
   const usuarios= await Usuario.find();
@@ -23,10 +23,15 @@ controller.postUser=(req,res) => {
     .then(result => {
 
       if(!result){
-
-        console.log(fetchuser);
         // aumenta campo de intentos 0-4
-        Usuario.findByIdAndUpdate(fetchuser._id,{nombre: 'modificado'}).then( user => res.json(user))
+        intentos++;
+        if(intentos>4){
+          intentos=0;
+          // Envio de correo
+          
+        }
+
+        Usuario.findByIdAndUpdate(fetchuser._id,{intentos: intentos}).then(res => {console.log(res)}).catch(err => {console.log(err)});
 
         return res.status(402).json({ message: 'Autentificación inválida'});
       }
