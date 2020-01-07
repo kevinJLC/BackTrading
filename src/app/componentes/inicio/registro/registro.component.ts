@@ -60,16 +60,21 @@ export class RegistroComponent implements OnInit {
 
   addUser(form) {
     if (form.valid) {
-      var fechaDate = new Date(form.value.fecha);
-      var now = new Date;
-      if (fechaDate.getUTCFullYear() + 18 < now.getUTCFullYear()) {
-        form.value.fecha = new Date(form.value.fecha);
+    const año = parseInt(form.value.fecha.split('-')[0]);
+    const mes = parseInt(form.value.fecha.split('-')[1])-1; // 0 = Ene y 11 = Dic
+    const dia = parseInt(form.value.fecha.split('-')[2]);
+
+    const fechaDate = new Date(año, mes, dia);
+    const now = new Date();
+    if (fechaDate.getUTCFullYear() + 18 < now.getUTCFullYear()) {
+        form.value.fecha = new Date(año, mes, dia);
         alert('Ve a tu correo y verifica tu cuenta');
         this.registro.postUsuario(form.value).subscribe(res => { console.log(res); });
-      }
-      else {
+    } else {
         this.mayor_edad = false;
-      }
+    }
+
+
 
     } else {
       alert('Formulario incompleto');

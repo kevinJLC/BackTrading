@@ -62,7 +62,8 @@ export class BacktestingComponent implements OnInit {
 
   imprimeSistema(sistema) {
 
-    this.ngRendimiento = sistema.rendimiento;
+    this.backtestingForm.get('rendimiento').setValue(sistema.rendimiento);
+    //this.ngRendimiento = sistema.rendimiento;
     this.ngStoploss = sistema.stopLoss;
     this.ngRango = sistema.periodo;
   }
@@ -104,51 +105,48 @@ export class BacktestingComponent implements OnInit {
     const mesInicio = parseInt(inicio.split('-')[1])-1; // 0 = Ene y 11 = Dic
     const diaInicio = parseInt(inicio.split('-')[2]);
     const inputInicio = new Date(añoInicio, mesInicio, diaInicio);
+
     var auxiliarFecha = new Date(añoInicio, mesInicio, diaInicio);
     auxiliarFecha.setDate(auxiliarFecha.getDate() + rango);
-
     this.diaPreConfigurado = (auxiliarFecha.getUTCFullYear() + '-' + auxiliarFecha.getUTCMonth()+1 + '-' + auxiliarFecha.getUTCDate()).toString();
 
     const hoy = new Date();
     console.log(inputInicio + 'quepedo');
-    
+
     // tslint:disable-next-line: max-line-length
-    if (input.getUTCFullYear() < hoy.getUTCFullYear()) 
+    if (input.getUTCFullYear() < hoy.getUTCFullYear())
     {
       this.inTime = true;
     // tslint:disable-next-line: max-line-length
-    } 
-    else if (input.getUTCFullYear() === hoy.getUTCFullYear() && input.getUTCMonth() <= hoy.getUTCMonth()) 
+    }
+    else if (input.getUTCFullYear() === hoy.getUTCFullYear() && input.getUTCMonth() <= hoy.getUTCMonth())
     {
-        if ( input.getUTCMonth() < hoy.getUTCMonth()) 
+        if ( input.getUTCMonth() < hoy.getUTCMonth())
         {
           this.inTime = true;
-        } 
-        else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate()) 
+        }
+        else if ( input.getUTCMonth() === hoy.getUTCMonth() && hoy.getDate() > input.getUTCDate())
         {
           this.inTime = true;
-          // tslint:disable-next-line: max-line-length
-          //console.log(Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
-          console.log(this.inRango + ' ' + Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000));
-        } 
-        else 
+        }
+        else
         {
           this.inTime = false;
         }
-      } 
-    else 
+      }
+    else
     {
       this.inTime = false;
     }
 
-    if(this.inTime){
-      if (Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000) >= rango ) 
-      { 
+    if (this.inTime) {
+      if (Math.trunc((input.getTime() - inputInicio.getTime()) / 86400000) >= rango )
+      {
         this.inRango = true;
       }
-      else 
-      { 
-        this.inRango = false; 
+      else
+      {
+        this.inRango = false;
       }
     }
   }

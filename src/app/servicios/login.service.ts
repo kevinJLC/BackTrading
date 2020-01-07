@@ -15,6 +15,7 @@ export class LoginService {
   private tokenTimer: any;    // NodeJS.timer
   private authStatusListener = new Subject<boolean>();
   private isAuthenticated = false;
+  private intentosInicioSesion: number = 0;
   constructor(private http: HttpClient, private router: Router) { }
 
 

@@ -16,6 +16,8 @@ const controller = {};
         contraseña: hash,
         nacimiento: req.body.fecha,
       });
+      console.log('Del req: ' +req.body.fecha);
+      console.log('Del usuario: ' +usuario.nacimiento);
       const tokentemporal= jwt.sign({correo: req.body.correo, nombre: req.body.nombre},'colomos2019', {expiresIn: '1h'});
       console.log(usuario);
 
@@ -43,7 +45,7 @@ const controller = {};
 
   subject: ' NoReply: Deuda pendiente folio#34728',
 
-  html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ usuario.nacimiento +'"> http://localhost/activacion/ </a>'
+  html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ req.body.fecha +'"> http://localhost/activacion/ </a>'
       };
       client.sendMail(email, function(err, info){
 
@@ -76,15 +78,14 @@ const controller = {};
         nombre: req.params.nombre,
         correo: req.params.correo,
         contraseña: hash,
-        nacimiento: req.params.nacimiento,
+        nacimiento: req.params.nacimiento
       });
-
+      console.log(usuario);
       usuario.save()
       .then(res.redirect('http://localhost:4200'))
-      .catch( err => { res.status(500).json({ err: err}); });
-
-
-
+      .catch( err => {
+        console.log('No pudo dar el Usuario.save() linea:84 solution en commit del 06/01/2020' + err );
+        res.status(500).json({ message:  'error brutal'}); });
     })
     .catch(err => {console.log(err) });
   };
