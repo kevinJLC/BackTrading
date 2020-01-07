@@ -18,7 +18,7 @@
                     <input matInput formControlName="email" type="email"  >
                     <mat-icon matSuffix>account_circle</mat-icon>
                     <mat-hint  *ngIf="email.invalid && (email.dirty || email.touched)">
-                        <mat-hint class="errores" *ngIf="email.errors.required"> Ingresa un correo</mat-hint>
+                        <!-- <mat-hint class="errores" *ngIf="email.errors.required"> Ingresa un correo</mat-hint> -->
                         <mat-hint class="errores" *ngIf="email.errors.pattern"> Correo no válido</mat-hint>
                     </mat-hint>
                   </mat-form-field>
@@ -28,9 +28,8 @@
                     <input matInput formControlName="password" type="password" >
                     <mat-icon matSuffix>visibility_off</mat-icon>
 
-                    <mat-hint  *ngIf="password.invalid && (password.dirty || password.touched)">
-                        <mat-hint class="errores" *ngIf="password.errors.minlength"> Contraseña menor a 6 caracteres </mat-hint>
-                        <mat-hint class="errores" *ngIf="password.errors.required"> Ingresa una contraseña</mat-hint>
+                    <mat-hint class="recuperacion" (mouseover)='hola()' (click)='recuperarCuenta()' style ="cursor: pointer;">
+                      ¿Olvidaste tu contraseña? <mat-icon> help </mat-icon>
                     </mat-hint>
 
                   </mat-form-field>

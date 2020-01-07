@@ -23,9 +23,12 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// componentes antes de logearse
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { InicioSesionComponent } from './componentes/inicio/inicio-sesion/inicio-sesion.component';
 import { RegistroComponent} from './componentes/inicio/registro/registro.component';
+import { RecuperarCuentaComponent } from './componentes/inicio/recuperar-cuenta/recuperar-cuenta.component';
+
 
 import { HomeModule} from './componentes/Home/home/home.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -55,7 +58,8 @@ import { TokenService } from './servicios/token.service';
     IndicadoresComponent,
     TutorialComponent,
     GuiaComponent,
-    TradingComponent
+    TradingComponent,
+    RecuperarCuentaComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,15 @@
 .errores{
   color: red;
 }
+.recuperacion{
+  color: navy;
+  font-size: x-small;
+}
+.recuperacion:hover{
+  color: navy;
+  text-decoration: underline;
+  font-size: x-small;
+}
 
 
 #fondo{

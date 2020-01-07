@@ -27,7 +27,6 @@ export class LoginService {
   // genera un inicio de sesión con un token
   postUsuario( user) {
     return this.http.post<{token: string, expiresIn: number}>(this.URL_API, user).subscribe(res => {
-      console.log('holaaaaa');
       const token = res.token;
       this.token = token;
       if (token) {
@@ -43,8 +42,8 @@ export class LoginService {
         this.router.navigate(['/sistemas']);
       } else {
         //console.log('No se puede');
-        //alert('Correo o contraseña no existen');
-        this.router.navigate(['http://google.com']);
+        alert('Correo o contraseña no existen');
+        this.router.navigate(['/']);
       }
 
     });

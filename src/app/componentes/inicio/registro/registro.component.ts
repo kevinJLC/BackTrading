@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { RegistroService } from '../../../servicios/registro.service';
 import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-registro',

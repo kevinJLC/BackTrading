@@ -5,6 +5,7 @@ import { NgForm, NgModel } from '@angular/forms';
 import { Usuario } from 'src/app/usuario';
 import { Subscription } from 'rxjs';
 import { subscribeOn } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -31,7 +32,7 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(private login: LoginService) {
+  constructor(private login: LoginService, private router: Router) {
     this.loginForm = this.createFormGroup();
    }
 
@@ -63,6 +64,12 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
     this.login.logout();
   }
 
+  hola(){
+    console.log('holas desde recuperar cuenta');
+  }
+  recuperarCuenta() {
+    this.router.navigate(['/recuperacion']);
+  }
 
   get email() {return this.loginForm.get('email'); }
   get password() {return this.loginForm.get('password'); }
