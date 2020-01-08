@@ -31,8 +31,8 @@ await Usuario.exists({correo: req.body.correoRecuperacion}, (err, result) =>{
             res.json(true);
             var options = {
                 auth: {
-                  api_user: 'intimartinez69',
-                  api_key: 'contrasendgrid777'
+                  api_user: 'kevin36joel',
+                  api_key: '333ingeniero777'
                 }
             }
             var client = nodemailer.createTransport(sgTransport(options));
@@ -40,7 +40,7 @@ await Usuario.exists({correo: req.body.correoRecuperacion}, (err, result) =>{
             const tokentemporal= jwt.sign({correo: req.body.correoRecuperacion},'colomos2019', {expiresIn: '1h'});
             var email = {
                 from: req.body.correoRecuperacion,
-                to: 'correodeldeshecho@gmail.com',
+                to: 'lopezcarrillokevin36@gmail.com',
                 subject: ' Contraseña de recuperacion',
                 html: '<b> Click en el siguiente enlace para actualizar tu contraseña a: '+ newcontra +' </b> <br> <a href ="http://localhost:3000/recuperar/'+ tokentemporal +'/'+ newcontra +'/'+ req.body.correoRecuperacion +'"> http://localhost/recuperar/ </a>'
             };
@@ -53,7 +53,7 @@ await Usuario.exists({correo: req.body.correoRecuperacion}, (err, result) =>{
                 }
             });
             console.log("Ve a tu correo y cambia la contraseña");
-        } 
+        }
     }
 });
     console.log(req.body.correoRecuperacion);
@@ -74,7 +74,7 @@ controller.getRecuperacion= (req,res) =>{
     })
     .catch(err => {
         console.log(err);
-        res.json({ message: 'error desconocido xd'}); 
+        res.json({ message: 'error desconocido xd'});
     })
 }
 

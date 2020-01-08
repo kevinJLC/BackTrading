@@ -45,6 +45,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginService } from './servicios/login.service';
 import { RegistroService } from './servicios/registro.service';
 import { TokenService } from './servicios/token.service';
+import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
 
 @NgModule({
   declarations: [
@@ -59,8 +60,10 @@ import { TokenService } from './servicios/token.service';
     TutorialComponent,
     GuiaComponent,
     TradingComponent,
-    RecuperarCuentaComponent
+    RecuperarCuentaComponent,
+    CambiarPasswordComponent
   ],
+  entryComponents: [ CambiarPasswordComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,
