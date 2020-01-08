@@ -4,9 +4,10 @@ const Usuario= require('../models/Usuarios');
 
 const login=require('../controllers/login.controller');
 const registro=require('../controllers/registro.controller');
-const sistemas = require('../controllers/sistemas.controller')
-const autorizacion = require('../middleware/autorizacion')
-const recuperacion = require('../controllers/Recuperacion.controller')
+const sistemas = require('../controllers/sistemas.controller');
+const autorizacion = require('../middleware/autorizacion');
+const recuperacion = require('../controllers/Recuperacion.controller');
+const changepass = require('../controllers/changePass.controller');
 
 router.get('/',login.getUsers);
 
@@ -16,6 +17,8 @@ router.post('/login', login.postUser);
 router.get('/login', login.getUsers);
 router.post('/recuperar', recuperacion.postRecuperacion);
 router.get('/recuperar/:token/:newpsw/:correorec', recuperacion.getRecuperacion);
+
+router.post('/updatepass',autorizacion,changepass.postCambiaContra);
 
 // Registro de usuarios
 router.post('/registro',registro.postUser);

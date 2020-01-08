@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
-
+import { Router } from '@angular/router';
+import { CambiocontraService } from 'src/app/servicios/Cambiar-Contra/cambiocontra.service';
 
 @Component({
   selector: 'app-cambiar-password',
@@ -24,7 +25,7 @@ export class CambiarPasswordComponent implements OnInit {
   }
 
 
-  constructor() {
+  constructor(private router: Router, private cambiarContra: CambiocontraService) {
     this.type = 'password';
     this.icon = 'visibility_off';
     this.pswForm = this.createFormGroup();
@@ -33,9 +34,29 @@ export class CambiarPasswordComponent implements OnInit {
   ngOnInit() {
   }
 
-  cambiaPsw() {
-
+  cambiaPsw(form) {
+    if(!form.valid){
+      alert("Campos invalidos");
+      return;
+    }
+    else{
+      this.cambiarContra.postCambiaContra(form.value.actualPsw, form.value.newPsw).subscribe(res =>{
+          if(res){
+            this.actualizado = true;
+            this.verificado = true;
+          }
+          else{
+            this.actualizado = false;
+            this.verificado = false;
+          }
+      });
+    }
   }
+
+cancelar(){
+  this.router.navigate(["/sistemas"])
+}
+
   muestra() {
     if (this.type === 'password') {
       this.type = 'text';
