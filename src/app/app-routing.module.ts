@@ -12,6 +12,7 @@ import { TradingComponent } from './componentes/menu/trading/trading.component';
 import { NoAuthenticatedGuardService} from './servicios/no-authenticated-guard.service';
 import { AuthenticatedGuardService} from './servicios/authenticated-guard.service';
 import { RecuperarCuentaComponent } from './componentes/inicio/recuperar-cuenta/recuperar-cuenta.component';
+import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
 
 
 
@@ -19,6 +20,9 @@ const routes: Routes = [
   {path: '', component: InicioComponent, canActivate: [NoAuthenticatedGuardService]},
 
   {path: 'recuperacion', component: RecuperarCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
+
+  {path: 'newPassword', component: HomeComponent, canActivate: [AuthenticatedGuardService],
+  children: [{path: '', component: CambiarPasswordComponent }]},
 
   {path: 'sistemas', component: HomeComponent, canActivate: [AuthenticatedGuardService],
   children: [{path: '', component: SistemasComponent }]},

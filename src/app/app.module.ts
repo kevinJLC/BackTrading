@@ -63,7 +63,6 @@ import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/
     RecuperarCuentaComponent,
     CambiarPasswordComponent
   ],
-  entryComponents: [ CambiarPasswordComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,

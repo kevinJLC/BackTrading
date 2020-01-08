@@ -26,7 +26,7 @@ export class RecuperarCuentaComponent implements OnInit {
    }
   ngOnInit() {
   }
- 
+
   recuperarCuenta(form) {
     if(form.value.correoRecuperacion.length == 0){
       this.encontrado = false;
@@ -40,7 +40,7 @@ export class RecuperarCuentaComponent implements OnInit {
         this.auxEncontrado = false;
         this.encontrado = false;
       }
-      
+
       console.log(res);
     });
   }
