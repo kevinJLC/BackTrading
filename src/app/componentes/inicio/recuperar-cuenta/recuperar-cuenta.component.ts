@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { RecuperacionService } from 'src/app/servicios/Recuperacion-Cuenta/recuperacion.service';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -19,14 +20,29 @@ export class RecuperarCuentaComponent implements OnInit {
   }
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private recuperacion: RecuperacionService) {
     this.recuperacionForm = this.createFormGroup();
+
    }
   ngOnInit() {
   }
 
   recuperarCuenta(form) {
-
+    if(form.value.correoRecuperacion.length == 0){
+      this.encontrado = false;
+    }
+    this.recuperacion.postRecuperar(form.value).subscribe(res => {
+      if(res){
+        this.auxEncontrado = true;
+        this.encontrado = true;
+      }
+      else{
+        this.auxEncontrado = false;
+        this.encontrado = false;
+      }
+      
+      console.log(res);
+    });
   }
 
   goHome() {
