@@ -22,11 +22,28 @@ export class SistemasComponent implements OnInit {
   // Formulario
   sistemaForm: FormGroup;
   selectedvalue: string[]; // Array que almacena los indicadores al momento de usar el formulario
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  toppingList: string[] =
+   [ 'ama',
+     'envelopes',
+     'ma',
+     'atr',
+     'bears',
+     'bulls',
+     'dmark',
+     'macd',
+     'momentum',
+     'osma',
+     'rsi',
+     'mfi',
+     'obv',
+     'volumes',
+     'ao'
+    ];
   // Tabla
   dataSource;
   listaDeSistemas;
-  displayedColumns: string[] = ['nombre', 'rendimiento', 'stoploss', 'rango', 'acciones'];
+  //<p *ngFor="let item of element.condicion"> {{item}} </p> Por si quieres que se muestren enlistados
+  displayedColumns: string[] = ['nombre', 'rendimiento', 'stoploss', 'rango', 'indicadores', 'acciones'];
   // Cuando el usuario edita
   editando = false;
   selectedSystem; // almacena todos los campos de la row seleccionada al editar
@@ -43,7 +60,7 @@ export class SistemasComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      nombre: new FormControl('', Validators.required),
+      nombre: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(15)]),
       rendimiento: new FormControl('', Validators.required),
       stoploss: new FormControl('', Validators.required),
       rango: new FormControl('', Validators.required),
@@ -66,15 +83,15 @@ export class SistemasComponent implements OnInit {
       case true:
         // Edita sistemas
         if ( form.valid && this.selectedvalue !== undefined && this.selectedvalue.length !== 0) {
-          this.sistema.updateSistema(this.selectedSystem._id, form.value, this.selectedvalue).subscribe(res => {
-            console.log(res);
+          this.sistema.updateSistema(this.selectedSystem._id, form.value, this.selectedvalue).subscribe(result => {
+            this.sistema.getSistemas().subscribe(res => {
+              this.dataSource = res;
+              this.listaDeSistemas = new MatTableDataSource(this.dataSource);
+              this.listaDeSistemas.sort = this.sort;
+              this.listaDeSistemas.paginator = this.paginator;
+            });
           });
-          this.sistema.getSistemas().subscribe(res => {
-            this.dataSource = res;
-            this.listaDeSistemas = new MatTableDataSource(this.dataSource);
-            this.listaDeSistemas.sort = this.sort;
-            this.listaDeSistemas.paginator = this.paginator;
-          });
+
           alert('Sistema editado con éxito');
         } else {
           alert('Formulario incompleto');
@@ -85,16 +102,16 @@ export class SistemasComponent implements OnInit {
       case false:
         // crea nuevos sistemas
           if ( form.valid && this.selectedvalue !== undefined && this.selectedvalue.length !== 0) {
-            this.sistema.postSistema(form.value, this.selectedvalue).subscribe(res => {
-              console.log(res);
+            this.sistema.postSistema(form.value, this.selectedvalue).subscribe(result => {
+              this.sistema.getSistemas().subscribe(res => {
+                this.dataSource = res;
+                this.listaDeSistemas = new MatTableDataSource(this.dataSource);
+                this.listaDeSistemas.sort = this.sort;
+                this.listaDeSistemas.paginator = this.paginator;
+                console.log(this.dataSource);
+              });
             });
-            this.sistema.getSistemas().subscribe(res => {
-              this.dataSource = res;
-              this.listaDeSistemas = new MatTableDataSource(this.dataSource);
-              this.listaDeSistemas.sort = this.sort;
-              this.listaDeSistemas.paginator = this.paginator;
-              console.log(this.dataSource);
-            });
+
             alert('Sistema guardado con éxito');
           } else {
             alert('no sirven tus datos');

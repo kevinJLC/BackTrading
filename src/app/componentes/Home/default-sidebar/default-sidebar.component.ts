@@ -15,6 +15,7 @@ export class DefaultSidebarComponent implements OnInit {
   }
   // manda un nuevo modo de usuario al servicio que administra el modo usuario
   setValue() {
+    console.log(this.modoUsuario);
     this.ModoUser.actualizarModoUser(this.modoUsuario);
   }
 
