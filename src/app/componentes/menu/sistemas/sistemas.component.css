@@ -1,13 +1,19 @@
+
+
+
 table{
   position: absolute;
-  top: 12%;
-  left: 21%;
-  right: 1%;
-  bottom: 12%;
-  width: 77%;
-  padding-bottom: 5%;
-  
+  top: 14%;
+  left: 30%;
+  width: 65%;
 }
+
+.filtro{
+  position: absolute;
+  top: 10%;
+  right: 5%;
+}
+
 .example-viewport {
   height: 100%;
   width: 100%;
@@ -17,3 +23,17 @@ table{
 .example-item {
   height: 50px;
 }
+.mat-card{
+  position: absolute;
+
+  top: 12%;
+  left: 21%;
+  right: 1%;
+
+  padding-bottom: 7%;
+
+}
+.errores{
+  color: red;
+}
+

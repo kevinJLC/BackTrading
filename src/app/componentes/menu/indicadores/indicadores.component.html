@@ -204,47 +204,6 @@
 <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Standard desviation
-      </mat-panel-title>
-      <mat-panel-description>
-          StdDev (i) = SQRT (AMOUNT (j = i - N, i) / N)
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-card-content>
-        El indicador técnico "Desviación Estándar" (Standard Deviation, StdDev) mide la volatilidad del mercado. Este indicador describe la horquilla de fluctuaciones del precio respecto a la media móvil. De esta manera, si el valor del indicador es alto, el mercado es volátil y los precios de las barras están esparcidos bastante respecto a la media móvil. Si el valor del indicador no es alto, el mercado se caracteriza con baja volatilidad y los precios de las barras se encuentran bastante cerca de la media móvil.
-
-        Normalmente, este indicador se utiliza como la parte integrante de otros indicadores. Así, durante el cálculo del Bollinger Bands® el valor de la desviación estándar del instrumento se suma a su media móvil.
-
-        La dinámica del mercado consiste en la alternación consecutiva de los períodos de tranquilidad y saltos de actividad, por eso la interpretación de este indicador es bastante sencilla:
-
-        si el valor del indicador es muy pequeño, es decir el mercado se encuentra en el estado de absoluta inactividad, entonces vale la pena esperar un salto de actividad;
-        y al contrario, si el indicador es extremamente alto, significa que lo más probable que esta actividad próximamente se vaya a la baja.
-        <br>
-
-        <img src="https://www.metatrader5.com/i/help/terminal/en/standard_deviation.png" alt="Desviation standard">
-
-        <h2>Fórmula y valores</h2>
-        <article>
-            StdDev (i) = SQRT (AMOUNT (j = i - N, i) / N)
-
-            AMOUNT (j = i - N, i) = SUM ((ApPRICE (j) - MA (ApPRICE , N, i)) ^ 2)
-
-            aquí:
-
-            StdDev (i) – Desviación Estándar de la barra actual;
-            SQRT – raíz cuadrada;
-            AMOUNT(j = i - N, i) – suma de cuadrados de j = i - N a i;
-            N – período de suavizado;
-            ApPRICE (j) – precio a aplicar de la barra j;
-            MA (ApPRICE , N, i) – valor de la media móvil para la barra actual con el período N;
-            ApPRICE (i) – precio aplicable de la barra actual.
-        </article>
-      </mat-card-content>
-</mat-expansion-panel>
-
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
         Avergage true range
       </mat-panel-title>
       <mat-panel-description>
@@ -661,5 +620,70 @@ VOLUME (i) – volumen de la barra actual.
         </article>
       </mat-card-content>
 </mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Volumes
+    </mat-panel-title>
+    <mat-panel-description>
+        
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-card-content>
+    Para el mercado Forex el indicador Volumes (volúmenes) es un indicador del número de cambios del precio en el transcurso de cada período del timeframe seleccionado. Para los símbolos del valor cotizado es un indicador de volúmenes tradeados actualmente (contratos, dinero, unidades, etc.).
+    Las barras del indicador tienen dos colores. El verde significa que el volumen de la barra actual supera el volumen de la barra anterior. El color rojo significa que el volumen de la barra actual es menos que el volumen de la barra anterior. Los colores del indicador, así como su aplicación a los volúmenes reales o de ticks, se puede ajustar en sus parámetros.
+    <br>
+
+      <img src="https://www.metatrader5.com/i/help/terminal/en/volumes_indicator.png" alt="volumes">
+
+    </mat-card-content>
+
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Accelerator of Oscillator
+    </mat-panel-title>
+    <mat-panel-description>
+        AC = AO - SMA (AO, 5)
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-card-content>
+    El precio es el último elemento que se cambia. Antes de que se cambie el precio, la fuerza impulsora del mercado cambia su dirección. Pero antes eso, la aceleración de esta fuerza debe disminuirse y llegar a cero. Luego se empieza a acelerar en dirección contraria hasta el momento cuando el precio empiece a cambiar su dirección.
+
+    El indicador técnico "Aceleración/Desaceleración" (Acceleration/Deceleration, Accelerator/Decelerator Oscillator, AC) mide la aceleración y desaceleración de la fuerza impulsora actual. Este indicador va a cambiar la dirección antes de cualquier cambio en la fuerza impulsora, y ésta en su lugar va a cambiar su dirección antes del cambio del precio. La comprensión de que el АС es una señal de alerta adelantada da unas evidentes ventajas.
+
+    La línea cero es básicamente el lugar donde la fuerza impulsora está en equilibrio con la aceleración. Si el Oscilador de Aceleración/Desaceleración está por encima de cero, entonces normalmente resulta más fácil para la aceleración continuar el movimiento ascendiente (y viceversa en casos cuando está por debajo de cero). A diferencia del Awesome Oscillator, el cruce de la línea cero no se considera una señal. Lo único que hay que hacer para controlar el mercado y tomar decisiones es estar atento a los cambios del color. Para evitar unas serias reflexiones, hay que recordar una cosa: no se recomienda comprar con la ayuda del AC cuando la columna actual está en rojo, y no se debe vender cuando la columna actual está en verde.
+
+    Si Usted entra al mercado en la dirección de la fuerza impulsora (el indicador Acceleration/Deceleration está por encima de cero al comprar, o por debajo de cero al vender), sólo necesita dos columnas verdes para comprar (dos columnas rojas para vender). Si la fuerza impulsora va en contra de la posición que se abre (el indicador está por debajo de cero durante la compra, o por encima de cero durante la venta), se necesita la confirmación, por eso hace falta una columna adicional. En este caso es necesario que el indicador muestre tres columnas rojas por encima de la línea cero para una posición corta, y tres verdes por debajo de cero para una posición larga.
+    <br>
+
+      <img src="https://www.metatrader5.com/i/help/terminal/en/ac.png" alt="Oscillator">
+
+      <h2>Fórmula y valores</h2>
+      <article>
+          El gráfico de barras АС es la diferencia entre el valor de 5/34 del gráfico de barras de la fuerza impulsora y la media móvil simple de cinco períodos tomada de este gráfico de barras.
+
+          MEDIAN PRICE = (HIGH + LOW) / 2
+
+          AO = SMA (MEDIAN PRICE, 5) - SMA (MEDIAN PRICE, 34)
+
+          AC = AO - SMA (AO, 5)
+
+          Aquí:
+
+          MEDIAN PRICE – precio mediano;
+          HIGH – precio máximo de la barra;
+          LOW – precio mínimo de la barra;
+          SMA – media móvil simple;
+          AO – indicador Awesome Oscillator.
+
+      </article>
+
+    </mat-card-content>
+  </mat-expansion-panel>
+
 
 </mat-accordion>>

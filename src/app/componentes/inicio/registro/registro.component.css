@@ -1,3 +1,30 @@
+#FormRegistro{
+  z-index: 100;
+  position: absolute;
+  width: 34%;
+  top: 16%;
+  left: 61%;
+
+}
+#footer{
+  z-index: 300;
+  position: absolute;
+  width: 100%;
+  top: 115%;
+}
 
 
+.spacer{
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
 
+.errores{
+  color: red;
+
+}
+
+mat-form-field{
+  width: 80%;
+}

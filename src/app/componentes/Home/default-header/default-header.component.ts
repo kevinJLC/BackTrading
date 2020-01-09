@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../../../servicios/login.service';
+import { MatDialog } from '@angular/material';
+import { CambiarPasswordComponent } from '../../inicio/cambiar-password/cambiar-password.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-default-header',
@@ -7,9 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DefaultHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private login: LoginService, private dialog: MatDialog, private router: Router ) { }
 
   ngOnInit() {
   }
 
+  onLogout() {
+    this.login.logout();
+  }
+
+  changePassword() {
+    this.router.navigate(['/newPassword']);
+  }
 }

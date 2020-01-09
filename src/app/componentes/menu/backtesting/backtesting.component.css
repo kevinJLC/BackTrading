@@ -25,3 +25,9 @@ button{
 mat-form-field{
   width: 27%;
 }
+.errores{
+  color: red;
+}
+.recomendacion{
+  color: rgb(2, 150, 150);
+}

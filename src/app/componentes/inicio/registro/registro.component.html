@@ -1,1 +1,75 @@
+<form  [formGroup]="registroForm" (submit)="addUser(registroForm)">
+      <div id="FormRegistro" >
+        <mat-card class="mat-card" style="text-align: center;">
+            <mat-card-title class="mat-card-title">Regístrate</mat-card-title>
+            <mat-card-content>
+                <p>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Nombre usuario</mat-label>
+                      <input matInput placeholder="kevin23" formControlName="nombre" >
+                      <mat-icon matSuffix>face</mat-icon>
+                      <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                          <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
+                          <mat-hint class="errores" *ngIf="nombre.errors.minlength"> nombre menor a 6 caracteres</mat-hint>
+                          <mat-hint class="errores" *ngIf="nombre.errors.maxlength"> nombre mayor a 20 caracteres</mat-hint>
+                      </mat-hint>
 
+                    </mat-form-field>
+                  </p>
+                  <p>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Correo electrónico</mat-label>
+                        <input matInput placeholder="example@example.com" formControlName="correo" >
+                        <mat-icon matSuffix>email</mat-icon>
+                        <mat-hint  *ngIf="correo.invalid && (correo.dirty || correo.touched)">
+                            <mat-hint class="errores" *ngIf="correo.errors.required"> Ingresa un correo</mat-hint>
+                            <mat-hint class="errores" *ngIf="correo.errors.pattern"> correo no valido</mat-hint>
+                        </mat-hint>
+                      </mat-form-field>
+                    </p>
+
+
+                    <p>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Contraseña</mat-label>
+                          <input matInput type="{{type}}" placeholder="password" formControlName="pass" >
+                          <mat-icon matSuffix (click)="muestra()" style ="cursor: pointer;">{{icon}}</mat-icon>
+
+                          <mat-hint  *ngIf="pass.invalid && (pass.dirty || pass.touched)">
+                              <mat-hint class="errores" *ngIf="pass.errors.required"> Ingresa una contraseña</mat-hint>
+                              <mat-hint class="errores" *ngIf="pass.errors.minlength"> contraseña menor a 7 caracteres</mat-hint>
+                              <mat-hint class="errores" *ngIf="pass.errors.maxlength"> contraseña mayor a 10 caracteres</mat-hint>
+                          </mat-hint>
+
+                        </mat-form-field>
+
+                      </p>
+                      <p>
+                          <mat-form-field appearance="outline">
+                            <mat-label>Fecha de nacimiento</mat-label>
+                            <input (click)="fechaValida()" matInput type="date" formControlName="fecha" >
+                            <mat-icon matSuffix>date_range</mat-icon>
+                            <mat-hint  *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="errores">
+                              Ingresa una fecha de nacimiento
+                            </mat-hint>
+                            <mat-hint *ngIf="!mayor_edad"  class= "errores">
+                               Eres menor
+                            </mat-hint>
+                          </mat-form-field>
+                        </p>
+
+                      <button mat-raised-button color="primary" type="submit">Registrarse</button>
+
+            </mat-card-content>
+          </mat-card>
+
+    </div>
+</form>
+
+    <footer>
+        <mat-toolbar color="warm" id="footer">
+          <span class="spacer"></span>
+            <h2> @ copyright Angular App 2019</h2>
+          <span class="spacer"></span>
+        </mat-toolbar>
+      </footer>

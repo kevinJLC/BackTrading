@@ -1,72 +1,90 @@
 <div id="FormRegistro" >
     <mat-card style="text-align:justify">
         <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
-        
+      <form [formGroup]="backtestingForm" (submit)="onCreate(backtestingForm)">
         <mat-card-content>
-            <mat-form-field>
-                <mat-label>Seleccione un sistema</mat-label>
-                <mat-select required>
-                  <mat-option>--</mat-option>
-                  <mat-option>
-                    System32
-                  </mat-option>
-                  <mat-option>
-                     bLackWin3r
-                    </mat-option>
-                    <mat-option>
-                        LaSolteraDeORO
-                      </mat-option>
-                </mat-select>
+          <mat-form-field>
+              <mat-label>Seleccione un sistema</mat-label>
+              <mat-select [(value)]='selectedSystem' (selectionChange)='imprimeSistema(selectedSystem)' required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let item of systems" [value]='item' > {{item.nombre}} </mat-option>
+              </mat-select>
 
+            </mat-form-field>
+          <p>
+              <mat-form-field appearance="outline" >
+                <mat-label>Rendimiento</mat-label>
+                <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento' type='number'>
+                <mat-icon matSuffix>attach_money</mat-icon>
+                <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)" class="errores">
+                    Ingresa un rendimiento
+                  </mat-hint>
+                <mat-hint *ngIf="rendimiento.value >= 3 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el rendimiento por debajo del 3% para que más operaciones se cumplan con éxito"> Rendimiento muy alto <mat-icon>help</mat-icon> </mat-hint>
               </mat-form-field>
+            </p>
             <p>
                 <mat-form-field appearance="outline">
-                  <mat-label>Rendimiento</mat-label>
-                  <input matInput placeholder="2.3%">
-                  <mat-icon matSuffix>attach_money</mat-icon>
-                  <mat-hint>menores al 3% </mat-hint>
-
-                </mat-form-field>
+                  <mat-label>StopLoss</mat-label>
+                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="1.5% no valores negativos" formControlName='stoploss' type='number'>
+                  <mat-icon matSuffix>money_off</mat-icon>
+                  <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
+                    <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
+                  </mat-hint>
+                  <mat-hint *ngIf="stoploss.value >= 1.5 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el stoploss por debajo de 1.5% para evitar que pierdas el capital en pocas operaciones"> Stoploss muy alto <mat-icon>help</mat-icon> </mat-hint>
+                  </mat-form-field>
               </p>
               <p>
                   <mat-form-field appearance="outline">
-                    <mat-label>StopLoss</mat-label>
-                    <input matInput type="number" placeholder="-1.5%">
-                    <mat-icon matSuffix>money_off</mat-icon>
+                    <mat-label>Rango de operación</mat-label>
+                    <input [(ngModel)]='ngRango' [(value)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
+                    <mat-icon matSuffix> date_range</mat-icon>
+                    <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched); else elseBlock">
+                      <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
+                    </mat-hint>
+                    <ng-template #elseBlock >
+                      <mat-hint *ngIf="2 > periodo.value  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
+                    </ng-template>
+                    <mat-hint *ngIf="periodo.value > 50  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="El sistema aun no soporta backtesting mayor a 50 días"> Periodo de operación muy largo <mat-icon>help</mat-icon> </mat-hint>
+
 
                   </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="outline">
-                      <mat-label>Rango de operación</mat-label>
-                      <input matInput type="number" placeholder="3 días">
-                      <mat-icon matSuffix> date_range</mat-icon>
-                      <mat-hint>max 100 días</mat-hint>
-
+                      <mat-label>Día de inicio</mat-label>
+                      <input matInput type="date" formControlName='fechaInicio' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
+                      <mat-icon matSuffix>calendar_today</mat-icon>
+                      <mat-hint  *ngIf="fechaInicio.invalid && (fechaInicio.dirty || fechaInicio.touched)">
+                        <mat-hint class="errores" *ngIf="fechaInicio.errors.required"> Ingresa un día de inicio </mat-hint>
+                      </mat-hint>
                     </mat-form-field>
                   </p>
-                  <p>
+
+                  <p *ngIf="MuestraCampoFechaFinalizacion">
                       <mat-form-field appearance="outline">
-                        <mat-label>Día de inicio</mat-label>
-                        <input matInput type="date">
+                        <mat-label>Día de Finalización</mat-label>
+                        <input matInput  type="date" formControlName='fechaFinalizacion' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
                         <mat-icon matSuffix>calendar_today</mat-icon>
-                        <mat-hint></mat-hint>
-                      </mat-form-field>
+                        <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched) ; else errorFecha">
+                          <mat-hint class="errores" *ngIf="fechaFinalizacion.errors.required"> Ingresa un día de finalizacion </mat-hint>
+                        </mat-hint>
+                        <ng-template #errorFecha>
+                            <mat-hint *ngIf="!fechaFinalizacion.invalid && fechaInicio.value >= fechaFinalizacion.value; else validaDiaFin"  class="errores"> El día de finalización debe ser posterior al de inicio </mat-hint>
+                        </ng-template >
+                        <ng-template #validaDiaFin>
+                            <mat-hint *ngIf="!inTime ;else CabeRango"  class="errores" matTooltip="Los backtesting se ejecutan con precios al día de ayer ( modifique su día de inicio de ser necesario )"> No existen precios para este día <mat-icon> help </mat-icon> </mat-hint>
+                        </ng-template>
+                        <ng-template #CabeRango>
+                          <mat-hint *ngIf="!inRango"  class="errores" matTooltip="El margen de días entre inicio y fin es menor al rango de operación (modifique el rango o inicio de ser necesario) ¡No olvide que finalización no debe ser mayor al día actual! "> Rango de operación superior a la diferencia de dias<mat-icon> help </mat-icon> </mat-hint>
+                        </ng-template>
+                        </mat-form-field>
                     </p>
 
-                    <p>
-                        <mat-form-field appearance="outline">
-                          <mat-label>Día de Finalización</mat-label>
-                          <input matInput type="date">
-                          <mat-icon matSuffix>calendar_today</mat-icon>
-                          <mat-hint>No mayor al día de finalización</mat-hint>
-                        </mat-form-field>
-                      </p>
+                  <button mat-raised-button color="primary">Ejecutar backtesting </button>
 
-                    <button mat-raised-button color="warm" >Guardar cambios</button>
-                    <button mat-raised-button color="primary" >Ejecutar backtesting</button>
+      </mat-card-content>
+      </form>
 
-        </mat-card-content>
       </mat-card>
 
 </div>
