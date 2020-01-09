@@ -9,7 +9,7 @@ export class CambiocontraService {
   readonly URL_API = 'http://localhost:3000/updatepass';
 
   constructor(private http: HttpClient) { }
-  postCambiaContra(nowContra,newContra){
+  postCambiaContra(nowContra, newContra) {
     return this.http.post(this.URL_API, {nowContra, newContra});
   }
 }

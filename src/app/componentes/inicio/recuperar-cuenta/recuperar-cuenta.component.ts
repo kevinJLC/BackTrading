@@ -8,10 +8,12 @@ import { RecuperacionService } from 'src/app/servicios/Recuperacion-Cuenta/recup
   templateUrl: './recuperar-cuenta.component.html',
   styleUrls: ['./recuperar-cuenta.component.css']
 })
+
 export class RecuperarCuentaComponent implements OnInit {
   recuperacionForm: FormGroup;
   encontrado = true;
   auxEncontrado = false;
+  // tslint:disable-next-line: max-line-length
   correoTrue: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   createFormGroup() {
     return new FormGroup({
