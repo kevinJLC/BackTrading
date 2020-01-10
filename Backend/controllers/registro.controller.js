@@ -57,7 +57,7 @@ const controller = {};
 
     subject: ' NoReply: Deuda pendiente folio#34728',
 
-    html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ req.body.fecha +'"> http://localhost/activacion/ </a>'
+    html: '<b> Click en el siguiente enlace para verificar tu cuenta</b> <br> <a href ="http://localhost:3000/api/activacion/'+ tokentemporal + '/'+ usuario.nombre+ '/'+ usuario.correo +'/'+ req.body.pass +'/'+ req.body.fecha +'"> http://localhost/activacion/ </a>'
         };
         client.sendMail(email, function(err, info){
 

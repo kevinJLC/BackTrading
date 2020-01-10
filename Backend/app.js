@@ -40,14 +40,17 @@ app.use(morgan('dev'));
 app.use(express.json()); //Body Parser desde express incluido para usar req.body
 app.use(express.urlencoded({extended: false}))
 
+//static files
+app.use("",express.static(path.join(__dirname,'angular')));
 
 //Rutas
   //app.use(routes);
 app.use(tasks);
+app.use((req,res,next)=>{
+  res.sendFile(path.join(__dirname,"angular","index.html"))
+});
 
 
 
-//static files
-      //app.use(express.static(path.join(__dirname,'dist')));
 
 module.exports=app;

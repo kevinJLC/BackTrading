@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  readonly URL_API = 'http://localhost:3000/login';
+  readonly URL_API = 'http://localhost:3000/api/login';
 
   private token: string;
   private tokenTimer: any;    // NodeJS.timer
@@ -19,7 +19,7 @@ export class LoginService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  //borrar esta función
+  // borrar esta función
   getUsuarios() {
     return this.http.get(this.URL_API);
   }

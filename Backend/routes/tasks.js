@@ -9,26 +9,29 @@ const autorizacion = require('../middleware/autorizacion');
 const recuperacion = require('../controllers/Recuperacion.controller');
 const changepass = require('../controllers/changePass.controller');
 
-router.get('/',login.getUsers);
+router.get('/api/usuarios',login.getUsers);
 
 
 // Inicio de sesion
-router.post('/login', login.postUser);
-router.get('/login', login.getUsers);
-router.post('/recuperar', recuperacion.postRecuperacion);
-router.get('/recuperar/:token/:newpsw/:correorec', recuperacion.getRecuperacion);
+router.post('/api/login', login.postUser);
+router.get('/api/login', login.getUsers);
 
-router.post('/updatepass',autorizacion,changepass.postCambiaContra);
+// Recuperación de cuenta
+router.post('/api/recuperar', recuperacion.postRecuperacion);
+router.get('/api/recuperar/:token/:newpsw/:correorec', recuperacion.getRecuperacion);
+
+// Actualizar contraseña
+router.post('/api/updatepass',autorizacion,changepass.postCambiaContra);
 
 // Registro de usuarios
-router.post('/registro',registro.postUser);
-router.get('/activacion/:token/:nombre/:correo/:password/:nacimiento',registro.getActivacion);
+router.post('/api/registro',registro.postUser);
+router.get('/api/activacion/:token/:nombre/:correo/:password/:nacimiento',registro.getActivacion);
 
 // Crear sistemas de trading
-router.post('/sistemas',autorizacion,sistemas.postSistema);
-router.get('/sistemas',autorizacion,sistemas.getSistemas);
-router.delete('/sistemas/:id',autorizacion, sistemas.deleteSistema);
-router.post('/sistemas/update', autorizacion,sistemas.updateSistema);
+router.post('/api/sistemas',autorizacion,sistemas.postSistema);
+router.get('/api/sistemas',autorizacion,sistemas.getSistemas);
+router.delete('/api/sistemas/:id',autorizacion, sistemas.deleteSistema);
+router.post('/api/sistemas/update', autorizacion,sistemas.updateSistema);
 
 
 module.exports=router;

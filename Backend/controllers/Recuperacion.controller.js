@@ -42,7 +42,7 @@ await Usuario.exists({correo: req.body.correoRecuperacion}, (err, result) =>{
                 from: req.body.correoRecuperacion,
                 to: 'lopezcarrillokevin36@gmail.com',
                 subject: ' Contraseña de recuperacion',
-                html: '<b> Click en el siguiente enlace para actualizar tu contraseña a: '+ newcontra +' </b> <br> <a href ="http://localhost:3000/recuperar/'+ tokentemporal +'/'+ newcontra +'/'+ req.body.correoRecuperacion +'"> http://localhost/recuperar/ </a>'
+                html: '<b> Click en el siguiente enlace para actualizar tu contraseña a: '+ newcontra +' </b> <br> <a href ="http://localhost:3000/api/recuperar/'+ tokentemporal +'/'+ newcontra +'/'+ req.body.correoRecuperacion +'"> http://localhost/recuperar/ </a>'
             };
             client.sendMail(email, function(err, info){
                 if (err ){

@@ -6,7 +6,7 @@ import { Sistema } from 'src/app/sistema';
   providedIn: 'root'
 })
 export class SistemasService {
-  readonly URL_API = 'http://localhost:3000/sistemas';
+  readonly URL_API = 'http://localhost:3000/api/sistemas';
 
   constructor(private http: HttpClient) { }
 

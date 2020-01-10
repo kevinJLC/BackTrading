@@ -88,4 +88,5 @@ controller.postUser=(req,res) => {
     });
 }
 
+
 module.exports=controller;
