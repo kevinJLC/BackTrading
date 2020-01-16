@@ -8,6 +8,7 @@ const sistemas = require('../controllers/sistemas.controller');
 const autorizacion = require('../middleware/autorizacion');
 const recuperacion = require('../controllers/Recuperacion.controller');
 const changepass = require('../controllers/changePass.controller');
+const empresas = require('../controllers/empresas.controller');
 
 router.get('/api/usuarios',login.getUsers);
 
@@ -32,6 +33,12 @@ router.post('/api/sistemas',autorizacion,sistemas.postSistema);
 router.get('/api/sistemas',autorizacion,sistemas.getSistemas);
 router.delete('/api/sistemas/:id',autorizacion, sistemas.deleteSistema);
 router.post('/api/sistemas/update', autorizacion,sistemas.updateSistema);
+
+// Obtener precios S&P 100
+router.get('/api/empresas',empresas.getEmpresas);
+
+// Ejecutar Backtesting
+
 
 
 module.exports=router;
