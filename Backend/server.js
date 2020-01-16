@@ -57,4 +57,6 @@ app.set("port", port);
 const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
-server.listen(port);
+server.listen(port,() => {
+  console.log('listening on port ' + port);
+});
