@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node ./Backend/server.js",
+    "start": "node server.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "nodemon ./Backend/server.js",
-    "postinstall": "ng build --output-path Backend/angular  --aot --prod"
+    "dev": "nodemon server.js",
+    "postinstall": "ng build --aot --prod"
   },
   "private": true,
   "dependencies": {
