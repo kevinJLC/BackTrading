@@ -37,5 +37,8 @@ router.post('/api/sistemas/update', autorizacion,sistemas.updateSistema);
 // Obtener precios S&P 100
 router.get('/api/empresas',empresas.getEmpresas);
 
+// Ejecutar Backtesting
+
+
 
 module.exports=router;
