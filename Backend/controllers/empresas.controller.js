@@ -592,7 +592,7 @@ Empresa.deleteMany({})
     respaldoForzado(13);
   });
 
-  //  BMY 
+  //  BMY
 
   request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[14]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
   .then(result => {
@@ -1936,7 +1936,7 @@ Empresa.deleteMany({})
   //  VZ
   //  WAG
   //  WFC
-  
+
   //  WMB
   //  WMT
   //  WY
@@ -1948,7 +1948,7 @@ Empresa.deleteMany({})
 
 
 
-}).then(res.send(simbolos))
+}).then(res.json({message: 'Respaldo en proceso'}))
 .catch(err => {console.log(err)});
 
 
@@ -1978,7 +1978,10 @@ function respaldoForzado(posision){
     .then(()=>{
       console.log(index + ' ' + respaldo.simbolo);
       index++;
-    }).catch(err => { console.log('Respaldo.save() fallida en : '+ respaldo.simbolo +'    '+ err); respaldoForzado(posision);});
+    }).catch(err => {
+      console.log('Respaldo.save() fallida en : '+ respaldo.simbolo +'    '+ err);
+      respaldoForzado(posision);
+    });
 
   })
   .catch(err => {
@@ -1986,50 +1989,8 @@ function respaldoForzado(posision){
     respaldoForzado(posision);
   });
 }
-
-
-
-
-
-
-
-
-
-/*
-URI = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=YAWX1E3QZ0LONC2T'
-request(URI, {json: true}).then( result => {
-
-  var listaPrecios = [];
-  preciosObject = result['Time Series (Daily)'];
-  for (const key in preciosObject) {
-    var listadoDias = {fecha: String, open: Number, close: Number, higher:Number, lower: Number, volume: Number};
-    listadoDias.fecha = key;
-    listadoDias.open = parseFloat(preciosObject[key]['1. open']);
-    listadoDias.close = parseFloat(preciosObject[key]['4. close']);
-    listadoDias.higher = parseFloat(preciosObject[key]['2. high']);
-    listadoDias.lower = parseFloat(preciosObject[key]['3. low']) ;
-    listadoDias.volume = parseInt(preciosObject[key]['3. low']);
-    listaPrecios.push(listadoDias);
-  }
-
-  const respaldo = new Empresa({
-    simbolo: result['Meta Data']['2. Symbol'],
-    ultimaActualizacion: result['Meta Data']['3. Last Refreshed'],
-    precios: listaPrecios
-  });
-
-  respaldo.save()
-  .then(response => {
-    res.send('empresas actualizadas');
-  }).catch(err => { console.log(err) });
-
-})
-.catch(err => {
-  res.send('hola ' + err);
-});
-*/
-
 }
+
 module.exports=controller;
 
 

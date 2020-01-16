@@ -78,65 +78,57 @@ app.use((req,res,next)=>{
   }
 
   ActualizacionApi.findById({_id: '5e1cc84962c70439c85680b5'}).then(result => {
-    const año = parseInt(result.fechaDeActualizacion.split('-')[0]);
-    const mes = parseInt(result.fechaDeActualizacion.split('-')[1])-1; // 0 = Ene y 11 = Dic
-    const dia = parseInt(result.fechaDeActualizacion.split('-')[2]);
+    let año = parseInt(result.fechaDeActualizacion.split('-')[0]);
+    let mes = parseInt(result.fechaDeActualizacion.split('-')[1]); // 0 = Ene y 11 = Dic
+    let dia = parseInt(result.fechaDeActualizacion.split('-')[2]);
     const fechaUltimaActualizacion = new Date(año, mes, dia);
 
     // verifica que sea la primera ejecución de esta función en el dia
-    if(hoy.getTime() > fechaUltimaActualizacion.getTime()){
+    console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
+    if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
       if(result.EstadoDeActualizacion == false){
         console.log('Sin respaldo el ' + fechaUltimaActualizacion);
-
         //Respaldo de la BD
+        request('http://localhost:3000/api/empresas', (err,res) => {
+          if(err){
+             console.log('Respaldo fallido!!!!! ' + err )
+          }
+          console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
+
+        });
       }
       //update fecha y status
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
+        .then(() => {
+          console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
+        })
+        .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
 
     }
+
+    console.log(mañana.getTime()-hoy.getTime());
     setTimeout(updateEmpresas, mañana.getTime()-hoy.getTime());
 
     //Respaldo de la BD
+
     function updateEmpresas(){
-      //peticion|.then.cath
-      //peticion2.then.cath
+      request('http://localhost:3000/api/empresas', (err,res) => {
+          if(err){
+             console.log('Respaldo fallido!!!!! ' + err )
+          }else{
+            console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
+          }
 
-      // petición a la Api
-      /*
-      var URI = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=YAWX1E3QZ0LONC2T'
-      request(URI, {json: true}).then( result => {
+        });
 
-        var listaPrecios = [];
-        preciosObject = result['Time Series (Daily)'];
-        for (const key in preciosObject) {
-        var listadoDias = {fecha: String, open: Number, close: Number, higher:Number, lower: Number, volume: Number};
-        listadoDias.fecha = key;
-        listadoDias.open = parseFloat(preciosObject[key]['1. open']);
-        listadoDias.close = parseFloat(preciosObject[key]['4. close']);
-        listadoDias.higher = parseFloat(preciosObject[key]['2. high']);
-        listadoDias.lower = parseFloat(preciosObject[key]['3. low']) ;
-        listadoDias.volume = parseInt(preciosObject[key]['3. low']);
-        listaPrecios.push(listadoDias);
-      }
-
-      const respaldo = new Empresa({
-      simbolo: result['Meta Data']['2. Symbol'],
-      ultimaActualizacion: result['Meta Data']['3. Last Refreshed'],
-      precios: listaPrecios
-      });
-
-      respaldo.save()
-      .then(response => {
-      console.log('se guardó');
-      })
-      .catch(err => { console.log(err) });
-
-      })
-      .catch(err => {
-      console.log('hola ' + err);
-      });
-      */
-
-
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
+        .then(() => {
+          console.log('Fecha de actualizacion updateada ' + fechaHoy);
+          respaldo();
+        })
+        .catch(err => { console.log('Fecha de actualizacion NO updateada ' + fechaHoy)});
     }
 
   });
