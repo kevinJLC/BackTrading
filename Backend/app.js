@@ -96,15 +96,16 @@ app.use((req,res,next)=>{
           console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
 
         });
-      }
+      } 
       //update fecha y status
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
+        console.log(fechaHoy);
         ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
         .then(() => {
           console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
         })
         .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
-
+ 
     }
 
     console.log(mañana.getTime()-hoy.getTime());
@@ -122,7 +123,7 @@ app.use((req,res,next)=>{
 
         });
 
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
         ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
         .then(() => {
           console.log('Fecha de actualizacion updateada ' + fechaHoy);
