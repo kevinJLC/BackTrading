@@ -90,7 +90,7 @@ app.use((req,res,next)=>{
       if(result.EstadoDeActualizacion == false){
         console.log('Sin respaldo el ' + fechaUltimaActualizacion);
         //Respaldo de la BD
-        request('http://localhost:3000/api/empresas', (err,res) => {
+        request('http://backtrading.herokuapp.com/api/empresas', (err,res) => {
           if(err){
              console.log('Respaldo fallido!!!!! ' + err )
           }
@@ -99,7 +99,7 @@ app.use((req,res,next)=>{
         });
       }
       //update fecha y status
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
         ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
         .then(() => {
           console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
@@ -114,7 +114,7 @@ app.use((req,res,next)=>{
     //Respaldo de la BD
 
     function updateEmpresas(){
-      request('http://localhost:3000/api/empresas', (err,res) => {
+      request('http://backtrading.herokuapp.com/api/empresas', (err,res) => {
           if(err){
              console.log('Respaldo fallido!!!!! ' + err )
           }else{
@@ -123,7 +123,7 @@ app.use((req,res,next)=>{
 
         });
 
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
+        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
         ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
         .then(() => {
           console.log('Fecha de actualizacion updateada ' + fechaHoy);
