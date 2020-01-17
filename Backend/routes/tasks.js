@@ -9,6 +9,7 @@ const autorizacion = require('../middleware/autorizacion');
 const recuperacion = require('../controllers/Recuperacion.controller');
 const changepass = require('../controllers/changePass.controller');
 const empresas = require('../controllers/empresas.controller');
+const backtesting = require('../controllers/backtesting.controller');
 
 router.get('/api/usuarios',login.getUsers);
 
@@ -38,7 +39,6 @@ router.post('/api/sistemas/update', autorizacion,sistemas.updateSistema);
 router.get('/api/empresas',empresas.getEmpresas);
 
 // Ejecutar Backtesting
-
-
+router.post('/api/backtesting',autorizacion,backtesting.postBacktesting);
 
 module.exports=router;

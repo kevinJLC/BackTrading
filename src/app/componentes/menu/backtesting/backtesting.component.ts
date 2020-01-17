@@ -6,6 +6,7 @@ import { Sistema} from '../../../sistema';
 import { Observable } from 'rxjs';
 import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
 import { invalid } from '@angular/compiler/src/render3/view/util';
+import { BacktestingService } from 'src/app/servicios/Backtesting/backtesting.service';
 
 @Component({
   selector: 'app-backtesting',
@@ -50,7 +51,7 @@ export class BacktestingComponent implements OnInit {
     });
   }
 
-  constructor( private sistemas: SistemasService, private usermode: ModousuarioService) {
+  constructor( private sistemas: SistemasService, private usermode: ModousuarioService, private backtesting: BacktestingService) {
     this.backtestingForm = this.createFormGroup();
     sistemas.getSistemas().subscribe(res => {
       this.systems = res;
@@ -66,6 +67,7 @@ export class BacktestingComponent implements OnInit {
     //this.ngRendimiento = sistema.rendimiento;
     this.ngStoploss = sistema.stopLoss;
     this.ngRango = sistema.periodo;
+
   }
 
 
@@ -80,11 +82,110 @@ export class BacktestingComponent implements OnInit {
     if (form.value.periodo < 2) {
       this.periodoInvalido = true;
     }
+    
+    // no deja al usuario novato ejecutar backtesting si los campos estan incorrectos
+    if (this.modoUsuario == 'novato'){
+      if(form.valid){
+        if(form.value.rendimiento < 3){
+          if(form.value.stoploss < 1.5){
+            if(form.value.periodo > 2 && form.value.periodo < 50){
+              if(form.value.fechaInicio < form.value.fechaFinalizacion){
+                if(this.inTime){
+                  if(this.inRango){
+                    console.log("todo bien desde: " + this.modoUsuario);
+                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{ 
+                      
+                    });
+                  }
+                  else
+                  {
+                    console.log("rango de operacion incorrecto");
+                    alert("Bad data, favor de corregir los valores para backtesting");
+                  }
+                }
+                else
+                {
+                  console.log("No hay precios");
+                  alert("Bad data, favor de corregir los valores para backtesting");
+                }
+              }
+              else
+              {  
+                console.log("fecha de finalizacion menor");
+                alert("Bad data, favor de corregir los valores para backtesting");
+              }
+            }
+            else
+            {
+              console.log("rango de operacion muy alto o muy bajo");
+              alert("Bad data, favor de corregir los valores para backtesting");
+            }
+          }
+          else
+          {
+            console.log("stoploss alto");
+            alert("Bad data, favor de corregir los valores para backtesting");
+          }
+        }
+        else
+        {
+          console.log("rendimiento alto");
+          alert("Bad data, favor de corregir los valores para backtesting");
+        }
+      }
+      else
+      {
+        alert("formulario invalido");
+      }
+    }
+    
+    if (this.modoUsuario == 'aprendiz' || this.modoUsuario =='pro'){
+      if(form.valid){
+        if(form.value.periodo > 2 && form.value.periodo < 50){
+          if(form.value.fechaInicio < form.value.fechaFinalizacion){
+            if(this.inTime){
+              if(this.inRango){
+                console.log("todo bien desde: " + this.modoUsuario);
+                this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{ 
+
+                });
+              }
+              else
+             {
+               console.log("rango de operacion incorrecto");
+                alert("Bad data, favor de corregir los valores para backtesting");
+              }
+            }
+           else
+            {
+             console.log("No hay precios");
+             alert("Bad data, favor de corregir los valores para backtesting");
+            }
+          }
+          else
+          {  
+           console.log("fecha de finalizacion menor");
+           alert("Bad data, favor de corregir los valores para backtesting");
+          }
+        }
+        else
+        {
+          console.log("rango de operacion muy alto o muy bajo");
+          alert("Bad data, favor de corregir los valores para backtesting");
+        }
+      }
+      else{
+       alert("formulario invalido");
+      }
+    }
+
+
   }
 
   enTiempo(fecha: string, inicio: string, rango: number) {
     if (inicio.length === 0 || rango === undefined || rango === null || rango === 0 || rango < 2) {
       this.MuestraCampoFechaFinalizacion = false;
+
       return;
     } else {
        this.MuestraCampoFechaFinalizacion = true;
@@ -150,6 +251,8 @@ export class BacktestingComponent implements OnInit {
       }
     }
   }
+
+
 
 
   get rendimiento() {return this.backtestingForm.get('rendimiento'); }
