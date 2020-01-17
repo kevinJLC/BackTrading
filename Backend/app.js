@@ -121,7 +121,7 @@ app.use((req,res,next)=>{
             console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
           }
 
-        });
+        }); 
 
         let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getUTCDate()).toString();
         ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
