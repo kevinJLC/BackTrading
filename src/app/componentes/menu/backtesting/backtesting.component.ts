@@ -82,7 +82,7 @@ export class BacktestingComponent implements OnInit {
     if (form.value.periodo < 2) {
       this.periodoInvalido = true;
     }
-    
+
     // no deja al usuario novato ejecutar backtesting si los campos estan incorrectos
     if (this.modoUsuario == 'novato'){
       if(form.valid){
@@ -93,8 +93,12 @@ export class BacktestingComponent implements OnInit {
                 if(this.inTime){
                   if(this.inRango){
                     console.log("todo bien desde: " + this.modoUsuario);
-                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{ 
-                      
+                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{
+                        // tslint:disable-next-line: no-string-literal
+                      if (res['status'] === false) {
+                        // tslint:disable-next-line: no-string-literal
+                        alert(res['message']);
+                      }
                     });
                   }
                   else
@@ -110,7 +114,7 @@ export class BacktestingComponent implements OnInit {
                 }
               }
               else
-              {  
+              {
                 console.log("fecha de finalizacion menor");
                 alert("Bad data, favor de corregir los valores para backtesting");
               }
@@ -138,16 +142,20 @@ export class BacktestingComponent implements OnInit {
         alert("formulario invalido");
       }
     }
-    
-    if (this.modoUsuario == 'aprendiz' || this.modoUsuario =='pro'){
+
+    if (this.modoUsuario == 'aprendiz' || this.modoUsuario == 'pro'){
       if(form.valid){
         if(form.value.periodo > 2 && form.value.periodo < 50){
-          if(form.value.fechaInicio < form.value.fechaFinalizacion){
+          if(form.value.fechaInicio < form.value.fechaFinalizacion) {
             if(this.inTime){
               if(this.inRango){
                 console.log("todo bien desde: " + this.modoUsuario);
-                this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{ 
-
+                this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res => {
+                  // tslint:disable-next-line: no-string-literal
+                  if (res['status'] === false) {
+                    // tslint:disable-next-line: no-string-literal
+                    alert(res['message']);
+                  }
                 });
               }
               else
@@ -163,8 +171,9 @@ export class BacktestingComponent implements OnInit {
             }
           }
           else
-          {  
+          {
            console.log("fecha de finalizacion menor");
+           console.log(typeof form.value.fechaInicio + ' '+ form.value.fechaInicio);
            alert("Bad data, favor de corregir los valores para backtesting");
           }
         }

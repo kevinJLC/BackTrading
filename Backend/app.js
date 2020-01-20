@@ -75,64 +75,66 @@ app.use((req,res,next)=>{
     console.log(sabadoNoche.getTime()-sabado.getTime());
     var tiempoParaMediaNoche = sabadoNoche.getTime()-sabado.getTime();
     setTimeout(respaldo, tiempoParaMediaNoche);
+  } else {
+    ActualizacionApi.findById({_id: '5e1cc84962c70439c85680b5'}).then(result => {
+      let año = parseInt(result.fechaDeActualizacion.split('-')[0]);
+      let mes = parseInt(result.fechaDeActualizacion.split('-')[1]); // 0 = Ene y 11 = Dic
+      let dia = parseInt(result.fechaDeActualizacion.split('-')[2]);
+      const fechaUltimaActualizacion = new Date(año, mes, dia);
+
+      // verifica que sea la primera ejecución de esta función en el dia
+      console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
+      if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
+        if(result.EstadoDeActualizacion == false){
+          console.log('Sin respaldo el ' + fechaUltimaActualizacion);
+          //Respaldo de la BD
+          request('http://localhost:3000/api/empresas', (err,res) => {
+            if(err){
+               console.log('Respaldo fallido!!!!! ' + err )
+            }
+            console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
+
+          });
+        }
+        //update fecha y status
+          let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
+          console.log(fechaHoy);
+          ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
+          .then(() => {
+            console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
+          })
+          .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
+
+      }
+
+      console.log(mañana.getTime()-hoy.getTime());
+      setTimeout(updateEmpresas, mañana.getTime()-hoy.getTime());
+
+      //Respaldo de la BD
+
+      function updateEmpresas(){
+        request('http://localhost:3000/api/empresas', (err,res) => {
+            if(err){
+               console.log('Respaldo fallido!!!!! ' + err )
+            }else{
+              console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
+            }
+
+          });
+
+          let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
+          ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
+          .then(() => {
+            console.log('Fecha de actualizacion updateada ' + fechaHoy);
+            respaldo();
+          })
+          .catch(err => { console.log('Fecha de actualizacion NO updateada ' + fechaHoy)});
+      }
+
+    });
   }
 
-  ActualizacionApi.findById({_id: '5e1cc84962c70439c85680b5'}).then(result => {
-    let año = parseInt(result.fechaDeActualizacion.split('-')[0]);
-    let mes = parseInt(result.fechaDeActualizacion.split('-')[1]); // 0 = Ene y 11 = Dic
-    let dia = parseInt(result.fechaDeActualizacion.split('-')[2]);
-    const fechaUltimaActualizacion = new Date(año, mes, dia);
 
-    // verifica que sea la primera ejecución de esta función en el dia
-    console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
-    if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
-      if(result.EstadoDeActualizacion == false){
-        console.log('Sin respaldo el ' + fechaUltimaActualizacion);
-        //Respaldo de la BD
-        request('http://localhost:3000/api/empresas', (err,res) => {
-          if(err){
-             console.log('Respaldo fallido!!!!! ' + err )
-          }
-          console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
-
-        });
-      } 
-      //update fecha y status
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
-        console.log(fechaHoy);
-        ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
-        .then(() => {
-          console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
-        })
-        .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
- 
-    }
-
-    console.log(mañana.getTime()-hoy.getTime());
-    setTimeout(updateEmpresas, mañana.getTime()-hoy.getTime());
-
-    //Respaldo de la BD
-
-    function updateEmpresas(){
-      request('http://localhost:3000/api/empresas', (err,res) => {
-          if(err){
-             console.log('Respaldo fallido!!!!! ' + err )
-          }else{
-            console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
-          }
-
-        });
-
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
-        ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
-        .then(() => {
-          console.log('Fecha de actualizacion updateada ' + fechaHoy);
-          respaldo();
-        })
-        .catch(err => { console.log('Fecha de actualizacion NO updateada ' + fechaHoy)});
-    }
-
-  });
 
 
 
