@@ -81,8 +81,6 @@ controller.postBacktesting = (req,res) =>{
                 case 'ama':
                     const ama = AMA(index-1);
                     console.log('Indicador AMA: ' + ama);
-
-
                     // condiciones
                     if(ama > AMA((index-1)-req.body.sistema.periodo) && ((value['open']>ama && value['close']<ama) || (value['open']<ama && value['close']>ama) || (value['open']>ama && value['close']>ama && value['lower']<ama) || (value['open']>ama && value['close']>ama && value['lower']>ama)) ){
                       // compra
@@ -97,11 +95,6 @@ controller.postBacktesting = (req,res) =>{
                       console.log(false);
                       boolCondicion = false;
                     }
-
-
-
-
-
                     function AMA(amaIndex){
                       // calcula ER efitience ratio
                       let cambio = Math.abs(preciosEmpresa[amaIndex]['close'] - preciosEmpresa[amaIndex-req.body.sistema.periodo]['close']);
@@ -134,13 +127,12 @@ controller.postBacktesting = (req,res) =>{
                       insideSMA = insideSMA/req.body.sistema.periodo;
                       return insideSMA;
                     }
-
-
-
-
                   break;
+
                 case 'envelopes':
                     console.log('Indicador ENVELOPES');
+                    
+
                   break;
                 case 'ma':
                     console.log('Indicador MA');
@@ -157,7 +149,7 @@ controller.postBacktesting = (req,res) =>{
                     console.log('Indicador BULLS');
                   break;
                 case 'dmark':
-                    console.log('Indicador DMARK');
+                    console.log('Indicador EMA');  //Editado
                   break;
                 case 'macd':
                     console.log('Indicador MACD');
@@ -169,7 +161,7 @@ controller.postBacktesting = (req,res) =>{
                     console.log('Indicador OSMA');
                   break;
                 case 'rsi':
-                    console.log('Indicador RSI');
+                    console.log('Indicador A/D'); //Editado
                   break;
                 case 'mfi':
                     console.log('Indicador MFI');
