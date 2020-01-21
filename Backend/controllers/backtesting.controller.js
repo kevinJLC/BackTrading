@@ -130,17 +130,98 @@ controller.postBacktesting = (req,res) =>{
                   break;
 
                 case 'envelopes':
-                    console.log('Indicador ENVELOPES');
-                    
+                    const K = 5; // valor por defecto de la desviacion
+                    var upp = upperBand(index-1);
+                    var low = lowerBand(index-1);
+                    var ssmmaa = SMA(index-1);
+                    console.log('Indicador ENVELOPES: '+ upp + ' ' + ssmmaa + ' ' + low);
+
+                    //compra
+                    if(lowerBand(index-1) > lowerBand(index-req.body.sistema.periodo) && (preciosEmpresa[index-1]['close'] < SMA(index-1) && preciosEmpresa[index-1]['close'] >= lowerBand(index-1) || (preciosEmpresa[index-1]['close']) < lowerBand(index-1))){
+                      console.log(true);
+                      boolCondicion = true;
+                    }
+                    //vende
+                    else{
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+                    //señal de compra o venta
+
+                    function upperBand(upperIndex){
+                      var sma = SMA(upperIndex); 
+                      uppBand = sma*(1+K/100);
+                      
+                      return(uppBand);
+                    }
+
+                    function lowerBand(lowerIndex){
+                      var sma = SMA(lowerIndex);            
+                      lowBand = sma*(1-K/100);
+                      
+                      return(lowBand);
+                    }
+
+                    function SMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
 
                   break;
                 case 'ma':
-                    console.log('Indicador MA');
+                    var sma = SMA(index-1);
+                    console.log('Indicador MA: '+sma);
 
+                    //compra
+                    if(SMA(index-1) > SMA(index-req.body.sistema.periodo) && ((preciosEmpresa[index-1]['open']>SMA(index-1) && preciosEmpresa[index-1]['close']<SMA(index-1)) || (preciosEmpresa[index-1]['open']<SMA(index-1) && preciosEmpresa[index-1]['close']>SMA(index-1)) || (preciosEmpresa[index-1]['open']>SMA(index-1) && preciosEmpresa[index-1]['close']>SMA(index-1)) && preciosEmpresa[index-1]['lower']<SMA(index-1))){
+                      console.log(true);
+                      boolCondicion = true;
+                    }
+                    else{
+                      console.log(false);
+                      boolCondicion = false;
+                    }
 
+                    function SMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
                   break;
                 case 'atr':
+                   
                     console.log('Indicador ATR');
+
+
+                    function ATR(){
+                      var bestATR;
+                      var dif1 = preciosEmpresa[index]['higher'] - preciosEmpresa[index]['lower'];
+                      var dif2 = preciosEmpresa[index]['higher'] - preciosEmpresa[index-1]['close'];
+                      var dif3 = preciosEmpresa[index-1]['close'] - preciosEmpresa[index]['lower'];
+
+                      
+                      Math.max(dif1, Math.abs(dif2), Math.abs(dif3))
+
+                      return bestATR;
+                    }
+
+                    function SMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
+
                   break;
                 case 'bears':
                     console.log('Indicador BEARS');
@@ -149,7 +230,7 @@ controller.postBacktesting = (req,res) =>{
                     console.log('Indicador BULLS');
                   break;
                 case 'dmark':
-                    console.log('Indicador EMA');  //Editado
+                    console.log('Indicador EMA');  //Editado cambiar de marker por ema
                   break;
                 case 'macd':
                     console.log('Indicador MACD');
@@ -161,7 +242,7 @@ controller.postBacktesting = (req,res) =>{
                     console.log('Indicador OSMA');
                   break;
                 case 'rsi':
-                    console.log('Indicador A/D'); //Editado
+                    console.log('Indicador A/D'); //Editado cambiar rsi por Accumulation/Distribution
                   break;
                 case 'mfi':
                     console.log('Indicador MFI');
@@ -173,7 +254,7 @@ controller.postBacktesting = (req,res) =>{
                     console.log('Indicador VOLUMES');
                   break;
                 case 'ao':
-                    console.log('Indicador AO');
+                    console.log('Indicador AO'); //Editado cambiar accelerator oscillator por awesome oscillator
                   break;
 
               }
