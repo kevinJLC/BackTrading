@@ -23,9 +23,10 @@ controller.postBacktesting = (req,res) =>{
 
   Empresas.find().then(todasLasEmpresas => {
   var  operaciones;
+
     // Recorre las empresas
     todasLasEmpresas.forEach(function (value, index){
-      console.log(index + ' ' + value['simbolo']);
+      console.log('[' + index + '] ' + value['simbolo']);
       const preciosEmpresa = value['precios'];
       preciosEmpresa.reverse();
 
@@ -43,11 +44,25 @@ controller.postBacktesting = (req,res) =>{
 
       if(Math.trunc(rangoDias/req.body.sistema.periodo) == 0){operaciones=0; return}
       operaciones = Math.trunc(rangoDias/req.body.sistema.periodo);
-      console.log(operaciones + ' operaciones')
 
       // Recorreo los precios y calcula los indicadores de req.body.condicion
       var contadorDiasEnOperacion=1;
       var contadorDeOperacionesRealizadas = operaciones;
+
+      var boolCondicion = true;
+      var boolOperacionExitosa = true;
+      var openInicioOperacion = 0;
+
+      var name = value['simbolo']; //listo
+      var opExitosas =0;
+      var opFallidas = 0;
+      var opRealizadas = 0; //listo
+      var opMaximas = operaciones;  //listo
+      var probabilidadExito = 0;
+      var sumatoriaDiasEnOperacion = 0; //listo
+      var promTiempoOperacion = 0;  //listo
+      var usabilidad = 0; //listo
+
 
       preciosEmpresa.forEach(function (value,index){
         let año = parseInt(value['fecha'].split('-')[0]);
@@ -55,17 +70,36 @@ controller.postBacktesting = (req,res) =>{
         let dia = parseInt(value['fecha'].split('-')[2]);
         let fechaPrecio = new Date(año, mes, dia);
         if(fechaPrecio >= inputInicio && fechaPrecio <= inputFinal && contadorDeOperacionesRealizadas !== 0){
-          if(contadorDiasEnOperacion > req.body.sistema.periodo){ contadorDiasEnOperacion = 1;}
+          if(contadorDiasEnOperacion > req.body.sistema.periodo){ contadorDiasEnOperacion = 1; boolOperacionExitosa = true; }
           if(contadorDiasEnOperacion == 1){
+            openInicioOperacion = value['open'];
+            boolCondicion = true;
+
             req.body.condicion.forEach(function (indicador,posicion){
+              if(boolCondicion == false){return};
               switch(indicador){
                 case 'ama':
-                    console.log('Indicador AMA');
+                    const ama = AMA(index-1);
+                    console.log('Indicador AMA: ' + ama);
 
-                    const ama = AMA(index);
-                    console.log(ama);
 
-                    //
+                    // condiciones
+                    if(ama > AMA((index-1)-req.body.sistema.periodo) && ((value['open']>ama && value['close']<ama) || (value['open']<ama && value['close']>ama) || (value['open']>ama && value['close']>ama && value['lower']<ama) || (value['open']>ama && value['close']>ama && value['lower']>ama)) ){
+                      // compra
+                      console.log(true);
+                      boolCondicion = true;
+                    } else if(ama < AMA((index-1)-req.body.sistema.periodo) && ((value['open']<ama && value['close']>ama) || (value['open']>ama && value['close']<ama) || (value['open']<ama && value['close']<ama && value['higher'] > ama) || (value['open']<ama && value['close']<ama && value['higher'] < ama)) ){
+                      // No compres
+                      console.log(false);
+                      boolCondicion = false;
+                    }else {
+                      // No compres
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+
+
 
 
                     function AMA(amaIndex){
@@ -82,7 +116,7 @@ controller.postBacktesting = (req,res) =>{
 
                     // calcula AMA adaptative moving average
                     let insideAMA=0;
-                    if(amaIndex == index-req.body.sistema.periodo){
+                    if(amaIndex == (index-1)-req.body.sistema.periodo){
                       insideAMA = SMA(amaIndex) + SC * (preciosEmpresa[amaIndex]['close'] - SMA(amaIndex));
                     }else{
                       insideAMA = AMA(amaIndex-1)+ SC * (preciosEmpresa[amaIndex]['close'] - AMA(amaIndex-1));
@@ -110,6 +144,8 @@ controller.postBacktesting = (req,res) =>{
                   break;
                 case 'ma':
                     console.log('Indicador MA');
+
+
                   break;
                 case 'atr':
                     console.log('Indicador ATR');
@@ -149,16 +185,57 @@ controller.postBacktesting = (req,res) =>{
                   break;
 
               }
-
             })
 
-            contadorDeOperacionesRealizadas--;
+
+
           }
 
+          if(boolCondicion == true && boolOperacionExitosa == true ){
+
+                 if( value['higher'] >= (openInicioOperacion * (1 + (req.body.sistema.rendimiento/100))) ){
+
+                    boolOperacionExitosa = false;
+                    opExitosas++;
+
+                 } else if( value['lower'] <= (openInicioOperacion * (1-(req.body.sistema.stoploss/100))) ){
+
+                    boolOperacionExitosa = false;
+                    opFallidas++;
+                 } else if (contadorDiasEnOperacion == req.body.sistema.periodo){
+                    opFallidas++;
+                 }
+
+
+              sumatoriaDiasEnOperacion++;
+          }
+
+
+          if(contadorDiasEnOperacion == req.body.sistema.periodo){contadorDeOperacionesRealizadas--;}
           contadorDiasEnOperacion++;
         }
+
+
       });
 
+      opRealizadas = opFallidas + opExitosas;
+      probabilidadExito = (opExitosas/opRealizadas)*100;
+      promTiempoOperacion = Math.trunc(sumatoriaDiasEnOperacion/opRealizadas);
+      usabilidad = (opRealizadas/opMaximas)*100;
+
+      if(opRealizadas == 0){ probabilidadExito = 0; promTiempoOperacion = 0;};
+
+      console.log(' ');
+      console.log('opMaximas = '+opMaximas);
+      console.log('opRealizadas = '+opRealizadas);
+      console.log('opFallidas = '+opFallidas);
+      console.log('opExitosas = '+opExitosas);
+      console.log('%Exito = '+ probabilidadExito + '%');
+      console.log('Dias en operacion = '+sumatoriaDiasEnOperacion);
+      console.log('Promedio tiempo operacion = '+ promTiempoOperacion + ' Dia(s)');
+      console.log('Usabilidad = ' + usabilidad + '%');
+      console.log('///////////////////////////////////////////////////////////////// End ' + name);
+      console.log(' ');
 
     })
 
