@@ -150,16 +150,16 @@ controller.postBacktesting = (req,res) =>{
                     //señal de compra o venta
 
                     function upperBand(upperIndex){
-                      var sma = SMA(upperIndex); 
+                      var sma = SMA(upperIndex);
                       uppBand = sma*(1+K/100);
-                      
+
                       return(uppBand);
                     }
 
                     function lowerBand(lowerIndex){
-                      var sma = SMA(lowerIndex);            
+                      var sma = SMA(lowerIndex);
                       lowBand = sma*(1-K/100);
-                      
+
                       return(lowBand);
                     }
 
@@ -197,34 +197,56 @@ controller.postBacktesting = (req,res) =>{
                     }
                   break;
                 case 'atr':
-                   
-                    console.log('Indicador ATR');
+                    var atr = ATR(index-1);
+                    atr = atr/req.body.sistema.periodo;
+                    console.log('Indicador ATR: '+atr);
 
 
-                    function ATR(){
+                    var stopLimit = preciosEmpresa[index]['open'] * (1+(req.body.sistema.rendimiento/100))
+                    if(preciosEmpresa[index-req.body.sistema.periodo]['close']<preciosEmpresa[index-1]['close'] && (preciosEmpresa[index-1]['close']+atr) >= stopLimit ){
+                      console.log(true);
+                      boolCondicion = true;
+                    } else {
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+
+
+
+                    function ATR(atrIndex){
                       var bestATR;
-                      var dif1 = preciosEmpresa[index]['higher'] - preciosEmpresa[index]['lower'];
-                      var dif2 = preciosEmpresa[index]['higher'] - preciosEmpresa[index-1]['close'];
-                      var dif3 = preciosEmpresa[index-1]['close'] - preciosEmpresa[index]['lower'];
+                      var dif1 = preciosEmpresa[atrIndex]['higher'] - preciosEmpresa[atrIndex]['lower'];
+                      var dif2 = preciosEmpresa[atrIndex-1]['close'] - preciosEmpresa[atrIndex]['higher'];
+                      var dif3 = preciosEmpresa[atrIndex-1]['close'] - preciosEmpresa[atrIndex]['lower'];
+                      if(dif1 > Math.abs(dif2)){
+                        if( dif1 > Math.abs(dif3)){
+                          bestATR = dif1;
+                        }else{
+                          bestATR = Math.abs(dif3);
+                        }
+                      } else {
+                        if ( Math.abs(dif2) > Math.abs(dif3) ){
+                          bestATR = Math.abs(dif2);
+                        }else{
+                          bestATR = Math.abs(dif3);
+                        }
+                      }
 
-                      
-                      Math.max(dif1, Math.abs(dif2), Math.abs(dif3))
+                      if(atrIndex == (index-1) - (req.body.sistema.periodo - 1)){
+                        return dif1;
+                      }
+                      bestATR = bestATR + ATR(atrIndex-1);
 
                       return bestATR;
                     }
 
-                    function SMA(smaIndex){
-                      var insideSMA = 0;
-                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
-                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
-                      }
-                      insideSMA = insideSMA/req.body.sistema.periodo;
-                      return insideSMA;
-                    }
+
 
                   break;
                 case 'bears':
                     console.log('Indicador BEARS');
+                    
                   break;
                 case 'bulls':
                     console.log('Indicador BULLS');
