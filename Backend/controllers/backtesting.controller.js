@@ -211,9 +211,6 @@ controller.postBacktesting = (req,res) =>{
                       boolCondicion = false;
                     }
 
-
-
-
                     function ATR(atrIndex){
                       var bestATR;
                       var dif1 = preciosEmpresa[atrIndex]['higher'] - preciosEmpresa[atrIndex]['lower'];
@@ -241,8 +238,6 @@ controller.postBacktesting = (req,res) =>{
                       return bestATR;
                     }
 
-
-
                   break;
                 case 'bears':
                     console.log('Indicador BEARS');
@@ -250,9 +245,44 @@ controller.postBacktesting = (req,res) =>{
                   break;
                 case 'bulls':
                     console.log('Indicador BULLS');
+                    
                   break;
                 case 'dmark':
-                    console.log('Indicador EMA');  //Editado cambiar de marker por ema
+                    var P = 2/(req.body.sistema.periodo);
+                    var ema = EMA(index-1);
+                    console.log('Indicador EMA: ' + ema);  //Editado cambiar de marker por ema
+
+                    //compra
+                    if(preciosEmpresa[index-req.body.sistema.periodo]['close']<preciosEmpresa[index-1]['close'] && (preciosEmpresa[index-1]['open']<ema && preciosEmpresa[index-1]['close']>ema)){
+                      console.log(true);
+                      boolCondicion = true;
+                    }
+                    else{
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+                    function EMA(emaIndex){
+                      var bestEMA;
+                      //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+                      if(emaIndex == (index-1) - (req.body.sistema.periodo - 1)){
+                        return SMA(emaIndex);
+                      }
+                      else{
+                        bestEMA = (preciosEmpresa[emaIndex]['close'] * P) + (EMA(emaIndex-1) * (1 - P));
+                      }
+                      return bestEMA;
+                    }
+
+                    function SMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
+
                   break;
                 case 'macd':
                     console.log('Indicador MACD');
