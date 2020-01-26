@@ -240,15 +240,93 @@ controller.postBacktesting = (req,res) =>{
 
                   break;
                 case 'bears':
-                    console.log('Indicador BEARS');
-                    
+                    var bears = BEARS(index-1);
+                    console.log('Indicador BEARS: ' + bears);
+
+                    if(BEARS(index-2)<0 && bears > 0){
+                      console.log(true);
+                      boolCondicion = true;
+                    }else{
+                      console.log(false);
+                      boolCondicion =  false;
+                    }
+
+                    function BEARS(bearsIndex){
+
+                      var insideBears = preciosEmpresa[bearsIndex]['lower'] - bearsEMA(bearsIndex);
+                      return insideBears;
+                    }
+
+
+                    function bearsEMA(emaIndex){
+                      var P = 2/(req.body.sistema.periodo + 1 );
+                      var bestEMA;
+                      //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+                      if(emaIndex == (index-1) - (req.body.sistema.periodo - 1)){
+                        return bearsSMA(emaIndex);
+                      }
+                      else{
+                        bestEMA = (preciosEmpresa[emaIndex]['close'] * P) + (bearsEMA(emaIndex-1) * (1 - P));
+                      }
+                      return bestEMA;
+                    }
+
+                    function bearsSMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-(req.body.sistema.periodo-1); i <= smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
+
+
+
                   break;
                 case 'bulls':
-                    console.log('Indicador BULLS');
-                    
+                    var bulls = BULLS(index-1);
+
+                    console.log('Indicador BULLS: ' + bulls);
+
+                    if(BULLS(index-2)<0 && bulls > 0){
+                      console.log(true);
+                      boolCondicion = true;
+                    }else{
+                      console.log(false);
+                      boolCondicion =  false;
+                    }
+
+                    function BULLS(bullsIndex){
+                      console.log(preciosEmpresa[bullsIndex]['higher'] +' '+ bullsEMA(bullsIndex))
+                      var insideBulls = preciosEmpresa[bullsIndex]['higher'] - bullsEMA(bullsIndex);
+                      return insideBulls;
+                    }
+
+                    function bullsEMA(emaIndex){
+                      var P = 2/(req.body.sistema.periodo + 1 );
+                      var bestEMA;
+                      //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+                      if(emaIndex == (index-1) - (req.body.sistema.periodo - 1)){
+                        return bullsSMA(emaIndex);
+                      }
+                      else{
+                        bestEMA = (preciosEmpresa[emaIndex]['close'] * P) + (bullsEMA(emaIndex-1) * (1 - P));
+                      }
+                      return bestEMA;
+                    }
+
+                    function bullsSMA(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-(req.body.sistema.periodo-1); i <= smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/req.body.sistema.periodo;
+                      return insideSMA;
+                    }
+
                   break;
                 case 'dmark':
-                    var P = 2/(req.body.sistema.periodo);
+                    var P = 2/(req.body.sistema.periodo + 1 );
                     var ema = EMA(index-1);
                     console.log('Indicador EMA: ' + ema);  //Editado cambiar de marker por ema
 
@@ -276,7 +354,7 @@ controller.postBacktesting = (req,res) =>{
 
                     function SMA(smaIndex){
                       var insideSMA = 0;
-                      for (let i = smaIndex-req.body.sistema.periodo; i < smaIndex ; i++){
+                      for (let i = smaIndex-(req.body.sistema.periodo - 1); i <= smaIndex ; i++){
                         insideSMA = insideSMA + preciosEmpresa[i]['close'];
                       }
                       insideSMA = insideSMA/req.body.sistema.periodo;
@@ -285,29 +363,244 @@ controller.postBacktesting = (req,res) =>{
 
                   break;
                 case 'macd':
-                    console.log('Indicador MACD');
+
+                    var macd =EMA12(index-1) - EMA26(index-1);
+                    var signal = SMA9(index-1);
+                    console.log('Indicador MACD: ' + macd + ' --> signal: ' + signal);
+
+
+
+                    if(preciosEmpresa[index-req.body.sistema.periodo]['close']<preciosEmpresa[index-1]['close'] && EMA12(index-1)>EMA26(index-1)){
+                      console.log(true);
+                      boolCondicion = true;
+                    } else{
+                      console.log(false)
+                      boolCondicion = false;
+                    }
+
+                    function EMA12(emaIndex){
+                      var P=2/13;
+                      var bestEMA;
+                      //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+                      if(emaIndex == (index-1) - 11){
+                        bestEMA = SMA12(emaIndex);
+                      }
+                      else{
+                        bestEMA = (preciosEmpresa[emaIndex]['close'] * P) + (EMA12(emaIndex-1) * (1 - P));
+                      }
+
+                      return bestEMA;
+                    }
+                    function EMA26(emaIndex){
+                      var P=2/27;
+                      var bestEMA;
+                      //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+                      if(emaIndex == (index-1) - 11){
+                        bestEMA = SMA26(emaIndex);
+                      }
+                      else{
+                        bestEMA = (preciosEmpresa[emaIndex]['close'] * P) + (EMA26(emaIndex-1) * (1 - P));
+                      }
+
+                      return bestEMA;
+                    }
+
+
+
+                    function SMA12(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-11; i <= smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/12;
+                      return insideSMA;
+                    }
+
+                    function SMA26(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-25; i <= smaIndex ; i++){
+                        insideSMA = insideSMA + preciosEmpresa[i]['close'];
+                      }
+                      insideSMA = insideSMA/26;
+                      return insideSMA;
+                    }
+
+                    function SMA9(smaIndex){
+                      var insideSMA = 0;
+                      for (let i = smaIndex-8; i <= smaIndex ; i++){
+                        insideSMA = insideSMA + (EMA12(i) - EMA26(i));
+                      }
+                      insideSMA = insideSMA/9;
+                      return insideSMA;
+                    }
+
                   break;
                 case 'momentum':
-                    console.log('Indicador MOMENTUM');
+                    var momentum = MOMENTUM(index-1);
+                    var tasaDeCambio = (preciosEmpresa[index-1]['close'] - preciosEmpresa[index-req.body.sistema.periodo]['close'] ) / preciosEmpresa[index-req.body.sistema.periodo]['close'];
+
+                    console.log('Indicador MOMENTUM: ' + momentum + ' ---> %cambio ' + tasaDeCambio);
+
+                    if(tasaDeCambio >= (req.body.sistema.rendimiento/100) && momentum > 0){
+                      console.log(true);
+                      boolCondicion =  true;
+                    }else {
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+
+                    function MOMENTUM(momentumIndex){
+                      let momentum = preciosEmpresa[momentumIndex]['close'] - preciosEmpresa[momentumIndex-req.body.sistema.periodo]['close'] ;
+                      return momentum;
+                    }
                   break;
                 case 'osma':
-                    console.log('Indicador OSMA');
+                    var macd =EMA12(index-1) - EMA26(index-1);
+                    var signal = SMA9(index-1);
+                    var osma = macd - signal;
+                    var macd2 =EMA12(index-2) - EMA26(index-2);
+                    var signal2 = SMA9(index-2);
+                    var osma2 = macd2 - signal2;
+
+                    console.log('Indicador OSMA: '+ osma2 + ' ----> ' + osma);
+
+                    if(osma > 0 && osma2<osma){
+                      console.log(true);
+                      boolCondicion =  true;
+
+                    }else{
+                      console.log(false);
+                      boolCondicion=false;
+                    }
+
+
                   break;
                 case 'rsi':
-                    console.log('Indicador A/D'); //Editado cambiar rsi por Accumulation/Distribution
+                    var ad = AD(index-1);
+                    console.log('Indicador A/D: ' + ad); //Editado cambiar rsi por Accumulation/Distribution
+
+                    if(preciosEmpresa[index-req.body.sistema.periodo]['close']<preciosEmpresa[index-1]['close'] && ad > 0){
+                      console.log(true);
+                      boolCondicion =  true;
+                    } else{
+                      console.log(false);
+                      boolCondicion =  false;
+                    }
+
+                    function AD(adIndex){
+                      if(adIndex == (index-1) - (req.body.sistema.periodo-1)){
+                        return (((preciosEmpresa[adIndex]['close'] - preciosEmpresa[adIndex]['lower'])-(preciosEmpresa[adIndex]['higher'] - preciosEmpresa[adIndex]['close'])) / (preciosEmpresa[adIndex]['higher'] - preciosEmpresa[adIndex]['lower']) ) * preciosEmpresa[adIndex]['volume'] ;
+                      }
+                      var insideAD = (((preciosEmpresa[adIndex]['close'] - preciosEmpresa[adIndex]['lower'])-(preciosEmpresa[adIndex]['higher'] - preciosEmpresa[adIndex]['close']))  / (preciosEmpresa[adIndex]['higher'] - preciosEmpresa[adIndex]['lower'])) * preciosEmpresa[adIndex]['volume']  + AD(adIndex-1);
+                      return insideAD;
+                    }
                   break;
                 case 'mfi':
-                    console.log('Indicador MFI');
+
+
+                    console.log('Indicador MFI: ' + MFI(index-1));
+
+                    if ( MFI(index-req.body.sistema.periodo) < MFI(index-1) && preciosEmpresa[index-req.body.sistema.periodo]['close'] < preciosEmpresa[index-1]['close'] && MFI(index-1)<80){
+                      console.log(true);
+                      boolCondicion =  true;
+                    }else{
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+
+
+                    function MFI(mfiIndex){
+                      var mfPositivo=0;
+                      var mfNegativo=0;
+
+                      for(let i = (index-1) - (req.body.sistema.periodo-1); i<=mfiIndex; i++){
+                        if(TP(i)<=TP(i-1)){
+                          mfNegativo = mfNegativo + MF(i,TP(i));
+                        }else{
+                          mfPositivo = mfPositivo + MF(i,TP(i));
+                        }
+                      }
+
+                      var mr = mfPositivo/mfNegativo;
+                      var mfi = 100 - (100 / (1 + mr));
+                      return mfi;
+                    }
+                    function TP(tpIndex){
+                      return (preciosEmpresa[tpIndex]['higher'] + preciosEmpresa[tpIndex]['lower'] + preciosEmpresa[tpIndex]['close'])/3;
+                    }
+
+                    function MF(mfIndex,tp){
+                      return tp*preciosEmpresa[mfIndex]['volume'];
+                    }
+
                   break;
                 case 'obv':
-                    console.log('Indicador OBV');
+                    var obv = OBV(index-1);
+                    console.log('Indicador OBV: ' + obv);
+
+                    if(OBV(index-1) > 0 && OBV(index-2) < OBV(index-1) && preciosEmpresa[index-2]['close'] < preciosEmpresa[index-1]['close'] ){
+                      console.log(true);
+                      boolCondicion = true;
+                    }else{
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+
+                    function OBV(obvIndex){
+                      if(obvIndex == (index-1) - (req.body.sistema.periodo-1)){
+                        return preciosEmpresa[obvIndex]['volume'];
+                      }else{
+                        if(preciosEmpresa[obvIndex]['close']>preciosEmpresa[obvIndex-1]['close']){
+                          return OBV(obvIndex-1) + preciosEmpresa[obvIndex]['volume'];
+                        } else if(preciosEmpresa[obvIndex]['close']<preciosEmpresa[obvIndex-1]['close']){
+                          return OBV(obvIndex-1) - preciosEmpresa[obvIndex]['volume'];
+                        } else{
+                          return OBV(obvIndex-1);
+                        }
+
+                      }
+                    }
+
                   break;
                 case 'volumes':
-                    console.log('Indicador VOLUMES');
+
+                    console.log('Indicador VOLUMES: ' + VOLUMES(index-1) + ' compra');
+
+                    function VOLUMES(volumesIndex){
+                      if(preciosEmpresa[volumesIndex]['volume']>preciosEmpresa[volumesIndex-1]['volume']){
+                        return true;
+                      }else{
+                        return false;
+                      }
+                    }
+
+                    if(VOLUMES(index-1)==true){
+                      console.log(true);
+                      boolCondicion =  true;
+                    } else {
+                      console.log(false);
+                      boolCondicion =  false;
+                    }
                   break;
                 case 'ao':
-                    console.log('Indicador AO'); //Editado cambiar accelerator oscillator por awesome oscillator
-                  break;
+
+                    console.log('Indicador MFI: ' + MarketFI(index-1) ); //Editado cambiar accelerator oscillator por Market Facilitation Index
+
+                    if(MarketFI(index-1)>0 && MarketFI(index-1) > MarketFI(index-req.body.sistema.periodo) && preciosEmpresa[index-1]['close'] > preciosEmpresa[index-req.body.sistema.periodo]['close'] ){
+                      console.log(true);
+                      boolCondicion = true;
+                    } else {
+                      console.log(false);
+                      boolCondicion = false;
+                    }
+                    
+                    function MarketFI(mfiIndex){
+                      return (preciosEmpresa[mfiIndex]['higher'] - preciosEmpresa[mfiIndex]['lower']) / preciosEmpresa[mfiIndex]['volume'];
+                    }
+
+                    break;
 
               }
             })
