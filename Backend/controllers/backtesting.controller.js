@@ -23,6 +23,7 @@ controller.postBacktesting = (req,res) =>{
 
   Empresas.find().then(todasLasEmpresas => {
   var  operaciones;
+  var listaComparacionEmpresas = [];
 
     // Recorre las empresas
     todasLasEmpresas.forEach(function (value, index){
@@ -595,7 +596,7 @@ controller.postBacktesting = (req,res) =>{
                       console.log(false);
                       boolCondicion = false;
                     }
-                    
+
                     function MarketFI(mfiIndex){
                       return (preciosEmpresa[mfiIndex]['higher'] - preciosEmpresa[mfiIndex]['lower']) / preciosEmpresa[mfiIndex]['volume'];
                     }
@@ -655,12 +656,14 @@ controller.postBacktesting = (req,res) =>{
       console.log('///////////////////////////////////////////////////////////////// End ' + name);
       console.log(' ');
 
+      let empresa = {nombre: value['simbolo'], opFallidas: opFallidas, opExitosas: opExitosas, opRealizadas: opRealizadas, opMaximas: opMaximas, probabilidadExito: probabilidadExito, sumatoriaDiasEnOperacion: sumatoriaDiasEnOperacion, promTiempoOperacion: promTiempoOperacion, usabilidad: usabilidad};
+      listaComparacionEmpresas.push(empresa);
     })
 
 
 
     // Llena la tabla de comparacion
-    if(operaciones === 0){
+    if(operaciones == 0){
       res.json({status: false, message: 'Su rango de operacion supera la cantidad de dias ente el inicio y el final del backtesting. SOLUCION: modifique las fechas de inicio o finalizacion considerando que sábados, domingos y dias festivos no se toman en cuenta, o disminuya su rango de operacion'});
       return;
     }else{
@@ -669,9 +672,10 @@ controller.postBacktesting = (req,res) =>{
     }
 
     //Calcula la empresa ganadora ...
+    console.log(listaComparacionEmpresas[0]);
   })
   .catch(err => {
-    console.log('No se pudo consultar la coleccion empresas: '+err);
+    console.log('No se pudo consultar la coleccion empresas: '+ err);
   });
 
 }

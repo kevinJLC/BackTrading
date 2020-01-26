@@ -352,8 +352,8 @@ Empresa.deleteMany({})
     respaldoForzado(6);
   });
 
-  //  AVP
-  request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[7]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
+  //  AVP   Dejó de cotizar
+  /* request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[7]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
   .then(result => {
     let listaPrecios = [];
     let preciosObject = result['Time Series (Daily)'];
@@ -384,7 +384,8 @@ Empresa.deleteMany({})
   .catch(err => {
     console.log('Request fallida: ' + simbolos[7]);
     respaldoForzado(7);
-  });
+  }); */
+  
 
   //  AXP
   request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[8]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
