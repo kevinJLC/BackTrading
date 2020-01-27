@@ -23,6 +23,7 @@ controller.postBacktesting = (req,res) =>{
 
   Empresas.find().then(todasLasEmpresas => {
   var  operaciones;
+  var procedeBacktesting = false;
   var listaComparacionEmpresas = [];
 
     // Recorre las empresas
@@ -45,6 +46,7 @@ controller.postBacktesting = (req,res) =>{
 
       if(Math.trunc(rangoDias/req.body.sistema.periodo) == 0){operaciones=0; return}
       operaciones = Math.trunc(rangoDias/req.body.sistema.periodo);
+      procedeBacktesting =  true;
 
       // Recorreo los precios y calcula los indicadores de req.body.condicion
       var contadorDiasEnOperacion=1;
@@ -53,6 +55,11 @@ controller.postBacktesting = (req,res) =>{
       var boolCondicion = true;
       var boolOperacionExitosa = true;
       var openInicioOperacion = 0;
+
+      var precioMaximo = 0;
+      var precioMinimo = 0;
+      var precioMaximoOperacion = 0;
+      var precioMinimoOperacion = 0;
 
       var name = value['simbolo']; //listo
       var opExitosas =0;
@@ -63,9 +70,12 @@ controller.postBacktesting = (req,res) =>{
       var sumatoriaDiasEnOperacion = 0; //listo
       var promTiempoOperacion = 0;  //listo
       var usabilidad = 0; //listo
+      var promMaximoPrecio = 0;
+      var promMinimoPrecio = 0;
 
 
       preciosEmpresa.forEach(function (value,index){
+
         let año = parseInt(value['fecha'].split('-')[0]);
         let mes = parseInt(value['fecha'].split('-')[1])-1; // 0 = Ene y 11 = Dic
         let dia = parseInt(value['fecha'].split('-')[2]);
@@ -73,6 +83,8 @@ controller.postBacktesting = (req,res) =>{
         if(fechaPrecio >= inputInicio && fechaPrecio <= inputFinal && contadorDeOperacionesRealizadas !== 0){
           if(contadorDiasEnOperacion > req.body.sistema.periodo){ contadorDiasEnOperacion = 1; boolOperacionExitosa = true; }
           if(contadorDiasEnOperacion == 1){
+            precioMinimo = value['lower'];
+            precioMaximo = value['higher'];
             openInicioOperacion = value['open'];
             boolCondicion = true;
 
@@ -608,6 +620,9 @@ controller.postBacktesting = (req,res) =>{
 
 
 
+          } else {
+            precioMaximo = Math.max(preciosEmpresa[index]['higher'],preciosEmpresa[index-1]['higher']);
+            precioMinimo = Math.min(preciosEmpresa[index]['lower'],preciosEmpresa[index-1]['lower']);
           }
 
           if(boolCondicion == true && boolOperacionExitosa == true ){
@@ -630,7 +645,11 @@ controller.postBacktesting = (req,res) =>{
           }
 
 
-          if(contadorDiasEnOperacion == req.body.sistema.periodo){contadorDeOperacionesRealizadas--;}
+          if(contadorDiasEnOperacion == req.body.sistema.periodo){
+            contadorDeOperacionesRealizadas--;
+            precioMinimoOperacion = precioMinimoOperacion + precioMinimo;
+            precioMaximoOperacion = precioMaximoOperacion + precioMaximo;
+          }
           contadorDiasEnOperacion++;
         }
 
@@ -641,8 +660,14 @@ controller.postBacktesting = (req,res) =>{
       probabilidadExito = (opExitosas/opRealizadas)*100;
       promTiempoOperacion = Math.trunc(sumatoriaDiasEnOperacion/opRealizadas);
       usabilidad = (opRealizadas/opMaximas)*100;
+      promMaximoPrecio = precioMaximoOperacion/opRealizadas;
+      promMinimoPrecio = precioMinimoOperacion/opRealizadas;
 
-      if(opRealizadas == 0){ probabilidadExito = 0; promTiempoOperacion = 0;};
+      if(opRealizadas == 0){
+         probabilidadExito = 0; promTiempoOperacion = 0;
+         promMinimoPrecio = 0;
+         promMaximoPrecio = 0
+        };
 
       console.log(' ');
       console.log('opMaximas = '+opMaximas);
@@ -656,14 +681,14 @@ controller.postBacktesting = (req,res) =>{
       console.log('///////////////////////////////////////////////////////////////// End ' + name);
       console.log(' ');
 
-      let empresa = {nombre: value['simbolo'], opFallidas: opFallidas, opExitosas: opExitosas, opRealizadas: opRealizadas, opMaximas: opMaximas, probabilidadExito: probabilidadExito, sumatoriaDiasEnOperacion: sumatoriaDiasEnOperacion, promTiempoOperacion: promTiempoOperacion, usabilidad: usabilidad};
+      let empresa = {nombre: value['simbolo'], opFallidas: opFallidas, opExitosas: opExitosas, opRealizadas: opRealizadas, opMaximas: opMaximas, probabilidadExito: probabilidadExito, sumatoriaDiasEnOperacion: sumatoriaDiasEnOperacion, promTiempoOperacion: promTiempoOperacion, usabilidad: usabilidad, promMaximoPrecio: promMaximoPrecio, promMinimoPrecio: promMinimoPrecio};
       listaComparacionEmpresas.push(empresa);
     })
 
 
 
     // Llena la tabla de comparacion
-    if(operaciones == 0){
+    if(!procedeBacktesting){
       res.json({status: false, message: 'Su rango de operacion supera la cantidad de dias ente el inicio y el final del backtesting. SOLUCION: modifique las fechas de inicio o finalizacion considerando que sábados, domingos y dias festivos no se toman en cuenta, o disminuya su rango de operacion'});
       return;
     }else{
@@ -672,7 +697,19 @@ controller.postBacktesting = (req,res) =>{
     }
 
     //Calcula la empresa ganadora ...
-    console.log(listaComparacionEmpresas[0]);
+    var empresaGanadora;
+    listaComparacionEmpresas.forEach(function (value,index){
+      if(index == 0){
+        empresaGanadora = value;
+      } else {
+        if((value['usabilidad'] > empresaGanadora['usabilidad'] && value['probabilidadExito']>empresaGanadora['probabilidadExito']) || ( value['probabilidadExito']>empresaGanadora['probabilidadExito'] && value['usabilidad'] >= empresaGanadora['usabilidad'])  ){
+          empresaGanadora = value;
+        }
+      }
+
+
+    })
+    console.log(empresaGanadora);
   })
   .catch(err => {
     console.log('No se pudo consultar la coleccion empresas: '+ err);
