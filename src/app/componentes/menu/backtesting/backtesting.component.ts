@@ -40,6 +40,22 @@ export class BacktestingComponent implements OnInit {
 
   MuestraCampoFechaFinalizacion = false;
 
+  empresaSimbolo: string;
+  empresaOpRealizadas: number;
+  empresaOpExitosas: number;
+  empresaOpFallidas: number;
+  empresaProbExito: number;
+  empresaUsabilidad: number;
+  empresaPromedioTiempo: number;
+  empresaPromedioPrecioMaximo: number;
+  empresaPromedioPrecioMin: number;
+  muestraResultadoBacktesting = false;
+  cargandoResultado = false;
+
+  muestraOptimizar = false;
+
+
+
 
   createFormGroup() {
     return new FormGroup({
@@ -79,13 +95,15 @@ export class BacktestingComponent implements OnInit {
   }
 
   onCreate(form) {
+
+
     if (form.value.periodo < 2) {
       this.periodoInvalido = true;
     }
 
     // no deja al usuario novato ejecutar backtesting si los campos estan incorrectos
-    if (this.modoUsuario == 'novato'){
-      if(form.valid){
+    if (this.modoUsuario == 'aprendiz') {
+      if(form.valid) {
         if(form.value.rendimiento < 3){
           if(form.value.stoploss < 1.5){
             if(form.value.periodo > 2 && form.value.periodo < 50){
@@ -93,11 +111,30 @@ export class BacktestingComponent implements OnInit {
                 if(this.inTime){
                   if(this.inRango){
                     console.log("todo bien desde: " + this.modoUsuario);
-                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res =>{
+                    this.muestraResultadoBacktesting = false;
+                    this.cargandoResultado = true;
+
+                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res => {
                         // tslint:disable-next-line: no-string-literal
                       if (res['status'] === false) {
                         // tslint:disable-next-line: no-string-literal
                         alert(res['message']);
+                      } else {
+                        // tslint:disable-next-line: no-string-literal
+                        console.log(res['empresa']);
+                        // tslint:disable-next-line: no-string-literal
+                        this.empresaSimbolo = res['empresa']['nombre'];
+                        this.empresaOpRealizadas = res['empresa']['opRealizadas'];
+                        this.empresaOpExitosas = res['empresa']['opExitosas'];
+                        this.empresaOpFallidas = res['empresa']['opFallidas'];
+                        this.empresaProbExito = res['empresa']['probabilidadExito'];
+                        this.empresaUsabilidad = res['empresa']['usabilidad'];
+                        this.empresaPromedioTiempo = res['empresa']['promTiempoOperacion'];
+                        this.empresaPromedioPrecioMaximo = res['empresa']['promMaximoPrecio'];
+                        this.empresaPromedioPrecioMin = res['empresa']['promMinimoPrecio'];
+                        this.cargandoResultado = false;
+                        this.muestraResultadoBacktesting = true;
+
                       }
                     });
                   }
@@ -143,18 +180,36 @@ export class BacktestingComponent implements OnInit {
       }
     }
 
-    if (this.modoUsuario == 'aprendiz' || this.modoUsuario == 'pro'){
+    if (this.modoUsuario == 'novato' || this.modoUsuario == 'pro'){
       if(form.valid){
         if(form.value.periodo > 2 && form.value.periodo < 50){
           if(form.value.fechaInicio < form.value.fechaFinalizacion) {
             if(this.inTime){
               if(this.inRango){
                 console.log("todo bien desde: " + this.modoUsuario);
+                this.muestraResultadoBacktesting = false;
+                this.cargandoResultado = true;
+
                 this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res => {
-                  // tslint:disable-next-line: no-string-literal
+                    // tslint:disable-next-line: no-string-literal
                   if (res['status'] === false) {
                     // tslint:disable-next-line: no-string-literal
                     alert(res['message']);
+                  }  else {
+                    // tslint:disable-next-line: no-string-literal
+                    console.log(res['empresa']);
+
+                      this.empresaSimbolo = res['empresa']['nombre'];
+                      this.empresaOpRealizadas = res['empresa']['opRealizadas'];
+                      this.empresaOpExitosas = res['empresa']['opExitosas'];
+                      this.empresaOpFallidas = res['empresa']['opFallidas'];
+                      this.empresaProbExito = res['empresa']['probabilidadExito'];
+                      this.empresaUsabilidad = res['empresa']['usabilidad'];
+                      this.empresaPromedioTiempo = res['empresa']['promTiempoOperacion'];
+                      this.empresaPromedioPrecioMaximo = res['empresa']['promMaximoPrecio'];
+                      this.empresaPromedioPrecioMin = res['empresa']['promMinimoPrecio'];
+                      this.cargandoResultado=false;
+                      this.muestraResultadoBacktesting = true;
                   }
                 });
               }
@@ -259,6 +314,10 @@ export class BacktestingComponent implements OnInit {
         this.inRango = false;
       }
     }
+  }
+
+  muestraOptimizacion() {
+    this.muestraOptimizar = !this.muestraOptimizar;
   }
 
 

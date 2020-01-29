@@ -15,11 +15,11 @@ controller.postBacktesting = (req,res) =>{
     const diaFinal = parseInt(req.body.sistema.fechaFinalizacion.split('-')[2]);
     const inputFinal = new Date(añoFinal, mesFinal, diaFinal);
 
-
     const añoInicio = parseInt(req.body.sistema.fechaInicio.split('-')[0]);
     const mesInicio = parseInt(req.body.sistema.fechaInicio.split('-')[1])-1; // 0 = Ene y 11 = Dic
     const diaInicio = parseInt(req.body.sistema.fechaInicio.split('-')[2]);
-    const inputInicio = new Date(añoInicio, mesInicio, diaInicio);
+    var inputInicio = new Date(añoInicio, mesInicio, diaInicio);
+    console.log(inputInicio);
 
   Empresas.find().then(todasLasEmpresas => {
   var  operaciones;
@@ -28,9 +28,12 @@ controller.postBacktesting = (req,res) =>{
 
     // Recorre las empresas
     todasLasEmpresas.forEach(function (value, index){
+
       console.log('[' + index + '] ' + value['simbolo']);
       const preciosEmpresa = value['precios'];
       preciosEmpresa.reverse();
+      var inputInicio = new Date(añoInicio, mesInicio, diaInicio);
+
 
       var rangoDias = 0;
       // Recorre los precios y calcula operaciones
@@ -39,13 +42,22 @@ controller.postBacktesting = (req,res) =>{
         let mes = parseInt(value['fecha'].split('-')[1])-1; // 0 = Ene y 11 = Dic
         let dia = parseInt(value['fecha'].split('-')[2]);
         let fechaPrecio = new Date(año, mes, dia);
+
         if(fechaPrecio >= inputInicio && fechaPrecio <= inputFinal){
+          if(index - ((req.body.sistema.periodo * 2) + 50) < 0){
+            let sumaDias = 86400000 * (50 + req.body.sistema.periodo) ;
+            console.log(inputInicio);
+            inputInicio=new Date(fechaPrecio.getTime() + sumaDias);
+            console.log(inputInicio);
+          } else {
             rangoDias++;
+          }
         }
       });
 
       if(Math.trunc(rangoDias/req.body.sistema.periodo) == 0){operaciones=0; return}
       operaciones = Math.trunc(rangoDias/req.body.sistema.periodo);
+      console.log(rangoDias);
       procedeBacktesting =  true;
 
       // Recorreo los precios y calcula los indicadores de req.body.condicion
@@ -489,7 +501,7 @@ controller.postBacktesting = (req,res) =>{
 
 
                   break;
-                case 'rsi':
+                case 'a/d':
                     var ad = AD(index-1);
                     console.log('Indicador A/D: ' + ad); //Editado cambiar rsi por Accumulation/Distribution
 
@@ -597,7 +609,7 @@ controller.postBacktesting = (req,res) =>{
                       boolCondicion =  false;
                     }
                   break;
-                case 'ao':
+                case 'marketfi':
 
                     console.log('Indicador MFI: ' + MarketFI(index-1) ); //Editado cambiar accelerator oscillator por Market Facilitation Index
 
@@ -686,16 +698,6 @@ controller.postBacktesting = (req,res) =>{
     })
 
 
-
-    // Llena la tabla de comparacion
-    if(!procedeBacktesting){
-      res.json({status: false, message: 'Su rango de operacion supera la cantidad de dias ente el inicio y el final del backtesting. SOLUCION: modifique las fechas de inicio o finalizacion considerando que sábados, domingos y dias festivos no se toman en cuenta, o disminuya su rango de operacion'});
-      return;
-    }else{
-      res.json({status: true, message: 'Backtesting finalizado'});
-
-    }
-
     //Calcula la empresa ganadora ...
     var empresaGanadora;
     listaComparacionEmpresas.forEach(function (value,index){
@@ -709,7 +711,19 @@ controller.postBacktesting = (req,res) =>{
 
 
     })
+
+    // Llena la tabla de comparacion
+    if(!procedeBacktesting){
+      res.json({status: false, message: 'Su rango de operacion supera la cantidad de dias ente el inicio y el final del backtesting. SOLUCION: modifique las fechas de inicio o finalizacion considerando que sábados, domingos y dias festivos no se toman en cuenta, o disminuya su rango de operacion'});
+      return;
+    }else{
+      res.json({status: true, message: 'Backtesting finalizado', empresa: empresaGanadora});
+
+    }
+
+
     console.log(empresaGanadora);
+    console.log(listaComparacionEmpresas[0]);
   })
   .catch(err => {
     console.log('No se pudo consultar la coleccion empresas: '+ err);

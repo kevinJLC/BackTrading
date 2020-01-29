@@ -85,6 +85,35 @@
       </mat-card-content>
       </form>
 
+      <mat-progress-spinner diameter="100" strokeWidth="90"   class="mat-progress-spinner" mode="indeterminate" *ngIf="cargandoResultado"></mat-progress-spinner>
+
+
+    <mat-card class="empresaGanadora" *ngIf="muestraResultadoBacktesting == true">
+      <mat-card-title> Resultado Backtesting</mat-card-title>
+      <mat-card-subtitle> Tu mejor opcion para invertir es la siguiente empresa</mat-card-subtitle>
+      <div>
+
+        <p matTooltip="Empresa del S&P100">Simbolo: {{empresaSimbolo}} </p>
+        <p>Operaciones realizadas: {{empresaOpRealizadas}} </p>
+        <p>Operaciones exitosas: {{empresaOpExitosas}} </p>
+        <p>Operaciones fallidas: {{empresaOpFallidas}} </p>
+        <p>Probabilidad de exito: {{empresaProbExito}} % </p>
+        <p>Usabilidad: {{empresaUsabilidad}} </p>
+
+      </div>
+      <button mat-button class = 'optimizar' (click)="muestraOptimizacion()"> Optimizar </button>
+      <div class = 'optimizarCuadro' *ngIf="muestraOptimizar">
+          <p matTooltip="Sumatoria de dias en operacion/operaciones realizadas">Promedio de dias por operacion: {{empresaPromedioTiempo}}  </p>
+          <p matTooltip = "Sumatoria precios máximos por operacion realizada/operaciones realizadas">Promedio de precio maximo: {{empresaPromedioPrecioMaximo}}  </p>
+          <p matTooltip = "Sumatoria precios mínimos por operacion realizada/operaciones realizadas">Promedio de precio minimo: {{empresaPromedioPrecioMin}}  </p>
+      </div>
+      <a href="https://www.youtube.com/watch?v=-STMrKn4Ork&t=857s">¿Cómo interpretar estos resultados? <mat-icon> help </mat-icon></a>
+
+
+
+
+
+    </mat-card>
       </mat-card>
 
 </div>

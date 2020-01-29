@@ -33,12 +33,13 @@ export class SistemasComponent implements OnInit {
      'macd',
      'momentum',
      'osma',
-     'rsi',
+     'a/d',
      'mfi',
      'obv',
      'volumes',
-     'ao'
+     'marketfi'
     ];
+    
   // Tabla
   dataSource;
   listaDeSistemas;
