@@ -10,6 +10,7 @@ const recuperacion = require('../controllers/Recuperacion.controller');
 const changepass = require('../controllers/changePass.controller');
 const empresas = require('../controllers/empresas.controller');
 const backtesting = require('../controllers/backtesting.controller');
+const trading = require('../controllers/trading.controller');
 
 router.get('/api/usuarios',login.getUsers);
 
@@ -40,5 +41,10 @@ router.get('/api/empresas',empresas.getEmpresas);
 
 // Ejecutar Backtesting
 router.post('/api/backtesting',autorizacion,backtesting.postBacktesting);
+
+// Trading Automático
+router.post('/api/trading',autorizacion,trading.postTrading);
+router.get('/api/trading',autorizacion,trading.getTrading);
+router.get('/api/trading/status',autorizacion,trading.getStatus);
 
 module.exports=router;

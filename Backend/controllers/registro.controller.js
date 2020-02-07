@@ -96,7 +96,8 @@ const controller = {};
         nombre: req.params.nombre,
         correo: req.params.correo,
         contraseña: hash,
-        nacimiento: req.params.nacimiento
+        nacimiento: req.params.nacimiento,
+        tradingActivado: false
       });
       console.log(usuario);
       usuario.save()

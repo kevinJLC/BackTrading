@@ -350,7 +350,7 @@ controller.postBacktesting = (req,res) =>{
                     }
 
                   break;
-                case 'dmark':
+                case 'ema':
                     var P = 2/(req.body.sistema.periodo + 1 );
                     var ema = EMA(index-1);
                     console.log('Indicador EMA: ' + ema);  //Editado cambiar de marker por ema
