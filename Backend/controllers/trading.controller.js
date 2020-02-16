@@ -1,11 +1,27 @@
 const Usuario=require('../models/Usuarios');
+const Backtesting = require('../controllers/backtesting.controller');
 
 const controller ={};
 
 controller.postTrading = (req,res) => {
   console.log(req.body);
   console.log(req.userData);
-  Usuario.findByIdAndUpdate(req.userData.id,{tradingActivo: true}).then(res => {
+  //Determinando perfil
+  time = req.body.periodo;
+  money = req.body.capital;
+  rendimiento = req.body.rendimiento;
+
+  Backtesting.backtestingTA(money, time, rendimiento);
+
+
+
+
+  Usuario.findByIdAndUpdate(req.userData.id,
+  { tradingActivo: true,
+    capitalInicial: req.body.capital,
+    rendimiento: req.body.rendimiento,
+    periodo: req.body.periodo
+  }).then(res => {
 
   })
   res.json({message: 'Trading en proceso'});

@@ -9,18 +9,15 @@ const UsuarioSchema=mongoose.Schema({
   nacimiento: {type: Date, required: true},
   intentos: {type: Number},
 
-  tradingActivo: {type: Boolean},
+  tradingActivo: {type: Boolean, default: false},
   capital: {type: Number},
   capitalInicial: {type: Number},
   rendimiento: {type: Number},
   periodo: {type: Number},
+  stoploss: {type: Number},
   empresa: {type: String},
   indicador: {type: String},
   parametro: {type: []},
-
-
-
-
 
 });
 

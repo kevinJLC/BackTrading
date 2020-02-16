@@ -731,4 +731,172 @@ controller.postBacktesting = (req,res) =>{
 
 }
 
+
+
+
+
+
+controller.backtestingTA = (money, time, rendimiento) => {
+  if(money >= 300 && money<=590 && time>=2 && time <=7){  // Perfil 1
+    console.log('Perfil 1');
+    /////////////////////////////////////////////////////////////////////////////////
+    Empresas.find().then(todasLasEmpresas => {
+
+      contadorIndex = 0;
+      empresaSeleccionada=0;
+      empresaOpExitosas = 0;
+      empresaAnterior = 0;
+      todasLasEmpresas.forEach(function (value, index){
+
+        // Selecciona empresa
+        if(value.precios[0].close < money){
+          console.log('[' + contadorIndex++ + '] ' + value['simbolo']);
+          console.log(value.precios[0].close);
+          exitosas(value, time, rendimiento);
+
+
+          if(empresaAnterior==0){
+            empresaSeleccionada = value;
+            empresaAnterior = value;
+          }else{
+            if(exitosas(value,time,rendimiento) > exitosas(empresaAnterior,time,rendimiento)){
+              empresaSeleccionada = value;
+              empresaOpExitosas = exitosas(value,time,rendimiento);
+              empresaAnterior = value;
+            } else if(exitosas(value,time,rendimiento) == exitosas(empresaAnterior,time,rendimiento)){
+              if(value.precios[0]['close'] < empresaAnterior.precios[0]['close']){
+                empresaSeleccionada = value;
+                empresaOpExitosas = exitosas(value,time,rendimiento);
+                empresaAnterior = value;
+              } else {
+                empresaSeleccionada = empresaAnterior;
+                empresaOpExitosas = exitosas(empresaAnterior,time,rendimiento);
+                empresaAnterior=value;
+              }
+            }
+          }
+          console.log(stoploss(value, time, rendimiento));
+
+        }
+      });
+
+
+
+      console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
+      // Selecciona indicador
+
+    }).catch(err => {
+      console.log(err);
+    })
+    /////////////////////////////////////////////////////////////////////////////////
+  }
+  else if(money >= 300 && money<=590 && time>=8 && time <=30){ //Perfil 2
+    console.log('Perfil 2');
+  }
+  else if(money >= 300 && money<=590 && time>=31 && time <=90){ //Perfil 3
+    console.log('Perfil 3');
+  }
+  else if(money >= 591 && money<=1000 && time>=2 && time <=7){ //Perfil 4
+    console.log('Perfil 4');
+  }
+  else if(money >= 591 && money<=1000 && time>=8 && time <=30){ //Perfil 5
+    console.log('Perfil 5');
+  }
+  else if(money >= 591 && money<=1000 && time>=31 && time <=90){ //Perfil 6
+    console.log('Perfil 6');
+  }
+  else if(money >= 1001 && time>=2 && time <=7){ //Perfil 7
+    console.log('Perfil 7');
+  }
+  else if(money >= 1001 && time>=8 && time <=30){ //Perfil 8
+    console.log('Perfil 8');
+  }
+  else if(money >= 1001 && time>=31 && time <=90){ //Perfil 9
+    console.log('Perfil 9');
+  }
+}
+
+function exitosas(empresa, time, rendimiento){
+  listadoPrecios =  empresa['precios'];
+  listadoPrecios.reverse();
+  opExitosas = 0;
+  contadorDias = 0;
+  enOperacion = true;
+  primerPrecio = 0;
+  stop=false;
+
+  listadoPrecios.forEach(function (value,index){
+    contadorDias++;
+    if(contadorDias > time){contadorDias = 1; stop=false;}
+    if(contadorDias == 1 ){
+      if(listadoPrecios[index+(time-1)]!==undefined){
+        primerPrecio = value['open'];
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+        }
+      }
+      else {
+        enOperacion = false;
+        return;
+      }
+    }
+    else{
+      if(enOperacion==true){
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+        }
+      }
+    }
+
+
+  });
+
+  return opExitosas;
+}
+function stoploss(empresa, time, rendimiento){
+  listadoPrecios =  empresa['precios'];
+  listadoPrecios.reverse();
+  opExitosas = 0;
+  contadorDias = 0;
+  enOperacion = true;
+  primerPrecio = 0;
+  stop=false;
+  promedio=0;
+
+  listadoPrecios.forEach(function (value,index){
+    contadorDias++;
+    if(contadorDias > time){contadorDias = 1; stop=false;}
+    if(contadorDias == 1 ){
+      if(listadoPrecios[index+(time-1)]!==undefined){
+        primerPrecio = value['open'];
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+          promedio = promedio + (value['lower'] - primerPrecio)/primerPrecio;
+        }
+      }
+      else {
+        enOperacion = false;
+        return;
+      }
+    }
+    else{
+      if(enOperacion==true){
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+          promedio = promedio + (value['lower'] - primerPrecio)/primerPrecio;
+        }
+      }
+    }
+
+
+  });
+
+  promedio = promedio/opExitosas;
+  return promedio;
+}
+
 module.exports=controller;
