@@ -776,12 +776,12 @@ controller.backtestingTA = (money, time, rendimiento) => {
               }
             }
           }
-          
+
 
         }
       });
       stoploss = stoploss1(empresaSeleccionada, time, rendimiento);
-      
+
 
       console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
       // Selecciona indicador
@@ -901,7 +901,7 @@ function stoploss1(empresa, time, rendimiento){
   return promedio;
 }
 function indicador1(empresa){
-  
+
   paquete = AMAauto(empresa);
   console.log(paquete);
 }
@@ -913,12 +913,15 @@ function AMAauto(empresa){
   parametro = 0;
   simbolo = 'Adaptative Moving Average';
 
-  contadorDias = 0;
+
 
   listadoPrecios = empresa['precios'];
   listadoPrecios.reverse();
-  for(let i = 2; i < 90; i++){
+  for(let i = 4; i < 90; i++){
     prediccionesExitosas = 0;
+    contadorDias = 0;
+    borrar = 0;
+
     listadoPrecios.forEach(function (value,index)
     {
       contadorDias++;
@@ -926,54 +929,57 @@ function AMAauto(empresa){
       if(contadorDias == 1){
         if(listadoPrecios[index+(i-1)] !== undefined){
           if(listadoPrecios[(index-1)-(i+i)] == undefined){
+
           }
           else{
-            // condiciones
-            ama = AMA(index-1, i);
 
+            ama = AMA(index-1, i);
             if(ama > AMA((index-1)-i, i) && ((value['open']>ama && value['close']<ama) || (value['open']<ama && value['close']>ama) || (value['open']>ama && value['close']>ama && value['lower']<ama) || (value['open']>ama && value['close']>ama && value['lower']>ama))  ){
-              // compra
               prediccionesExitosas++;
-            } 
+            }
           }
         }
       }
       function AMA(amaIndex, periodo){
         // calcula ER efitience ratio
-      
+
         let cambio = Math.abs(listadoPrecios[amaIndex]['close'] - listadoPrecios[amaIndex-periodo]['close']);
         let volatilidad = 0;
         for(let i = amaIndex; i > amaIndex-periodo; i--){
            volatilidad = volatilidad + Math.abs(listadoPrecios[i]['close'] - listadoPrecios[i-1]['close']);
         }
         let ER = cambio/volatilidad;
-      
+
         // calcula  SC constante de suavizado
         let SC = Math.pow(ER * (2/(2+1) - 2/(30+1)) + 2/(30+1),2);
-      
+
         // calcula AMA adaptative moving average
         let insideAMA=0;
                         //index-1
         if(amaIndex == (index-1)-periodo){
-          insideAMA = SMA(amaIndex, periodo) + SC * (listadoPrecios[amaIndex]['close'] - SMA(amaIndex, periodo));
+          sma = SMA(amaIndex,periodo);
+          insideAMA = sma + SC * (listadoPrecios[amaIndex]['close'] - sma);
         }
         else{
-          insideAMA = AMA(amaIndex-1, periodo)+ SC * (listadoPrecios[amaIndex]['close'] - AMA(amaIndex-1, periodo));
+          backAma = AMA(amaIndex-1, periodo)
+          insideAMA = backAma + SC * (listadoPrecios[amaIndex]['close'] - backAma);
         }
+
         return insideAMA;
       }
-      
+
       function SMA(smaIndex, periodo){
           var insideSMA = 0;
-        
+
             for (let i = smaIndex-(periodo-1); i <= smaIndex ; i++){
               insideSMA = insideSMA + listadoPrecios[i]['close'];
             }
             insideSMA = insideSMA/periodo;
-   
+
           return insideSMA;
       }
-    })
+    });
+
     if(i == 2){
       Exitosas = prediccionesExitosas;
       parametro = i;
@@ -992,7 +998,7 @@ function AMAauto(empresa){
     simbolo: simbolo
   }
   return paquete;
-}  
+}
 
 
 
