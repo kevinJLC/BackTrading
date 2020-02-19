@@ -6,13 +6,38 @@
   left: 61%;
 
 }
-#footer{
-  z-index: 300;
+.footer{
+  z-index: 101;
   position: absolute;
+  background-color: black;
+
   width: 100%;
   top: 115%;
+  height: 60%;
+
+
 }
 
+.formularioContacto{
+  display: inline-block;
+  width: 100%;
+  background-color: rgba(136, 136, 136, 0.801);
+
+}
+
+.mat-card-contacto{
+  position: absolute;
+  top: 2%;
+  width: 25%;
+  background-color:black;
+}
+.mat-card-nosotros{
+  position: absolute;
+  top: 2%;
+  left: 35%;
+  width: 25%;
+  background-color:rgb(0, 0, 0);
+}
 
 .spacer{
   -webkit-box-flex: 1;
@@ -28,3 +53,31 @@
 mat-form-field{
   width: 80%;
 }
+#campo{
+  margin-top: 2px;
+  position: relative;
+  width: 100%;
+  height: 10%;
+  color: white;
+
+}
+
+.contacto-titulo{
+  font-size: 17px;
+  color: white;
+}
+.nosotros-titulo{
+  font-size: 17px;
+  color: white;
+}
+
+.nosotros-texto{
+  font-size: 12px;
+  color: rgb(224, 224, 224);
+}
+.enviar{
+  color: white;
+  background-color: rgb(18, 27, 109);
+
+}
+

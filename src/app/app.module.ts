@@ -46,6 +46,7 @@ import { LoginService } from './servicios/login.service';
 import { RegistroService } from './servicios/registro.service';
 import { TokenService } from './servicios/token.service';
 import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
+import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/
     GuiaComponent,
     TradingComponent,
     RecuperarCuentaComponent,
-    CambiarPasswordComponent
+    CambiarPasswordComponent,
+    NosotrosComponent
   ],
   imports: [
     BrowserModule,

@@ -66,6 +66,60 @@
     </div>
 </form>
 
-    <footer>
-        
-      </footer>
+<footer>
+  <mat-toolbar  class="footer">
+    <div class="contacto">
+        <mat-card class="mat-card-contacto">
+            <mat-card-title class="contacto-titulo">
+              Contacto
+            </mat-card-title>
+            <mat-card-content class="formularioContacto" >
+              <form >
+                      <mat-form-field  appearance="fill" id="campo">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput>
+                      </mat-form-field>
+                      <br>
+                      <mat-form-field appearance="fill" id="campo">
+                          <mat-label>Correo</mat-label>
+                          <input matInput placeholder="example@hotmail.com"  >
+                        </mat-form-field>
+                      <br>
+                      <mat-form-field appearance="fill" id="campo">
+                          <mat-label>Mensaje</mat-label>
+                          <input matInput placeholder="Nice page, bro!"  >
+                        </mat-form-field>
+
+
+
+
+              </form>
+
+            </mat-card-content>
+            <br>
+            <button mat-button class="enviar"> Enviar </button>
+
+          </mat-card>
+    </div>
+
+    <div class="nosotros">
+      <mat-card class="mat-card-nosotros">
+        <mat-card-title class="nosotros-titulo">
+          Nosotros
+        </mat-card-title>
+        <mat-card-content class="nosotros-texto">
+          <pre align="justify">Somos un equipo de estudiantes del Centro de Enseñanza
+Técnica industrial, cursamos el 8vo semestre de la
+carrera en desarrollo de software y nuestro
+proyecto consiste en<a href="/nosotros"> ...Seguir leyendo</a></pre>
+
+
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+
+
+  </mat-toolbar>
+</footer>
