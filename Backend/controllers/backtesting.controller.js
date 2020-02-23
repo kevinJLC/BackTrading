@@ -1,5 +1,6 @@
 const Sistema = require('../models/Sistemas');
 const Empresas = require('../models/Empresas');
+const Usuarios = require('../models/Usuarios');
 
 const controller ={};
 
@@ -736,7 +737,7 @@ controller.postBacktesting = (req,res) =>{
 
 
 
-controller.backtestingTA = (money, time, rendimiento) => {
+controller.backtestingTA = (money, time, rendimiento,userId) => {
 
 
   if(money >= 300 && money<=590 && time>=2 && time <=7){  // Perfil 1
@@ -748,7 +749,7 @@ controller.backtestingTA = (money, time, rendimiento) => {
       empresaSeleccionada=0;
       empresaOpExitosas = 0;
       empresaAnterior = 0;
-      stoploss = 0;
+
       todasLasEmpresas.forEach(function (value, index){
 
         // Selecciona empresa
@@ -782,11 +783,12 @@ controller.backtestingTA = (money, time, rendimiento) => {
 
         }
       });
-
-      stoploss = stoploss1(empresaSeleccionada, time, rendimiento);
       console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
-      // Selecciona indicador
-      console.log(sistemaP1(empresaSeleccionada,time,rendimiento));
+      stoploss = stoploss1(empresaSeleccionada, time, rendimiento);
+      sistema = sistemaP1(empresaSeleccionada,time,rendimiento);
+      guardaSistema(stoploss, empresaSeleccionada['simbolo'],sistema['indicador'],sistema['parametros'],userId);
+
+
 
     }).catch(err => {
       console.log(err);
@@ -909,10 +911,10 @@ function sistemaP1(empresa,time,rendimiento){
   ]
 
   contExitosas = sistema[0]['predicExitosas']
-  sistemaSeleccionado = sistema[0]['indicador'];
+  sistemaSeleccionado = sistema[0];
   sistema.forEach(function(indicador,index){
     if(index > 0 && indicador['predicExitosas'] > contExitosas){
-      sistemaSeleccionado=indicador['indicador'];
+      sistemaSeleccionado=indicador;
     }
   })
 
@@ -1006,7 +1008,7 @@ function AMAauto(empresa,time,rendimiento){
 
 
 
-  return {predicExitosas: Exitosas, indicador: indicador};
+  return {predicExitosas: Exitosas, indicador: indicador, parametros: [time]};
 }
 
 function ENVELOPESauto(empresa,time,rendimiento){
@@ -1115,7 +1117,7 @@ function ENVELOPESauto(empresa,time,rendimiento){
 
 
   indicador = indicador + '| periodo:'+parametro['periodo'] + ' / K:' + parametro['K'];
-  return {predicExitosas: Exitosas, indicador: indicador};
+  return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo'],parametro['K']]};
 }
 
 function SMAauto(empresa,time,rendimiento){
@@ -1169,10 +1171,21 @@ function SMAauto(empresa,time,rendimiento){
 
     });
   indicador = indicador + '| periodo:'+parametro['periodo'];
-  return {predicExitosas: Exitosas, indicador: indicador};
+  return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
 }
 
 
+function guardaSistema(stoploss, empresa, indicador, parametro,userId ){
+  Usuarios.findByIdAndUpdate(userId,{
+    stoploss: stoploss,
+    empresa: empresa,
+    indicador: indicador,
+    parametro: parametro
+  }).then(res => {
+
+  })
+
+}
 
 
 module.exports=controller;

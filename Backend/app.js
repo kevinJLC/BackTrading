@@ -57,8 +57,6 @@ app.use((req,res,next)=>{
 });
 
 (function respaldo(){
-
-
   // get hoy y mañana date
   const hoy = new Date();
   console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
@@ -139,6 +137,21 @@ app.use((req,res,next)=>{
 
 
 })();
+
+
+function user() {
+
+}
+
+async function TA() {
+  console.log('calling');
+
+  // expected output: 'resolved'
+}
+
+
+
+
 
 
 module.exports=app;

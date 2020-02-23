@@ -11,13 +11,14 @@ controller.postTrading = (req,res) => {
   money = req.body.capital;
   rendimiento = req.body.rendimiento;
 
-  Backtesting.backtestingTA(money, time, rendimiento);
+  Backtesting.backtestingTA(money, time, rendimiento, req.userData.id);
 
 
 
 
   Usuario.findByIdAndUpdate(req.userData.id,
   { tradingActivo: true,
+    capital: req.body.capital,
     capitalInicial: req.body.capital,
     rendimiento: req.body.rendimiento,
     periodo: req.body.periodo
@@ -27,7 +28,7 @@ controller.postTrading = (req,res) => {
   res.json({message: 'Trading en proceso'});
 }
 
-controller.getTrading = (req,res) =>{
+controller.getStopTrading = (req,res) =>{
   Usuario.findByIdAndUpdate(req.userData.id,{tradingActivo: false}).then(res => {
 
   })

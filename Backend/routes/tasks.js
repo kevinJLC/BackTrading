@@ -44,7 +44,7 @@ router.post('/api/backtesting',autorizacion,backtesting.postBacktesting);
 
 // Trading Automático
 router.post('/api/trading',autorizacion,trading.postTrading);
-router.get('/api/trading',autorizacion,trading.getTrading);
+router.get('/api/trading',autorizacion,trading.getStopTrading);
 router.get('/api/trading/status',autorizacion,trading.getStatus);
 
 module.exports=router;
