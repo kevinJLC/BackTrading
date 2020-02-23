@@ -737,6 +737,8 @@ controller.postBacktesting = (req,res) =>{
 
 
 controller.backtestingTA = (money, time, rendimiento) => {
+
+
   if(money >= 300 && money<=590 && time>=2 && time <=7){  // Perfil 1
     console.log('Perfil 1');
     /////////////////////////////////////////////////////////////////////////////////
@@ -784,7 +786,7 @@ controller.backtestingTA = (money, time, rendimiento) => {
       stoploss = stoploss1(empresaSeleccionada, time, rendimiento);
       console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
       // Selecciona indicador
-      sistemaP1(empresaSeleccionada,time,rendimiento);
+      console.log(sistemaP1(empresaSeleccionada,time,rendimiento));
 
     }).catch(err => {
       console.log(err);
@@ -900,11 +902,24 @@ function stoploss1(empresa, time, rendimiento){
   return promedio;
 }
 function sistemaP1(empresa,time,rendimiento){
+  sistema = [
+    ama= AMAauto(empresa,time,rendimiento),
+    envelopes= ENVELOPESauto(empresa,time,rendimiento),
+    sma= SMAauto(empresa,time,rendimiento)
+  ]
 
-  console.log(AMAauto(empresa,time,rendimiento));
-  console.log(ENVELOPESauto(empresa,time,rendimiento));
+  contExitosas = sistema[0]['predicExitosas']
+  sistemaSeleccionado = sistema[0]['indicador'];
+  sistema.forEach(function(indicador,index){
+    if(index > 0 && indicador['predicExitosas'] > contExitosas){
+      sistemaSeleccionado=indicador['indicador'];
+    }
+  })
+
+  return sistemaSeleccionado;
 
 }
+
 
 
 //Indicadores  opExitosas, parametro, simbolo
@@ -1100,6 +1115,60 @@ function ENVELOPESauto(empresa,time,rendimiento){
 
 
   indicador = indicador + '| periodo:'+parametro['periodo'] + ' / K:' + parametro['K'];
+  return {predicExitosas: Exitosas, indicador: indicador};
+}
+
+function SMAauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Simple Moving Average';
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            if(SMA(index-1,time) > SMA(index-time,time) && ((listadoPrecios[index-1]['open']>SMA(index-1,time) && listadoPrecios[index-1]['close']<SMA(index-1,time)) || (listadoPrecios[index-1]['open']<SMA(index-1,time) && listadoPrecios[index-1]['close']>SMA(index-1,time)) || (listadoPrecios[index-1]['open']>SMA(index-1,time) && listadoPrecios[index-1]['close']>SMA(index-1,time)) && listadoPrecios[index-1]['lower']<SMA(index-1,time))){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+
+
+
+
+      function SMA(smaIndex, periodo){
+        var insideSMA = 0;
+
+          for (let i = smaIndex-(periodo-1); i <= smaIndex ; i++){
+            insideSMA = insideSMA + listadoPrecios[i]['close'];
+          }
+          insideSMA = insideSMA/periodo;
+
+        return insideSMA;
+    }
+
+    });
+  indicador = indicador + '| periodo:'+parametro['periodo'];
   return {predicExitosas: Exitosas, indicador: indicador};
 }
 
