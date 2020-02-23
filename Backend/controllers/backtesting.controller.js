@@ -919,7 +919,6 @@ function sistemaP1(empresa,time,rendimiento){
   })
 
   return sistemaSeleccionado;
-
 }
 
 
@@ -1180,7 +1179,8 @@ function guardaSistema(stoploss, empresa, indicador, parametro,userId ){
     stoploss: stoploss,
     empresa: empresa,
     indicador: indicador,
-    parametro: parametro
+    parametro: parametro,
+    diasOperacion: 0
   }).then(res => {
 
   })

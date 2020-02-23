@@ -7,8 +7,10 @@ const tasks = require('./routes/tasks');
 const path=require('path');
 const {mongoose} = require('./MongoDB/database');
 const ActualizacionApi = require('./models/ActualizacionApi');
+const backtesting = require('./controllers/backtesting.controller');
 
 const Empresa=require('./models/Empresas');
+const Usuarios = require('./models/Usuarios');
 const request = require("request-promise");
 const empresasApi = []
 
@@ -144,11 +146,35 @@ function user() {
 }
 
 async function TA() {
+ 
   console.log('calling');
+  const usuarios = await Usuarios.find();
+  
+  
+  usuarios.forEach(async function(value, index){
+    if(value['tradingActivo']){
+     if(value['diasOperacion'] > value['periodo']){
+       value['diasOperacion'] = 0;
+     }
+     else{  
+      await Empresa.findOne({simbolo: value['empresa']}).then(result => {
+        console.log(result['simbolo']);
+        
+      })
+      .catch();
+       
+       
+     }
+    }
+  });
+
+
+ 
 
   // expected output: 'resolved'
 }
 
+TA();
 
 
 
