@@ -1180,7 +1180,7 @@ function guardaSistema(stoploss, empresa, indicador, parametro,userId ){
     empresa: empresa,
     indicador: indicador,
     parametro: parametro,
-    diasOperacion: 0
+    diasOperacion: 0,
   }).then(res => {
 
   })

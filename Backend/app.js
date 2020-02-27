@@ -8,6 +8,8 @@ const path=require('path');
 const {mongoose} = require('./MongoDB/database');
 const ActualizacionApi = require('./models/ActualizacionApi');
 const backtesting = require('./controllers/backtesting.controller');
+const trading = require('./controllers/indicadores.controller');
+
 
 const Empresa=require('./models/Empresas');
 const Usuarios = require('./models/Usuarios');
@@ -146,32 +148,103 @@ function user() {
 }
 
 async function TA() {
- 
+
   console.log('calling');
+
+
+  //Si domingo
+  //TRUE: TimeOut 3:am
+  //False: ...
   const usuarios = await Usuarios.find();
-  
-  
+
+
   usuarios.forEach(async function(value, index){
     if(value['tradingActivo']){
-     if(value['diasOperacion'] > value['periodo']){
-       value['diasOperacion'] = 0;
-     }
-     else{  
-      await Empresa.findOne({simbolo: value['empresa']}).then(result => {
-        console.log(result['simbolo']);
-        
-      })
-      .catch();
-       
-       
-     }
+
+    empresa = await Empresa.findOne({simbolo: value['empresa']})
+
+
+      //NO es premium
+      if(value['diasOperacion'] == 0){
+        if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],1)){
+          await Usuarios.findByIdAndUpdate(value['_id'],{
+            diasOperacion: value['diasOperacion']+1,
+            precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
+            precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']/100))
+          })
+        }
+        await Usuarios.findByIdAndUpdate(value['_id'],{
+          diasOperacion: value['diasOperacion']+1,
+          precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
+          precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']/100))
+
+        })
+
+      } else{
+        if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
+          console.log('ahuevo')
+          await Usuarios.findByIdAndUpdate(value['_id'],{
+            diasOperacion: 0,
+            capital: value['capitalInicial'] * (1+(value['rendimiento']/100)),
+            precioObjetivo: 0,
+            precioPerdida: 0
+          })
+        }else{
+
+          await Usuarios.findByIdAndUpdate(value['_id'],{
+            diasOperacion: value['diasOperacion']+1
+          })
+          if(value['diasOperacion']+1 > value['periodo'] || empresa['precios'][0]['lower']<=value['precioPerdida']){
+            console.log('No ahuevo ')
+            await Usuarios.findByIdAndUpdate(value['_id'],{
+              diasOperacion: 0,
+              capital: value['capitalInicial'] * (1+(value['stoploss']/100)),
+              precioObjetivo: 0,
+              precioPerdida: 0  
+            })
+          }
+
+
+        }
+
+
+
+
+
+      }
+
+      // Si diasOperacion == 0
+      // TRUE:
+          //Si indicador == true
+          //TRUE: diasOperacion++
+          //FALSE:
+      // FALSE: Verifica Exitosas
+                // TRUE: recalcula capital (capital=capital*($cierre/$Compra), diasOperación = 0
+                // FALSE: diasOperacion++, Si -> diasOperacion==Periodo || lower <= stoploss
+                          //TRUE: recalcula capital, diasOperacion = 0
+                          //FALSE:
+
+      //Es premium
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
   });
 
 
- 
+  // TimeOut 3:00 am
 
-  // expected output: 'resolved'
+
 }
 
 TA();

@@ -18,7 +18,9 @@ const UsuarioSchema=mongoose.Schema({
   empresa: {type: String},
   indicador: {type: String},
   parametro: {type: []},
-  diasOperacion: {type: Number}
+  diasOperacion: {type: Number},
+  precioObjetivo: {type: Number},
+  precioPerdida: {type: Number}
 
 });
 
