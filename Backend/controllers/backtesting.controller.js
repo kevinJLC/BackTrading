@@ -1173,6 +1173,210 @@ function SMAauto(empresa,time,rendimiento){
   return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
 }
 
+function ATRauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Average True Range'+'| periodo:'+time;
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            atr = ATR(index-1, time);
+            atr = atr/time;
+            stopLimit = listadoPrecios[index]['open'] * (1+(rendimiento/100));
+            if(listadoPrecios[index-time]['close']<listadoPrecios[index-1]['close'] && (listadoPrecios[index-1]['close']+atr) >= stopLimit ){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function ATR(atrIndex, periodo){
+        var bestATR;
+        var dif1 = listadoPrecios[atrIndex]['higher'] - listadoPrecios[atrIndex]['lower'];
+        var dif2 = listadoPrecios[atrIndex-1]['close'] - listadoPrecios[atrIndex]['higher'];
+        var dif3 = listadoPrecios[atrIndex-1]['close'] - listadoPrecios[atrIndex]['lower'];
+        if(dif1 > Math.abs(dif2)){
+          if( dif1 > Math.abs(dif3)){
+            bestATR = dif1;
+          }else{
+            bestATR = Math.abs(dif3);
+          }
+        } else {
+          if ( Math.abs(dif2) > Math.abs(dif3) ){
+            bestATR = Math.abs(dif2);
+          }else{
+            bestATR = Math.abs(dif3);
+          }
+        }
+
+        if(atrIndex == (index-1) - (periodo - 1)){
+          return dif1;
+        }
+        bestATR = bestATR + ATR(atrIndex-1, periodo);
+
+        return bestATR;
+      }
+
+    });
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
+
+function BEARSauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Bears'+'| periodo:'+time;
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            bears = BEARS(index-1, time);
+            if(BEARS(index-2, time)<0 && bears > 0){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function BEARS(bearsIndex, periodo){
+        var insideBears = listadoPrecios[bearsIndex]['lower'] - bearsEMA(bearsIndex, periodo);
+        return insideBears;
+      }
+
+      function bearsEMA(emaIndex, periodoEma){
+        var P = 2/(periodoEma + 1 );
+        var bestEMA;
+        //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+        if(emaIndex == (index-1) - (periodoEma - 1)){
+          return bearsSMA(emaIndex, periodoEma);
+        }
+        else{
+          ema = bearsEMA(emaIndex-1, periodoEma);
+          bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (ema * (1 - P));
+        }
+        return bestEMA;
+      }
+
+      function bearsSMA(smaIndex, periodoSma){
+        var insideSMA = 0;
+        for (let i = smaIndex-(periodoSma-1); i <= smaIndex ; i++){
+          insideSMA = insideSMA + listadoPrecios[i]['close'];
+        }
+        insideSMA = insideSMA/periodoSma;
+        return insideSMA;
+      }
+
+
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
+
+function BULLSauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Bulls'+'| periodo:'+time;
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  istadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            bulls = BULLS(index-1, time);
+            if(BULLS(index-2, time)<0 && bulls > 0){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function BULLS(bullsIndex, periodo){
+        var insideBulls = listadoPrecios[bullsIndex]['higher'] - bullsEMA(bullsIndex, periodo);
+        return insideBulls;
+      }
+
+      function bullsEMA(emaIndex, periodoEmaBulls){
+        var P = 2/(periodoEmaBulls + 1 );
+        var bestEMA;
+        //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
+        if(emaIndex == (index-1) - (periodoEmaBulls - 1)){
+          return bullsSMA(emaIndex, periodoEmaBulls);
+        }
+        else{
+          emaBulls = bullsEMA(emaIndex-1, periodoEmaBulls);
+          bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (emaBulls * (1 - P));
+        }
+        return bestEMA;
+      }
+
+      function bullsSMA(smaIndex, periodoSmaBulls){
+        var insideSMA = 0;
+        for (let i = smaIndex-(periodoSmaBulls-1); i <= smaIndex ; i++){
+          insideSMA = insideSMA + listadoPrecios[i]['close'];
+        }
+        insideSMA = insideSMA/periodoSmaBulls;
+        return insideSMA;
+      }
+
+    });
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+
+}
 
 function guardaSistema(stoploss, empresa, indicador, parametro,userId ){
   Usuarios.findByIdAndUpdate(userId,{
