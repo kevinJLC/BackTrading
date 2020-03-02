@@ -84,7 +84,7 @@ app.use((req,res,next)=>{
       // verifica que sea la primera ejecución de esta función en el dia
       console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
       if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
-        
+
           console.log('Sin respaldo el ' + fechaUltimaActualizacion);
           //Respaldo de la BD
           await request('http://localhost:3000/api/empresas', (err,res) => {
@@ -165,32 +165,39 @@ async function TA() {
   if(hoy.getDay() > 0 && hoy.getDay() < 6){
     const usuarios = await Usuarios.find();
     usuarios.forEach(async function(value, index){
-      if(value['tradingActivo']){
+      if(value['tradingActivo'] && value['capital']>=value['capitalInicial']){
+      console.log('xd')
       empresa = await Empresa.findOne({simbolo: value['empresa']})
 
 
         //NO es premium
+        // Si diasOperacion == 0
+        // TRUE:
+            //Si indicador == true
+            //TRUE: diasOperacion++
+            //FALSE:
+        // FALSE: Verifica Exitosas
+                  // TRUE: recalcula capital (capital=capital*($cierre/$Compra), diasOperación = 0
+                  // FALSE: diasOperacion++, Si -> diasOperacion==Periodo || lower <= stoploss
+                            //TRUE: recalcula capital, diasOperacion = 0
+                            //FALSE:
+
         if(value['diasOperacion'] == 0){
           if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],1)){
             await Usuarios.findByIdAndUpdate(value['_id'],{
               diasOperacion: value['diasOperacion']+1,
               precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
-              precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']/100))
+              precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']))
             })
           }
-          await Usuarios.findByIdAndUpdate(value['_id'],{
-            diasOperacion: value['diasOperacion']+1,
-            precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
-            precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']/100))
 
-          })
 
         } else{
           if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
 
             await Usuarios.findByIdAndUpdate(value['_id'],{
               diasOperacion: 0,
-              capital: value['capitalInicial'] * (1+(value['rendimiento']/100)),
+              capital: value['capital'] * (1+(value['rendimiento']/100)),
               precioObjetivo: 0,
               precioPerdida: 0
             })
@@ -203,7 +210,7 @@ async function TA() {
 
               await Usuarios.findByIdAndUpdate(value['_id'],{
                 diasOperacion: 0,
-                capital: value['capitalInicial'] * (1+(value['stoploss']/100)),
+                capital: value['capital'] * (1+(value['stoploss']/100)),
                 precioObjetivo: 0,
                 precioPerdida: 0
               })
@@ -213,19 +220,12 @@ async function TA() {
           }
         }
 
-        // Si diasOperacion == 0
-        // TRUE:
-            //Si indicador == true
-            //TRUE: diasOperacion++
-            //FALSE:
-        // FALSE: Verifica Exitosas
-                  // TRUE: recalcula capital (capital=capital*($cierre/$Compra), diasOperación = 0
-                  // FALSE: diasOperacion++, Si -> diasOperacion==Periodo || lower <= stoploss
-                            //TRUE: recalcula capital, diasOperacion = 0
-                            //FALSE:
+
+
 
         //Es premium
       }
+
     });
 
   }

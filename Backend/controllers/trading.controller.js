@@ -13,9 +13,6 @@ controller.postTrading = (req,res) => {
 
   Backtesting.backtestingTA(money, time, rendimiento, req.userData.id);
 
-
-
-
   Usuario.findByIdAndUpdate(req.userData.id,
   { tradingActivo: true,
     capital: req.body.capital,

@@ -15,7 +15,10 @@ controller.indicador = (indicador,precios, time, parametros) =>{
 
     break;
     case 'Simple Moving Average':
-
+        sma = SMA(0, precios, time, parametros);
+        if(precios[0]['higher']>precios[0+(time-1)]['higher'] && ((precios[0]['open']>sma && precios[0]['close']<sma)) || (precios[0]['open']<sma && precios[0]['close']>sma) || (precios[0]['open']>sma && precios[0]['close']>sma) && precios[0]['lower']<sma){
+          return true;
+        }
     break;
     case 'Average True Range':
 
