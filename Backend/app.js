@@ -183,7 +183,7 @@ async function TA() {
                             //FALSE:
 
         if(value['diasOperacion'] == 0){
-          if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],1)){
+          if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],1 /*parametro*/ )){
             await Usuarios.findByIdAndUpdate(value['_id'],{
               diasOperacion: value['diasOperacion']+1,
               precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
