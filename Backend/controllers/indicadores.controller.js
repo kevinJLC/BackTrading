@@ -91,6 +91,10 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   return insideAMA;
   }
 
+  function ENVELOPES(envelopesIndex,preciosEmpresa,time,parametros){
+    
+  }
+
   function SMA(smaIndex,preciosEmpresa,time,parametros){
     var insideSMA = 0;
     for (let i = smaIndex+(time-1); i >= smaIndex ; i--){
@@ -99,6 +103,8 @@ controller.indicador = (indicador,precios, time, parametros) =>{
     insideSMA = insideSMA/time;
     return insideSMA;
   }
+
+
 
 
 

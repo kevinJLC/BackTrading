@@ -166,7 +166,6 @@ async function TA() {
     const usuarios = await Usuarios.find();
     usuarios.forEach(async function(value, index){
       if(value['tradingActivo'] && value['capital']>=value['capitalInicial']){
-      console.log('xd')
       empresa = await Empresa.findOne({simbolo: value['empresa']})
 
 
@@ -234,7 +233,7 @@ async function TA() {
   setTimeout(TA, mañana.getTime() - hoy.getTime());
 
 }
-TA();
+// TA();
 
 
 
