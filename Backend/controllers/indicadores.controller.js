@@ -12,7 +12,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         }
     break;
     case 'Envelopes':
-
+        
     break;
     case 'Simple Moving Average':
         sma = SMA(0, precios, time, parametros);

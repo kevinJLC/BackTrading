@@ -1011,12 +1011,147 @@ controller.backtestingTA = (money, time, rendimiento,userId) => {
   }
   else if(money >= 591 && money<=1000 && time>=31 && time <=90){ //Perfil 6
     console.log('Perfil 6');
+    /////////////////////////////////////////////////////////////////////////////////
+    Empresas.find().then(todasLasEmpresas => {
+
+      contadorIndex = 0;
+      empresaSeleccionada=0;
+      empresaOpExitosas = 0;
+      empresaAnterior = 0;
+
+      todasLasEmpresas.forEach(function (value, index){
+
+        // Selecciona empresa
+        if(value.precios[0].close < money){
+          exitosas(value, time, rendimiento);
+          if(empresaAnterior==0){
+            empresaSeleccionada = value;
+            empresaAnterior = value;
+          }else{
+            if(exitosas(value,time,rendimiento) > exitosas(empresaAnterior,time,rendimiento)){
+              empresaSeleccionada = value;
+              empresaOpExitosas = exitosas(value,time,rendimiento);
+              empresaAnterior = value;
+            } else if(exitosas(value,time,rendimiento) == exitosas(empresaAnterior,time,rendimiento)){
+              if(value.precios[0]['close'] < empresaAnterior.precios[0]['close']){
+                empresaSeleccionada = value;
+                empresaOpExitosas = exitosas(value,time,rendimiento);
+                empresaAnterior = value;
+              } else {
+                empresaSeleccionada = empresaAnterior;
+                empresaOpExitosas = exitosas(empresaAnterior,time,rendimiento);
+                empresaAnterior=value;
+              }
+            }
+          }
+        }
+      });
+      console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
+      stoploss = stoploss2(empresaSeleccionada, time, rendimiento);
+      sistema = sistemaP6(empresaSeleccionada,time,rendimiento);
+      //console.log(sistema['predicExitosas'])
+      guardaSistema(stoploss, empresaSeleccionada['simbolo'],sistema['indicador'],sistema['parametros'],userId);
+
+    }).catch(err => {
+    console.log(err);
+    })
+    /////////////////////////////////////////////////////////////////////////////////
   }
   else if(money >= 1001 && time>=2 && time <=7){ //Perfil 7
     console.log('Perfil 7');
+    /////////////////////////////////////////////////////////////////////////////////
+    Empresas.find().then(todasLasEmpresas => {
+
+      contadorIndex = 0;
+      empresaSeleccionada=0;
+      empresaOpExitosas = 0;
+      empresaAnterior = 0;
+
+      todasLasEmpresas.forEach(function (value, index){
+
+        // Selecciona empresa
+        if(value.precios[0].close < money){
+          exitosas(value, time, rendimiento);
+          if(empresaAnterior==0){
+            empresaSeleccionada = value;
+            empresaAnterior = value;
+          }else{
+            if(exitosas(value,time,rendimiento) > exitosas(empresaAnterior,time,rendimiento)){
+              empresaSeleccionada = value;
+              empresaOpExitosas = exitosas(value,time,rendimiento);
+              empresaAnterior = value;
+            } else if(exitosas(value,time,rendimiento) == exitosas(empresaAnterior,time,rendimiento)){
+              if(value.precios[0]['close'] < empresaAnterior.precios[0]['close']){
+                empresaSeleccionada = value;
+                empresaOpExitosas = exitosas(value,time,rendimiento);
+                empresaAnterior = value;
+              } else {
+                empresaSeleccionada = empresaAnterior;
+                empresaOpExitosas = exitosas(empresaAnterior,time,rendimiento);
+                empresaAnterior=value;
+              }
+            }
+          }
+        }
+      });
+      console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
+      stoploss = stoploss3(rendimiento);
+      sistema = sistemaP7(empresaSeleccionada,time,rendimiento);
+      //console.log(sistema['predicExitosas'])
+      guardaSistema(stoploss, empresaSeleccionada['simbolo'],sistema['indicador'],sistema['parametros'],userId);
+
+    }).catch(err => {
+    console.log(err);
+    })
+    /////////////////////////////////////////////////////////////////////////////////
   }
   else if(money >= 1001 && time>=8 && time <=30){ //Perfil 8
     console.log('Perfil 8');
+    /////////////////////////////////////////////////////////////////////////////////
+    Empresas.find().then(todasLasEmpresas => {
+
+      contadorIndex = 0;
+      empresaSeleccionada=0;
+      empresaOpExitosas = 0;
+      empresaAnterior = 0;
+
+      todasLasEmpresas.forEach(function (value, index){
+
+        // Selecciona empresa
+        if(value.precios[0].close < money){
+          exitosas(value, time, rendimiento);
+          if(empresaAnterior==0){
+            empresaSeleccionada = value;
+            empresaAnterior = value;
+          }else{
+            if(exitosas(value,time,rendimiento) > exitosas(empresaAnterior,time,rendimiento)){
+              empresaSeleccionada = value;
+              empresaOpExitosas = exitosas(value,time,rendimiento);
+              empresaAnterior = value;
+            } else if(exitosas(value,time,rendimiento) == exitosas(empresaAnterior,time,rendimiento)){
+              if(value.precios[0]['close'] < empresaAnterior.precios[0]['close']){
+                empresaSeleccionada = value;
+                empresaOpExitosas = exitosas(value,time,rendimiento);
+                empresaAnterior = value;
+              } else {
+                empresaSeleccionada = empresaAnterior;
+                empresaOpExitosas = exitosas(empresaAnterior,time,rendimiento);
+                empresaAnterior=value;
+              }
+            }
+          }
+        }
+      });
+      console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
+      stoploss = stoploss3(rendimiento);
+      sistema = sistemaP8(empresaSeleccionada,time,rendimiento);
+      //console.log(sistema['predicExitosas'])
+      guardaSistema(stoploss, empresaSeleccionada['simbolo'],sistema['indicador'],sistema['parametros'],userId);
+
+    }).catch(err => {
+    console.log(err);
+    })
+    /////////////////////////////////////////////////////////////////////////////////
   }
   else if(money >= 1001 && time>=31 && time <=90){ //Perfil 9
     console.log('Perfil 9');
@@ -1117,7 +1252,9 @@ function stoploss2(empresa, time, rendimiento){
   }
   return stoploss
 }
-
+function stoploss3(rendimiento){
+  return ((rendimiento/5)/100)*-1;
+}
 
 function sistemaP1(empresa,time,rendimiento){
   sistema = [
@@ -1232,8 +1369,92 @@ function sistemaP5(empresa,time,rendimiento){
   console.log('ganadora: ' + sistemaSeleccionado['predicExitosas'])
   return sistemaSeleccionado;
 }
+function sistemaP6(empresa,time,rendimiento){
+  sistema = [
+    ama= AMAauto(empresa,time,rendimiento),
+    envelopes= ENVELOPESauto(empresa,time,rendimiento),
+    sma= SMAauto(empresa,time,rendimiento),
+    atr= ATRauto(empresa,time,rendimiento),
+    bears = BEARSauto(empresa,time,rendimiento),
+    bulls = BULLSauto(empresa,time,rendimiento),
+    ema = EMAauto(empresa,time,rendimiento),
+    macd = MACDauto(empresa,time,rendimiento),
+    momentum = MOMENTUMauto(empresa,time,rendimiento),
+    osma = OSMAauto(empresa,time,rendimiento)
+  ]
 
+  contExitosas = sistema[0]['predicExitosas']
+  sistemaSeleccionado = sistema[0];
+  sistema.forEach(function(indicador,index){
+    console.log(indicador['predicExitosas'])
+    if(index > 0 && indicador['predicExitosas'] > contExitosas){
+      sistemaSeleccionado=indicador;
+      contExitosas = indicador['predicExitosas']
+    }
+  })
 
+  console.log('ganadora: ' + sistemaSeleccionado['predicExitosas'])
+  return sistemaSeleccionado;
+}
+function sistemaP7(empresa,time,rendimiento){
+  sistema = [
+    ama= AMAauto(empresa,time,rendimiento),
+    envelopes= ENVELOPESauto(empresa,time,rendimiento),
+    sma= SMAauto(empresa,time,rendimiento),
+    atr= ATRauto(empresa,time,rendimiento),
+    bears = BEARSauto(empresa,time,rendimiento),
+    bulls = BULLSauto(empresa,time,rendimiento),
+    ema = EMAauto(empresa,time,rendimiento),
+    macd = MACDauto(empresa,time,rendimiento),
+    momentum = MOMENTUMauto(empresa,time,rendimiento),
+    osma = OSMAauto(empresa,time,rendimiento),
+    ad = ADauto(empresa,time,rendimiento),
+    mfi = MFIauto(empresa,time,rendimiento)
+  ]
+
+  contExitosas = sistema[0]['predicExitosas']
+  sistemaSeleccionado = sistema[0];
+  sistema.forEach(function(indicador,index){
+    console.log(indicador['predicExitosas'])
+    if(index > 0 && indicador['predicExitosas'] > contExitosas){
+      sistemaSeleccionado=indicador;
+      contExitosas = indicador['predicExitosas']
+    }
+  })
+
+  console.log('ganadora: ' + sistemaSeleccionado['predicExitosas'])
+  return sistemaSeleccionado;
+}
+function sistemaP8(empresa,time,rendimiento){
+  sistema = [
+    ama= AMAauto(empresa,time,rendimiento),
+    envelopes= ENVELOPESauto(empresa,time,rendimiento),
+    sma= SMAauto(empresa,time,rendimiento),
+    atr= ATRauto(empresa,time,rendimiento),
+    bears = BEARSauto(empresa,time,rendimiento),
+    bulls = BULLSauto(empresa,time,rendimiento),
+    ema = EMAauto(empresa,time,rendimiento),
+    macd = MACDauto(empresa,time,rendimiento),
+    momentum = MOMENTUMauto(empresa,time,rendimiento),
+    osma = OSMAauto(empresa,time,rendimiento),
+    ad = ADauto(empresa,time,rendimiento),
+    mfi = MFIauto(empresa,time,rendimiento),
+    obv = OBVauto(empresa,time,rendimiento)
+  ]
+
+  contExitosas = sistema[0]['predicExitosas']
+  sistemaSeleccionado = sistema[0];
+  sistema.forEach(function(indicador,index){
+    console.log(indicador['predicExitosas'])
+    if(index > 0 && indicador['predicExitosas'] > contExitosas){
+      sistemaSeleccionado=indicador;
+      contExitosas = indicador['predicExitosas']
+    }
+  })
+
+  console.log('ganadora: ' + sistemaSeleccionado['predicExitosas'])
+  return sistemaSeleccionado;
+}
 
 //Indicadores  opExitosas, parametro, simbolo
 function AMAauto(empresa,time,rendimiento){
@@ -1980,8 +2201,168 @@ function OSMAauto(empresa,time,rendimiento){
 
 }
 
+function ADauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Acumulation/Distribution';
 
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
 
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;enOperacion= false}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            ad = AD(index-1, time);
+            if(listadoPrecios[index-time]['close']<listadoPrecios[index-1]['close'] && ad > 0){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function AD(adIndex, periodo){
+        if(adIndex == (index-1) - (periodo-1)){
+          return (((listadoPrecios[adIndex]['close'] - listadoPrecios[adIndex]['lower'])-(listadoPrecios[adIndex]['higher'] - listadoPrecios[adIndex]['close'])) / (listadoPrecios[adIndex]['higher'] - listadoPrecios[adIndex]['lower']) ) * listadoPrecios[adIndex]['volume'] ;
+        }
+        var insideAD = (((listadoPrecios[adIndex]['close'] - listadoPrecios[adIndex]['lower'])-(listadoPrecios[adIndex]['higher'] - listadoPrecios[adIndex]['close']))  / (listadoPrecios[adIndex]['higher'] - listadoPrecios[adIndex]['lower'])) * listadoPrecios[adIndex]['volume']  + AD(adIndex-1, periodo);
+        return insideAD;
+      }
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
+
+function MFIauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Money Flow Index';
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;enOperacion= false}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            mfi = MFI(index-1,time);
+            if(MFI(index-time, time) < mfi && listadoPrecios[index-time]['close'] < listadoPrecios[index-1]['close'] && mfi<80){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function MFI(mfiIndex,periodo){
+        var mfPositivo=0;
+        var mfNegativo=0;
+
+        for(let i = (index-1) - (periodo-1); i<=mfiIndex; i++){
+          if(TP(i)<=TP(i-1)){
+            mfNegativo = mfNegativo + MF(i,TP(i));
+          }else{
+            mfPositivo = mfPositivo + MF(i,TP(i));
+          }
+        }
+
+        var mr = mfPositivo/mfNegativo;
+        var mfi = 100 - (100 / (1 + mr));
+        return mfi;
+      }
+      function TP(tpIndex){
+        return (listadoPrecios[tpIndex]['higher'] + listadoPrecios[tpIndex]['lower'] + listadoPrecios[tpIndex]['close'])/3;
+      }
+
+      function MF(mfIndex,tp){
+        return tp*listadoPrecios[mfIndex]['volume'];
+      }
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
+
+function OBVauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'On Balance Volume';
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;enOperacion= false}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+            obv = OBV(index-1,time);
+            if(obv > 0 && OBV(index-2,time) < obv && listadoPrecios[index-2]['close'] < listadoPrecios[index-1]['close']){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function OBV(obvIndex,periodo){
+        if(obvIndex == (index-1) - (periodo-1)){
+          return listadoPrecios[obvIndex]['volume'];
+        }else{
+          if(listadoPrecios[obvIndex]['close']>listadoPrecios[obvIndex-1]['close']){
+            return OBV(obvIndex-1,periodo) + listadoPrecios[obvIndex]['volume'];
+          } else if(listadoPrecios[obvIndex]['close']<listadoPrecios[obvIndex-1]['close']){
+            return OBV(obvIndex-1,periodo) - listadoPrecios[obvIndex]['volume'];
+          } else{
+            return OBV(obvIndex-1,periodo);
+          }
+        }
+      }
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
 
 
 
