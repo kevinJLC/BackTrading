@@ -99,9 +99,9 @@ const controller = {};
         nacimiento: req.params.nacimiento,
         tradingActivado: false
       });
-      console.log(usuario);
+      console.log(usuario)
       usuario.save()
-      .then(res.redirect('http://localhost:4200'))
+      .then(res.redirect('http://localhost:4200')) //
       .catch( err => {
         console.log('No pudo dar el Usuario.save() linea:84 solution en commit del 06/01/2020' + err );
         res.status(500).json({ message:  'error brutal'}); });

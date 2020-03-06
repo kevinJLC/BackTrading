@@ -2027,7 +2027,7 @@ function MACDauto(empresa,time,rendimiento){
         var P=2/27;
         var bestEMA;
         //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
-        if(emaIndex == (index-1) - 11){
+        if(emaIndex == (index-1) - 25){
           bestEMA = SMA26(emaIndex);
         }
         else{
