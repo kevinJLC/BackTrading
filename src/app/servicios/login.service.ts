@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  readonly URL_API = 'https://backtrading.com.mx/api/login';
+  readonly URL_API = '/api/login';
 
   private token: string;
   private tokenTimer: any;    // NodeJS.timer
