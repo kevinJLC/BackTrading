@@ -45,7 +45,7 @@ then(()=>{
     next();
   });
 */
-app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({origin: 'http://backtrading.com.mx'}));
 app.use(morgan('dev'));
 app.use(express.json()); //Body Parser desde express incluido para usar req.body
 app.use(express.urlencoded({extended: false}))
@@ -87,7 +87,7 @@ app.use((req,res,next)=>{
 
           console.log('Sin respaldo el ' + fechaUltimaActualizacion);
           //Respaldo de la BD
-          await request('http://localhost:3000/api/empresas', (err,res) => {
+          await request('http://backtrading.com.mx/api/empresas', (err,res) => {
             if(err){
                console.log('Respaldo fallido!!!!! ' + err )
             }else{
@@ -119,7 +119,7 @@ app.use((req,res,next)=>{
       //Respaldo de la BD
 
       async function updateEmpresas(){
-        await request('http://localhost:3000/api/empresas', (err,res) => {
+        await request('http://backtrading.com.mx/api/empresas', (err,res) => {
             if(err){
                console.log('Respaldo fallido!!!!! ' + err )
             }else{
