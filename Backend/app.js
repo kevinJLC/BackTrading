@@ -32,7 +32,7 @@ then(()=>{
 
 //Middlewares
 
- app.use((req, res, next) => {
+ /*app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
@@ -43,9 +43,9 @@ then(()=>{
       "GET, POST,PATCH, PUT, DELETE, OPTIONS"
     );
     next();
-  });
+  });*/
 
-//app.use(cors({origin: 'http://backtrading.com.mx'}));
+app.use(cors({origin: 'http://backtrading.com.mx'}));
 app.use(morgan('dev'));
 app.use(express.json()); //Body Parser desde express incluido para usar req.body
 app.use(express.urlencoded({extended: false}))
