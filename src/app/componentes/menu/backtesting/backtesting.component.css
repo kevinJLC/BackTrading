@@ -4,12 +4,29 @@ mat-card{
   top: 12%;
   left: 21%;
   right: 1%;
-
   padding-bottom: 7%;
-
+}
+.empresaGanadora{
+  position: absolute;
+  top: 10%;
+  left: 40%;
+  width: 45%;
+}
+.optimizarCuadro{
+  margin-top: 5%;
+  color: white;
+  border-width: medium;
+  border-style: solid;
+  border-color: rgba(50, 61, 87, 0.959);
+  padding: 5px;
+  background-color: black;
+}
+mat-progress-spinner{
+  position: absolute;
+  top: 36%;
+  left: 60%;
 
 }
-
 
 
 footer{
@@ -30,4 +47,9 @@ mat-form-field{
 }
 .recomendacion{
   color: rgb(2, 150, 150);
+}
+.optimizar{
+  color: white;
+  background-color: rgb(18, 27, 109);
+  right: 4px;
 }

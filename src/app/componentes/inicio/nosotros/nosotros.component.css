@@ -1,0 +1,16 @@
+mat-card{
+  position: absolute;
+  z-index: 200;
+  top:30%;
+  left:5%;
+  width: 50%;
+  background-color: white;
+}
+.traducir{
+  color: white;
+  background-color: rgb(18, 27, 109);
+
+}
+body{
+  background-color: rgb(1, 1, 73);
+}

@@ -6,6 +6,7 @@ import { Sistema} from '../../../sistema';
 import { Observable } from 'rxjs';
 import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
 import { invalid } from '@angular/compiler/src/render3/view/util';
+import { BacktestingService } from 'src/app/servicios/Backtesting/backtesting.service';
 
 @Component({
   selector: 'app-backtesting',
@@ -39,6 +40,22 @@ export class BacktestingComponent implements OnInit {
 
   MuestraCampoFechaFinalizacion = false;
 
+  empresaSimbolo: string;
+  empresaOpRealizadas: number;
+  empresaOpExitosas: number;
+  empresaOpFallidas: number;
+  empresaProbExito: number;
+  empresaUsabilidad: number;
+  empresaPromedioTiempo: number;
+  empresaPromedioPrecioMaximo: number;
+  empresaPromedioPrecioMin: number;
+  muestraResultadoBacktesting = false;
+  cargandoResultado = false;
+
+  muestraOptimizar = false;
+
+
+
 
   createFormGroup() {
     return new FormGroup({
@@ -50,7 +67,7 @@ export class BacktestingComponent implements OnInit {
     });
   }
 
-  constructor( private sistemas: SistemasService, private usermode: ModousuarioService) {
+  constructor( private sistemas: SistemasService, private usermode: ModousuarioService, private backtesting: BacktestingService) {
     this.backtestingForm = this.createFormGroup();
     sistemas.getSistemas().subscribe(res => {
       this.systems = res;
@@ -66,6 +83,7 @@ export class BacktestingComponent implements OnInit {
     //this.ngRendimiento = sistema.rendimiento;
     this.ngStoploss = sistema.stopLoss;
     this.ngRango = sistema.periodo;
+
   }
 
 
@@ -77,14 +95,161 @@ export class BacktestingComponent implements OnInit {
   }
 
   onCreate(form) {
+
+
     if (form.value.periodo < 2) {
       this.periodoInvalido = true;
     }
+
+    // no deja al usuario novato ejecutar backtesting si los campos estan incorrectos
+    if (this.modoUsuario == 'aprendiz') {
+      if(form.valid) {
+        if(form.value.rendimiento < 3){
+          if(form.value.stoploss < 1.5){
+            if(form.value.periodo > 2 && form.value.periodo < 50){
+              if(form.value.fechaInicio < form.value.fechaFinalizacion){
+                if(this.inTime){
+                  if(this.inRango){
+                    console.log("todo bien desde: " + this.modoUsuario);
+                    this.muestraResultadoBacktesting = false;
+                    this.cargandoResultado = true;
+
+                    this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res => {
+                        // tslint:disable-next-line: no-string-literal
+                      if (res['status'] === false) {
+                        // tslint:disable-next-line: no-string-literal
+                        alert(res['message']);
+                      } else {
+                        // tslint:disable-next-line: no-string-literal
+                        console.log(res['empresa']);
+                        // tslint:disable-next-line: no-string-literal
+                        this.empresaSimbolo = res['empresa']['nombre'];
+                        this.empresaOpRealizadas = res['empresa']['opRealizadas'];
+                        this.empresaOpExitosas = res['empresa']['opExitosas'];
+                        this.empresaOpFallidas = res['empresa']['opFallidas'];
+                        this.empresaProbExito = res['empresa']['probabilidadExito'];
+                        this.empresaUsabilidad = res['empresa']['usabilidad'];
+                        this.empresaPromedioTiempo = res['empresa']['promTiempoOperacion'];
+                        this.empresaPromedioPrecioMaximo = res['empresa']['promMaximoPrecio'];
+                        this.empresaPromedioPrecioMin = res['empresa']['promMinimoPrecio'];
+                        this.cargandoResultado = false;
+                        this.muestraResultadoBacktesting = true;
+
+                      }
+                    });
+                  }
+                  else
+                  {
+                    console.log("rango de operacion incorrecto");
+                    alert("Bad data, favor de corregir los valores para backtesting");
+                  }
+                }
+                else
+                {
+                  console.log("No hay precios");
+                  alert("Bad data, favor de corregir los valores para backtesting");
+                }
+              }
+              else
+              {
+                console.log("fecha de finalizacion menor");
+                alert("Bad data, favor de corregir los valores para backtesting");
+              }
+            }
+            else
+            {
+              console.log("rango de operacion muy alto o muy bajo");
+              alert("Bad data, favor de corregir los valores para backtesting");
+            }
+          }
+          else
+          {
+            console.log("stoploss alto");
+            alert("Bad data, favor de corregir los valores para backtesting");
+          }
+        }
+        else
+        {
+          console.log("rendimiento alto");
+          alert("Bad data, favor de corregir los valores para backtesting");
+        }
+      }
+      else
+      {
+        alert("formulario invalido");
+      }
+    }
+
+    if (this.modoUsuario == 'novato' || this.modoUsuario == 'pro'){
+      if(form.valid){
+        if(form.value.periodo > 2 && form.value.periodo < 50){
+          if(form.value.fechaInicio < form.value.fechaFinalizacion) {
+            if(this.inTime){
+              if(this.inRango){
+                console.log("todo bien desde: " + this.modoUsuario);
+                this.muestraResultadoBacktesting = false;
+                this.cargandoResultado = true;
+
+                this.backtesting.postBacktesting(form.value, this.selectedSystem.condicion).subscribe(res => {
+                    // tslint:disable-next-line: no-string-literal
+                  if (res['status'] === false) {
+                    // tslint:disable-next-line: no-string-literal
+                    alert(res['message']);
+                  }  else {
+                    // tslint:disable-next-line: no-string-literal
+                    console.log(res['empresa']);
+
+                      this.empresaSimbolo = res['empresa']['nombre'];
+                      this.empresaOpRealizadas = res['empresa']['opRealizadas'];
+                      this.empresaOpExitosas = res['empresa']['opExitosas'];
+                      this.empresaOpFallidas = res['empresa']['opFallidas'];
+                      this.empresaProbExito = res['empresa']['probabilidadExito'];
+                      this.empresaUsabilidad = res['empresa']['usabilidad'];
+                      this.empresaPromedioTiempo = res['empresa']['promTiempoOperacion'];
+                      this.empresaPromedioPrecioMaximo = res['empresa']['promMaximoPrecio'];
+                      this.empresaPromedioPrecioMin = res['empresa']['promMinimoPrecio'];
+                      this.cargandoResultado=false;
+                      this.muestraResultadoBacktesting = true;
+                  }
+                });
+              }
+              else
+             {
+               console.log("rango de operacion incorrecto");
+                alert("Bad data, favor de corregir los valores para backtesting");
+              }
+            }
+           else
+            {
+             console.log("No hay precios");
+             alert("Bad data, favor de corregir los valores para backtesting");
+            }
+          }
+          else
+          {
+           console.log("fecha de finalizacion menor");
+           console.log(typeof form.value.fechaInicio + ' '+ form.value.fechaInicio);
+           alert("Bad data, favor de corregir los valores para backtesting");
+          }
+        }
+        else
+        {
+          console.log("rango de operacion muy alto o muy bajo");
+          alert("Bad data, favor de corregir los valores para backtesting");
+        }
+      }
+      else{
+       alert("formulario invalido");
+      }
+    }
+
+
   }
 
   enTiempo(fecha: string, inicio: string, rango: number) {
     if (inicio.length === 0 || rango === undefined || rango === null || rango === 0 || rango < 2) {
       this.MuestraCampoFechaFinalizacion = false;
+
       return;
     } else {
        this.MuestraCampoFechaFinalizacion = true;
@@ -150,6 +315,12 @@ export class BacktestingComponent implements OnInit {
       }
     }
   }
+
+  muestraOptimizacion() {
+    this.muestraOptimizar = !this.muestraOptimizar;
+  }
+
+
 
 
   get rendimiento() {return this.backtestingForm.get('rendimiento'); }

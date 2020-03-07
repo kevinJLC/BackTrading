@@ -7,7 +7,21 @@ const UsuarioSchema=mongoose.Schema({
   correo: {type: String, required: true, unique: true},
   contraseña: {type: String, required: true},
   nacimiento: {type: Date, required: true},
-  intentos: {type: Number}
+  intentos: {type: Number},
+
+  tradingActivo: {type: Boolean, default: false},
+  capital: {type: Number},
+  capitalInicial: {type: Number},
+  rendimiento: {type: Number},
+  periodo: {type: Number},
+  stoploss: {type: Number},
+  empresa: {type: String},
+  indicador: {type: String},
+  parametro: {type: []},
+  diasOperacion: {type: Number},
+  precioObjetivo: {type: Number},
+  precioPerdida: {type: Number}
+
 });
 
 UsuarioSchema.plugin(uniqueValidator);

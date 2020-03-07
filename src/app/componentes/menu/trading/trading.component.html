@@ -1,11 +1,13 @@
 <mat-card>
-    <mat-card-title> Trading automático </mat-card-title>
+    <div *ngIf="!cambiaAccion">
+      <mat-card-title> Trading automático </mat-card-title>
     <mat-card-subtitle><h4>Encuentra un sistema rentable para tu estilo de trading</h4></mat-card-subtitle>
-    <mat-card-content>
+    <form [formGroup]="tradingForm" (submit)="onCreate(tradingForm)">
+      <mat-card-content>
         <p>
             <mat-form-field appearance="outline">
               <mat-label>Capital</mat-label>
-              <input matInput placeholder="$2,000">
+              <input matInput placeholder="$2,000" formControlName='capital' type="number">
               <mat-icon matSuffix>attach_money</mat-icon>
               <mat-hint>mayor a $300</mat-hint>
 
@@ -14,7 +16,7 @@
           <p>
               <mat-form-field appearance="outline">
                 <mat-label>Rendimiento</mat-label>
-                <input matInput type="number" placeholder="+1.5%">
+                <input matInput type="number" placeholder="+1.5%" formControlName='rendimiento' type="number">
                 <mat-icon matSuffix>multiline_chart</mat-icon>
 
               </mat-form-field>
@@ -23,18 +25,33 @@
             <p>
                 <mat-form-field appearance="outline">
                   <mat-label>Tiempo de operación</mat-label>
-                  <input matInput type="number" placeholder="15 días">
+                  <input matInput type="number" placeholder="15 días" formControlName='periodo' type="number">
                   <mat-icon matSuffix>alarm</mat-icon>
                   <mat-hint>Mayor a 1 día</mat-hint>
 
                 </mat-form-field>
               </p>
-
-
-
-
-
-                <button mat-raised-button color="primary" >Iniciar</button>
+                <button mat-raised-button color="primary" type="submit">Iniciar</button>
 
     </mat-card-content>
+    </form>
+    </div>
+
+
+    <div *ngIf="cambiaAccion">
+      <mat-card-title> Ejecutando Trading automático </mat-card-title>
+    <mat-card-subtitle><h4>Presione ELIMINAR para buscar un nuevo sistema</h4></mat-card-subtitle>
+    <mat-card-content>
+        <p>Capital:  </p>
+        <p>Capital inicial:  </p>
+        <p>Rendimiento:  </p>
+        <p>Tiempo de operación:  </p>
+        <p>Empresa:  </p>
+        <p>Indicador:  </p>
+        <p>Parámetros:  </p>
+        <button mat-button (click)='changeAction()'> Eliminar </button>
+
+    </mat-card-content>
+    </div>
+
 </mat-card>

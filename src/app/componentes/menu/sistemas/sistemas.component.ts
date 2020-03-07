@@ -29,16 +29,17 @@ export class SistemasComponent implements OnInit {
      'atr',
      'bears',
      'bulls',
-     'dmark',
+     'ema',
      'macd',
      'momentum',
      'osma',
-     'rsi',
+     'a/d',
      'mfi',
      'obv',
      'volumes',
-     'ao'
+     'marketfi'
     ];
+
   // Tabla
   dataSource;
   listaDeSistemas;
