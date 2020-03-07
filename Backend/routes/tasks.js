@@ -14,7 +14,6 @@ const trading = require('../controllers/trading.controller');
 
 router.get('/api/usuarios',login.getUsers);
 
-
 // Inicio de sesion
 router.post('/api/login', login.postUser);
 router.get('/api/login', login.getUsers);

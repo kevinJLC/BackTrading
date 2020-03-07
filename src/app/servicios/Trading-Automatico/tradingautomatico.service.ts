@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TradingautomaticoService {
-  readonly URL_API = 'http://localhost:3000/api/trading';
+  readonly URL_API = 'http://backtrading.com.mx/api/trading';
   constructor(private http: HttpClient) { }
 
   postTrading(formulario) {

@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class BacktestingService {
-  readonly URL_API = 'http://localhost:3000/api/backtesting';
+  readonly URL_API = 'http://backtrading.com.mx/api/backtesting';
 
   constructor(private http: HttpClient) { }
   postBacktesting(sistema, condicion){

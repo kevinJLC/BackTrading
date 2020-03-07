@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class RecuperacionService {
-  readonly URL_API = 'http://localhost:3000/api/recuperar';
+  readonly URL_API = 'http://backtrading.com.mx/api/recuperar';
 
   constructor(private http: HttpClient) { }
   postRecuperar(correo_recuperacion) {
