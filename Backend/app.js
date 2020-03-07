@@ -45,7 +45,7 @@ then(()=>{
     next();
   });*/
 
-app.use(cors({origin: 'http://backtrading.com.mx'}));
+app.use(cors({origin: 'http://www.backtrading.com.mx'}));
 app.use(morgan('dev'));
 app.use(express.json()); //Body Parser desde express incluido para usar req.body
 app.use(express.urlencoded({extended: false}))
