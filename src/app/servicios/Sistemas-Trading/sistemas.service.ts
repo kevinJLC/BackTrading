@@ -6,7 +6,7 @@ import { Sistema } from 'src/app/sistema';
   providedIn: 'root'
 })
 export class SistemasService {
-  readonly URL_API = 'http://backtrading.com.mx/api/sistemas';
+  readonly URL_API = '/api/sistemas';
 
   constructor(private http: HttpClient) { }
 

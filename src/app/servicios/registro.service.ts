@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class RegistroService {
-  readonly URL_API = 'http://backtrading.com.mx/api/registro';
+  readonly URL_API = '/api/registro';
 
   constructor(private http: HttpClient) { }
 
