@@ -5,12 +5,7 @@
         <mat-card-content>
 
 
-        <p>Modo Usuario</p>
-        <mat-button-toggle-group [(value)]='modoUsuario'  name="fontStyle" aria-label="Font Style" appearance="Legacy" >
-          <mat-button-toggle value="aprendiz">Aprendiz</mat-button-toggle>
-          <mat-button-toggle value="novato">Novato</mat-button-toggle>
-          <mat-button-toggle value="pro">Pro</mat-button-toggle>
-        </mat-button-toggle-group>
+
 
 
 
@@ -23,7 +18,15 @@
               </mat-select>
 
             </mat-form-field>
-          <p>
+
+            <br>
+            <mat-button-toggle-group [(value)]='modoUsuario'  name="fontStyle" aria-label="Font Style" appearance="Legacy" >
+          <mat-button-toggle value="aprendiz">Aprendiz</mat-button-toggle>
+          <mat-button-toggle value="novato">Novato</mat-button-toggle>
+          <mat-button-toggle value="pro">Pro</mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <p>
               <mat-form-field appearance="outline" >
                 <mat-label>Rendimiento</mat-label>
                 <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento' type='number'>
