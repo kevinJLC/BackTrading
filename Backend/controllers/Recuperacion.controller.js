@@ -70,7 +70,7 @@ controller.getRecuperacion= (req,res) =>{
                 console.log(response);
             }
         });
-        res.redirect('http://backtrading.com.mx');
+        res.redirect('http://backtrading.com.mx/recuperacion');
     })
     .catch(err => {
         console.log(err);

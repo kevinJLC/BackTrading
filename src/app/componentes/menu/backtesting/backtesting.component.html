@@ -3,6 +3,18 @@
         <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
       <form [formGroup]="backtestingForm" (submit)="onCreate(backtestingForm)">
         <mat-card-content>
+
+
+        <p>Modo Usuario</p>
+        <mat-button-toggle-group [(value)]='modoUsuario'  name="fontStyle" aria-label="Font Style" appearance="Legacy" >
+          <mat-button-toggle value="aprendiz">Aprendiz</mat-button-toggle>
+          <mat-button-toggle value="novato">Novato</mat-button-toggle>
+          <mat-button-toggle value="pro">Pro</mat-button-toggle>
+        </mat-button-toggle-group>
+
+
+
+
           <mat-form-field>
               <mat-label>Seleccione un sistema</mat-label>
               <mat-select [(value)]='selectedSystem' (selectionChange)='imprimeSistema(selectedSystem)' required>
@@ -15,7 +27,7 @@
               <mat-form-field appearance="outline" >
                 <mat-label>Rendimiento</mat-label>
                 <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento' type='number'>
-                <mat-icon matSuffix>attach_money</mat-icon>
+
                 <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)" class="errores">
                     Ingresa un rendimiento
                   </mat-hint>
@@ -25,8 +37,8 @@
             <p>
                 <mat-form-field appearance="outline">
                   <mat-label>StopLoss</mat-label>
-                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="1.5% no valores negativos" formControlName='stoploss' type='number'>
-                  <mat-icon matSuffix>money_off</mat-icon>
+                  <input [(ngModel)]='ngStoploss' name='stoploss'  matInput type="number" placeholder="1.5%" formControlName='stoploss' type='number'>
+
                   <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
                     <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
                   </mat-hint>

@@ -18,7 +18,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         sma = SMA(0, precios, time, parametros)
         if(precios[0]['higher']>precios[0+(time-1)]['higher'] && ((precios[0]['open']>sma && precios[0]['close']<sma)) || (precios[0]['open']<sma && precios[0]['close']>sma) || (precios[0]['open']>sma && precios[0]['close']>sma) && precios[0]['lower']<sma){
           return true;
-        }  
+        }
     break;
     case 'Average True Range':
         return ATR(0,precios,time,parametros)
@@ -257,7 +257,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         return SMA(emaIndex,periodo);
       }
       else{
-        bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (EMA(emaIndex+1,time) * (1 - P));
+        bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (ema(emaIndex+1,time) * (1 - P));
       }
       return bestEMA;
     }

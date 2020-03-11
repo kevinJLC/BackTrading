@@ -18,7 +18,9 @@ import {
   MatSelectModule,
   MatPaginatorModule,
   MatSortModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatButtonToggleModule,
+  MatButtonToggleGroup
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -47,6 +49,8 @@ import { RegistroService } from './servicios/registro.service';
 import { TokenService } from './servicios/token.service';
 import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
 import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.component';
+import { ActivacionCuentaComponent } from './componentes/inicio/activacion-cuenta/activacion-cuenta.component';
+import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nuevapassword.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +67,9 @@ import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.compon
     TradingComponent,
     RecuperarCuentaComponent,
     CambiarPasswordComponent,
-    NosotrosComponent
+    NosotrosComponent,
+    ActivacionCuentaComponent,
+    NuevapasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +96,7 @@ import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.compon
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonToggleModule
   ],
   providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]

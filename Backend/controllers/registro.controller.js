@@ -101,7 +101,11 @@ const controller = {};
       });
       console.log(usuario)
       usuario.save()
-      .then(res.redirect('http://backtrading.com.mx')) //
+      .then(
+
+        res.redirect('http://backtrading.com.mx/activacion')
+
+        ) //
       .catch( err => {
         console.log('No pudo dar el Usuario.save() linea:84 solution en commit del 06/01/2020' + err );
         res.status(500).json({ message:  'error brutal'}); });

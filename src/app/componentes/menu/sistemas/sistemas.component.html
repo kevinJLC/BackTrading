@@ -7,7 +7,7 @@
         <mat-form-field appearance="outline">
           <mat-label *ngIf="!editando">Nombre</mat-label>
           <mat-label *ngIf="editando" style="color:royalblue"><strong>{{selectedSystem.nombre}}</strong></mat-label>
-          <input matInput [(ngModel)]='ngNombre' formControlName='nombre' placeholder="My systems">
+          <input matInput [(ngModel)]='ngNombre' formControlName='nombre' placeholder="Mi sistema">
           <mat-icon matSuffix>text_format</mat-icon>
           <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
             <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
@@ -23,7 +23,7 @@
             <mat-label *ngIf="!editando">Rendimiento</mat-label>
             <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.rendimiento}}</strong></i></mat-label>
             <input matInput [(ngModel)]='ngRendimiento' formControlName='rendimiento' type="number" placeholder="2.3%">
-          <mat-icon matSuffix>attach_money</mat-icon>
+
           <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)">
             <mat-hint class="errores" *ngIf="rendimiento.errors.required"> Ingresa un rendimiento</mat-hint>
           </mat-hint>
@@ -33,8 +33,8 @@
           <mat-form-field appearance="outline">
               <mat-label *ngIf="!editando">StopLoss</mat-label>
               <mat-label *ngIf="editando" style="color:royalblue"><i><strong>{{selectedSystem.stopLoss}}</strong></i></mat-label>
-              <input matInput [(ngModel)]='ngStoploss' formControlName='stoploss' type="number" placeholder="-1.5%">
-            <mat-icon matSuffix>money_off</mat-icon>
+              <input matInput [(ngModel)]='ngStoploss' formControlName='stoploss' type="number" placeholder="1.5%">
+
             <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
               <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss</mat-hint>
             </mat-hint>

@@ -14,10 +14,16 @@ import { AuthenticatedGuardService} from './servicios/authenticated-guard.servic
 import { RecuperarCuentaComponent } from './componentes/inicio/recuperar-cuenta/recuperar-cuenta.component';
 import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
 import { NosotrosComponent} from './componentes/inicio/nosotros/nosotros.component';
+import { ActivacionCuentaComponent } from './componentes/inicio/activacion-cuenta/activacion-cuenta.component';
+import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nuevapassword.component';
 
 
 const routes: Routes = [
   {path: '', component: InicioComponent, canActivate: [NoAuthenticatedGuardService]},
+
+  {path: 'activacion', component: ActivacionCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
+
+  {path: 'contraseña', component: NuevapasswordComponent, canActivate: [NoAuthenticatedGuardService]},
 
   {path: 'recuperacion', component: RecuperarCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
 
