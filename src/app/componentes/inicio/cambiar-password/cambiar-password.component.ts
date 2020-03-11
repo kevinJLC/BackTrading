@@ -15,12 +15,14 @@ export class CambiarPasswordComponent implements OnInit {
   icon: string;
   actualizado = false;
   verificado = true;
+  confirmacion = "";
 
 
   createFormGroup() {
     return new FormGroup({
       actualPsw: new FormControl('', [Validators.required]),
       newPsw: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]),
+      confirmPsw: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)])
     });
   }
 
@@ -35,8 +37,9 @@ export class CambiarPasswordComponent implements OnInit {
   }
 
   cambiaPsw(form) {
-    if(!form.valid){
+    if(!form.valid || form.value.confirmPsw === "" || form.value.confirmPsw !== form.value.newPsw){
       alert("Campos invalidos");
+      console.log(form.value.newPsw);
       return;
     }
     else{
@@ -69,5 +72,6 @@ cancelar(){
 
   get actualPsw()  {return this.pswForm.get('actualPsw'); }
   get newPsw() { return this.pswForm.get('newPsw'); }
+  get confirmPsw() { return this.pswForm.get('confirmPsw'); }
 
 }
