@@ -43,7 +43,7 @@ controller.updateSistema = async(req, res) => {
     Sistema.findByIdAndUpdate(req.body.id,{
     nombre: req.body.sistema.nombre,
     rendimiento: req.body.sistema.rendimiento,
-    stopLoss: req.body.sistema.stoploss,
+    stopLoss: -1 * Math.abs(req.body.sistema.stoploss),
     periodo: req.body.sistema.rango,
     condicion: req.body.condicion
     })

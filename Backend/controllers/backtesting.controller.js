@@ -645,7 +645,7 @@ controller.postBacktesting = (req,res) =>{
                     boolOperacionExitosa = false;
                     opExitosas++;
 
-                 } else if( value['lower'] <= (openInicioOperacion * (1-(req.body.sistema.stoploss/100))) ){
+                 } else if( value['lower'] <= (openInicioOperacion * (1-((-1*Math.abs(req.body.sistema.stoploss))/100))) ){
 
                     boolOperacionExitosa = false;
                     opFallidas++;
