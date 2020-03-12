@@ -10,6 +10,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         if(precios[0]['higher']>precios[0+(time-1)]['higher']&& ((precios[0]['open']>ama && precios[0]['close']<ama) || (precios[0]['open']<ama && precios[0]['close']>ama) || (precios[0]['open']>ama && precios[0]['close']>ama && precios[0]['lower']<ama) || (precios[0]['open']>ama && precios[0]['close']>ama && precios[0]['lower']>ama)) ){
           return true
         }
+
     break;
     case 'Envelopes':
         return ENVELOPES(0,precios,time,parametros)
@@ -24,7 +25,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         return ATR(0,precios,time,parametros)
     break;
     case 'Bears':
-        return BEARS(0,preciosEmpresa,time,parametros)
+        return BEARS(0,precios,time,parametros)
     break;
     case 'Bulls':
         return BULLS(0,precios,time,parametros)
@@ -33,6 +34,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         return EMA(0,precios,time,parametros)
     break;
     case 'Moving Average Convergence Divergence':
+
         return MACD(0,precios,time,parametros)
     break;
     case 'Momentum':
@@ -95,7 +97,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         upp = upperBand(envelopesIndex);
         low = lowerBand(envelopesIndex);
         ssmmaa = SMA(envelopesIndex,time);
-        if(LOW > lowerBand(envelopesIndex + (time-1)) && (preciosEmpresa[envelopesIndex]['close'] < ssmmaa && preciosEmpresa[envelopesIndex]['close'] >= low || (preciosEmpresa[envelopesIndex]['close']) < low)){
+        if(low > lowerBand(envelopesIndex + (time-1)) && (preciosEmpresa[envelopesIndex]['close'] < ssmmaa && preciosEmpresa[envelopesIndex]['close'] >= low || (preciosEmpresa[envelopesIndex]['close']) < low)){
           return true
         }
         return false
@@ -136,9 +138,10 @@ controller.indicador = (indicador,precios, time, parametros) =>{
     return insideSMA;
   }
 
+
   function ATR(atrIndex,preciosEmpresa,time,parametros){
 
-    if(preciosEmpresa[atrIndex+time]['close']<preciosEmpresa[atrIndex-1]['close'] && (preciosEmpresa[atrIndex-1]['close']+atr(0,time)/time) > 0 ){
+    if(preciosEmpresa[atrIndex+time]['close']<preciosEmpresa[atrIndex+1]['close'] && (preciosEmpresa[atrIndex+1]['close']+atr(0,time)/time) > 0 ){
       return true
     }
     return false
@@ -146,8 +149,8 @@ controller.indicador = (indicador,precios, time, parametros) =>{
     function atr(atrIndex, periodo){
       var bestATR;
       var dif1 = preciosEmpresa[atrIndex]['higher'] - preciosEmpresa[atrIndex]['lower'];
-      var dif2 = preciosEmpresa[atrIndex-1]['close'] - preciosEmpresa[atrIndex]['higher'];
-      var dif3 = preciosEmpresa[atrIndex-1]['close'] - preciosEmpresa[atrIndex]['lower'];
+      var dif2 = preciosEmpresa[atrIndex+1]['close'] - preciosEmpresa[atrIndex]['higher'];
+      var dif3 = preciosEmpresa[atrIndex+1]['close'] - preciosEmpresa[atrIndex]['lower'];
       if(dif1 > Math.abs(dif2)){
         if( dif1 > Math.abs(dif3)){
           bestATR = dif1;
@@ -172,26 +175,26 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   }
 
   function BEARS(bearsIndex,listadoPrecios,time,parametros){
-    bears = bears(bearsIndex, time);
-            if(bears(bearsIndex + time, time)<0 && bears > 0){
+    bears1 = bears(bearsIndex, time);
+            if(bears(bearsIndex + time, time)<0 && bears1 > 0){
               return true
             }
             return false
 
     function bears(bearsIndex, periodo){
-      var insideBears = listadoPrecios[bearsIndex]['lower'] - bearsEMA(bearsIndex, periodo);
+      var insideBears = listadoPrecios[bearsIndex]['lower'] - bearsEMA(bearsIndex, periodo, bearsIndex);
       return insideBears;
     }
 
-    function bearsEMA(emaIndex, periodoEma){
+    function bearsEMA(emaIndex, periodoEma, indexInicial){
       var P = 2/(periodoEma + 1 );
       var bestEMA;
       //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
-      if(emaIndex == 0 + (periodoEma - 1)){
+      if(emaIndex == indexInicial + (periodoEma - 1)){
+
         return bearsSMA(emaIndex, periodoEma);
-      }
-      else{
-        ema = bearsEMA(emaIndex+1, periodoEma);
+      }else{
+        ema = bearsEMA(emaIndex+1, periodoEma, indexInicial);
         bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (ema * (1 - P));
       }
       return bestEMA;
@@ -199,7 +202,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
 
     function bearsSMA(smaIndex, periodoSma){
       var insideSMA = 0;
-      for (let i = smaIndex; i <= smaIndex + (smaIndex-1) ; i++){
+      for (let i = smaIndex; i <= smaIndex + (periodoSma-1) ; i++){
         insideSMA = insideSMA + listadoPrecios[i]['close'];
       }
       insideSMA = insideSMA/periodoSma;
@@ -208,26 +211,26 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   }
 
   function BULLS(bullsIndex,listadoPrecios,time,parametros){
-    bulls = bulls(bullsIndex, time);
-            if(bulls(bullsIndex+time, time)<0 && bulls > 0){
+    bulls1 = bulls(bullsIndex, time);
+            if(bulls(bullsIndex+time, time)<0 && bulls1 > 0){
               return true
             }
             return false
 
     function bulls(bullsIndex, periodo){
-      var insideBulls = listadoPrecios[bullsIndex]['higher'] - bullsEMA(bullsIndex, periodo);
+      var insideBulls = listadoPrecios[bullsIndex]['higher'] - bullsEMA(bullsIndex, periodo, bullsIndex);
       return insideBulls;
     }
 
-    function bullsEMA(emaIndex, periodoEmaBulls){
+    function bullsEMA(emaIndex, periodoEmaBulls, indexInicial){
       var P = 2/(periodoEmaBulls + 1 );
       var bestEMA;
       //EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
-      if(emaIndex == 0 + (periodoEmaBulls - 1)){
+      if(emaIndex == indexInicial + (periodoEmaBulls - 1)){
         return bullsSMA(emaIndex, periodoEmaBulls);
       }
       else{
-        emaBulls = bullsEMA(emaIndex+1, periodoEmaBulls);
+        emaBulls = bullsEMA(emaIndex+1, periodoEmaBulls, indexInicial);
         bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (emaBulls * (1 - P));
       }
       return bestEMA;
@@ -257,7 +260,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
         return SMA(emaIndex,periodo);
       }
       else{
-        bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (EMA(emaIndex+1,time) * (1 - P));
+        bestEMA = (listadoPrecios[emaIndex]['close'] * P) + (ema(emaIndex+1,time) * (1 - P));
       }
       return bestEMA;
     }
@@ -275,7 +278,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   function MACD(macdIndex,listadoPrecios,time,parametros){
 
     macd = EMA12(macdIndex) - EMA26(macdIndex);
-            if(listadoPrecios[index]['close']>listadoPrecios[macdIndex+time]['close'] && macd>0 ){
+            if(listadoPrecios[macdIndex]['close']>listadoPrecios[macdIndex+time]['close'] && macd>0 ){
               return true
             }
             return false
@@ -325,7 +328,7 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   }
 
   function MOMENTUM(momentumIndex,listadoPrecios,time,parametros){
-    momentum = MOMENTUM(momentumIndex)
+    momentum = momentum(momentumIndex)
             if(listadoPrecios[momentumIndex]['close']>listadoPrecios[momentumIndex + time]['close'] && momentum>0 ){
               return true
             }
@@ -414,8 +417,8 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   }
 
   function MFI(mfiIndex,listadoPrecios,time,parametros){
-    mfi = mfi(mfiIndex,time);
-            if(mfi(mfiIndex+time, time) < mfi && listadoPrecios[index-time]['close'] < listadoPrecios[index-1]['close'] && mfi<80){
+    mfi1 = mfi(mfiIndex,time);
+            if(mfi(mfiIndex+time, time) < mfi1 && listadoPrecios[mfiIndex+time]['close'] < listadoPrecios[mfiIndex]['close'] && mfi1<80){
               return true
             }
             return false
