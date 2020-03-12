@@ -18,8 +18,8 @@ controller.postSistema = async(req,res) => {
   const sistema = new Sistema({
   nombre: req.body.sistema.nombre,
   rendimiento: req.body.sistema.rendimiento,
-  stopLoss: req.body.sistema.stoploss,
-  periodo: -1 * Math.abs(req.body.sistema.rango),
+  stopLoss: -1 * Math.abs(req.body.sistema.stoploss),
+  periodo: req.body.sistema.rango,
   condicion: req.body.condicion,
   creador: req.userData.id
   });
