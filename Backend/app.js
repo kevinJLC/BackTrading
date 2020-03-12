@@ -91,7 +91,7 @@ app.use((req,res,next)=>{
             if(err){
                console.log('Respaldo fallido!!!!! ' + err )
             }else{
-               console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
+               console.log('Respaldo exitoso: ' + fechaUltimaActualizacion);
             }
 
 
@@ -209,7 +209,7 @@ async function TA() {
 
               await Usuarios.findByIdAndUpdate(value['_id'],{
                 diasOperacion: 0,
-                capital: value['capital'] * (1+(value['stoploss']/100)),
+                capital: value['capital'] * (1+(value['stoploss'])),
                 precioObjetivo: 0,
                 precioPerdida: 0
               })
