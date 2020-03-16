@@ -94,7 +94,6 @@ app.use((req,res,next)=>{
                console.log('Respaldo exitoso: ' + fechaUltimaActualizacion);
             }
 
-
           });
 
           //update fecha y status
