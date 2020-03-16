@@ -84,7 +84,6 @@ app.use((req,res,next)=>{
       // verifica que sea la primera ejecución de esta función en el dia
       console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
       if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
-
           console.log('Sin respaldo el ' + fechaUltimaActualizacion);
           //Respaldo de la BD
           await request('http://backtrading.com.mx/api/empresas', (err,res) => {
