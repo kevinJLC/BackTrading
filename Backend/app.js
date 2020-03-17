@@ -64,9 +64,10 @@ app.use((req,res,next)=>{
 (async function respaldo(){
   // get hoy y mañana date
   const hoy = new Date();
-  console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
   var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
   mañana = new Date(mañana.getTime()+60000);
+
+  console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
   console.log(mañana.getDate() +'/'+ mañana.getMonth() + '/' + mañana.getFullYear() + ' a las : '+ mañana.getHours()+':'+mañana.getMinutes()+':'+mañana.getSeconds());
 
   // verifica que sea sábado o domingo
@@ -108,33 +109,8 @@ app.use((req,res,next)=>{
 
       }
 
-
-
-
       console.log(mañana.getTime()-hoy.getTime());
-      setTimeout(updateEmpresas, mañana.getTime()-hoy.getTime());
-
-      //Respaldo de la BD
-
-      async function updateEmpresas(){
-        await request('http://backtrading.com.mx/api/empresas', (err,res) => {
-            if(err){
-               console.log('Respaldo fallido!!!!! ' + err )
-            }else{
-              console.log('Respaldo exitoso: ' + result.fechaDeActualizacion);
-            }
-
-          });
-
-        let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
-        await ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
-          .then(() => {
-            console.log('Fecha de actualizacion updateada ' + fechaHoy);
-          })
-          .catch(err => { console.log('Fecha de actualizacion NO updateada ' + fechaHoy)});
-
-        respaldo();
-      }
+      setTimeout(respaldo, mañana.getTime()-hoy.getTime());
 
     });
   }
@@ -216,9 +192,6 @@ async function TA() {
 
           }
         }
-
-
-
 
         //Es premium
       }

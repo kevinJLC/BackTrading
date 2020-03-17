@@ -385,7 +385,7 @@ Empresa.deleteMany({})
     console.log('Request fallida: ' + simbolos[7]);
     respaldoForzado(7);
   }); */
-  
+
 
   //  AXP
   request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[8]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
@@ -1951,7 +1951,6 @@ Empresa.deleteMany({})
 
 }).then(res.json({message: 'Respaldo en proceso'}))
 .catch(err => {console.log(err)});
-
 
 function respaldoForzado(posision){
   request('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+simbolos[posision]+'&outputsize=full&apikey=YAWX1E3QZ0LONC2T', {json: true})
