@@ -53,10 +53,10 @@ controller.indicador = (indicador,precios, time, parametros) =>{
       return OBV(0,precios,time,parametros)
     break;
     case 'Volumes':
-
+      return VOLUMES(0,precios,time,parametros)
     break;
     case 'Market Facilitation Index':
-
+      return MARKETFI(0,precios,time,parametros)
     break;
 
 
@@ -137,7 +137,6 @@ controller.indicador = (indicador,precios, time, parametros) =>{
     insideSMA = insideSMA/time;
     return insideSMA;
   }
-
 
   function ATR(atrIndex,preciosEmpresa,time,parametros){
 
@@ -448,8 +447,8 @@ controller.indicador = (indicador,precios, time, parametros) =>{
   }
 
   function OBV(obvIndex,listadoPrecios,time,parametros){
-    obv = obv(obvIndex,time);
-            if(obv > 0 && obv(obvIndex+time,time) < obv && listadoPrecios[obvIndex+time]['close'] < listadoPrecios[obvIndex]['close']){
+    obv1 = obv(obvIndex,time);
+            if(obv1 < 0/* && obv(obvIndex+time,time) < obv1 && listadoPrecios[obvIndex+time]['close'] < listadoPrecios[obvIndex]['close']*/){
               return true
             }
             return false
@@ -467,6 +466,31 @@ controller.indicador = (indicador,precios, time, parametros) =>{
       }
     }
   }
+
+  function VOLUMES(volumesIndex,listadoPrecios,time,parametros){
+            if(listadoPrecios[volumesIndex]['volume']>listadoPrecios[volumesIndex+1]['volume']){
+              return true
+            }
+            return false
+
+
+
+  }
+
+  function MARKETFI(marketfiIndex,listadoPrecios,time,parametros){
+    if(MarketFI(marketfiIndex+1)>0 && MarketFI(marketfiIndex) > MarketFI(marketfiIndex+time)){
+      return true
+    }
+    return false
+
+    function MarketFI(mfiIndex){
+      return (listadoPrecios[mfiIndex]['higher'] - listadoPrecios[mfiIndex]['lower']) / listadoPrecios[mfiIndex]['volume'];
+    }
+
+}
+
+
+
 
 
 

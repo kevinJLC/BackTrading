@@ -1155,11 +1155,105 @@ controller.backtestingTA = (money, time, rendimiento,userId) => {
   }
   else if(money >= 1001 && time>=31 && time <=90){ //Perfil 9
     console.log('Perfil 9');
+        /////////////////////////////////////////////////////////////////////////////////
+        Empresas.find().then(todasLasEmpresas => {
+
+          contadorIndex = 0;
+          empresaSeleccionada=0;
+          empresaOpExitosas = 0;
+          empresaAnterior = 0;
+
+          todasLasEmpresas.forEach(function (value, index){
+
+            // Selecciona empresa
+            if(value.precios[0].close < (money*0.56)){
+              exitosasP9(value, time, rendimiento);
+              if(empresaAnterior==0){
+                empresaSeleccionada = value;
+                empresaAnterior = value;
+              }else{
+                if(exitosasP9(value,time,rendimiento) > exitosasP9(empresaAnterior,time,rendimiento)){
+                  empresaSeleccionada = value;
+                  empresaOpExitosas = exitosasP9(value,time,rendimiento);
+                  empresaAnterior = value;
+                } else if(exitosasP9(value,time,rendimiento) == exitosasP9(empresaAnterior,time,rendimiento)){
+                  if(value.precios[0]['close'] < empresaAnterior.precios[0]['close']){
+                    empresaSeleccionada = value;
+                    empresaOpExitosas = exitosasP9(value,time,rendimiento);
+                    empresaAnterior = value;
+                  } else {
+                    empresaSeleccionada = empresaAnterior;
+                    empresaOpExitosas = exitosasP9(empresaAnterior,time,rendimiento);
+                    empresaAnterior=value;
+                  }
+                }
+              }
+            }
+          });
+          console.log(empresaSeleccionada['simbolo'] + ' ' + empresaOpExitosas);
+          stoploss = stoploss3(rendimiento);
+          sistema = sistemaP9(empresaSeleccionada,time,rendimiento);
+          //console.log(sistema['predicExitosas'])
+          guardaSistema(stoploss, empresaSeleccionada['simbolo'],sistema['indicador'],sistema['parametros'],userId);
+
+        }).catch(err => {
+        console.log(err);
+        })
+        /////////////////////////////////////////////////////////////////////////////////
   }
 }
 
+controller.calcularPrecioSoporte = (listadoPrecios,periodo) => {
+  auxLow = listadoPrecios[0]['lower'];
+  for(let i = 0; i<periodo;i++){
+    if(auxLow>listadoPrecios[i+1]['lower'])
+    auxLow=listadoPrecios[i+1]['lower']
+  }
+  return auxLow
+}
+
+
 function exitosas(empresa, time, rendimiento){
   listadoPrecios =  empresa['precios'];
+  listadoPrecios.reverse();
+  opExitosas = 0;
+  contadorDias = 0;
+  enOperacion = true;
+  primerPrecio = 0;
+  stop=false;
+
+  listadoPrecios.forEach(function (value,index){
+    contadorDias++;
+    if(contadorDias > time){contadorDias = 1; stop=false;}
+    if(contadorDias == 1){
+      if(listadoPrecios[index+(time-1)]!==undefined){
+        primerPrecio = value['open'];
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+        }
+      }
+      else {
+        enOperacion = false;
+        return;
+      }
+    }
+    else{
+      if(enOperacion==true){
+        if(value['higher'] > primerPrecio * (1+(rendimiento/100)) && stop!=true){
+          opExitosas++;
+          stop=true;
+        }
+      }
+    }
+
+
+  });
+
+  return opExitosas;
+}
+function exitosasP9(empresa, time, rendimiento){
+  listadoPrecios =  empresa['precios'].slice(0,501);
   listadoPrecios.reverse();
   opExitosas = 0;
   contadorDias = 0;
@@ -1440,6 +1534,38 @@ function sistemaP8(empresa,time,rendimiento){
     ad = ADauto(empresa,time,rendimiento),
     mfi = MFIauto(empresa,time,rendimiento),
     obv = OBVauto(empresa,time,rendimiento)
+  ]
+
+  contExitosas = sistema[0]['predicExitosas']
+  sistemaSeleccionado = sistema[0];
+  sistema.forEach(function(indicador,index){
+    console.log(indicador['predicExitosas'])
+    if(index > 0 && indicador['predicExitosas'] > contExitosas){
+      sistemaSeleccionado=indicador;
+      contExitosas = indicador['predicExitosas']
+    }
+  })
+
+  console.log('ganadora: ' + sistemaSeleccionado['predicExitosas'])
+  return sistemaSeleccionado;
+}
+function sistemaP9(empresa,time,rendimiento){
+  sistema = [
+    ama= AMAauto(empresa,time,rendimiento),
+    envelopes= ENVELOPESauto(empresa,time,rendimiento),
+    sma= SMAauto(empresa,time,rendimiento),
+    atr= ATRauto(empresa,time,rendimiento),
+    bears = BEARSauto(empresa,time,rendimiento),
+    bulls = BULLSauto(empresa,time,rendimiento),
+    ema = EMAauto(empresa,time,rendimiento),
+    macd = MACDauto(empresa,time,rendimiento),
+    momentum = MOMENTUMauto(empresa,time,rendimiento),
+    osma = OSMAauto(empresa,time,rendimiento),
+    ad = ADauto(empresa,time,rendimiento),
+    mfi = MFIauto(empresa,time,rendimiento),
+    obv = OBVauto(empresa,time,rendimiento),
+    volumes = VOLUMESauto(empresa,time,rendimiento),
+    marketfi = MARKETFIauto(empresa,time,rendimiento)
   ]
 
   contExitosas = sistema[0]['predicExitosas']
@@ -2364,8 +2490,95 @@ function OBVauto(empresa,time,rendimiento){
     return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
 }
 
+function VOLUMESauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Volumes';
 
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
 
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;enOperacion= false}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+
+            if(VOLUMES(index)){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function VOLUMES(volumesIndex){
+        if(listadoPrecios[volumesIndex]['volume']>preciosEmpresa[volumesIndex-1]['volume']){
+          return true;
+        }else{
+          return false;
+        }
+      }
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
+
+function MARKETFIauto(empresa,time,rendimiento){
+  Exitosas = 0;
+  parametro = {periodo: time};
+  indicador = 'Market Facilitation Index';
+
+  listadoPrecios = empresa['precios'];
+  listadoPrecios.reverse();
+  contadorDias = 0;
+  enOperacion = false;
+  primerPrecio = 0;
+  precioObjetivo=0;
+  predicExitosas = 0;
+
+  listadoPrecios.forEach(function (value,index)
+    {
+      contadorDias++;
+      if(contadorDias > time){contadorDias = 1;enOperacion= false}
+      if(contadorDias == 1){
+        if(listadoPrecios[index+(time-1)] !== undefined){
+          if(listadoPrecios[(index-1)-(time+time)] !== undefined){
+
+            if(MarketFI(index-1)>0 && MarketFI(index-1) > MarketFI(index-time)){
+              enOperacion = true;
+              primerPrecio = value['open'];
+              precioObjetivo = primerPrecio * (1 + (rendimiento/100));
+            }
+          }
+        }
+      }
+      if(enOperacion && value['higher'] >= precioObjetivo){
+        Exitosas++;
+        enOperacion= false;
+      }
+
+      function MarketFI(mfiIndex){
+        return (listadoPrecios[mfiIndex]['higher'] - listadoPrecios[mfiIndex]['lower']) / listadoPrecios[mfiIndex]['volume'];
+      }
+    });
+
+    indicador = indicador + '| periodo:'+parametro['periodo'];
+    return {predicExitosas: Exitosas, indicador: indicador, parametros: [parametro['periodo']]};
+}
 
 
 function guardaSistema(stoploss, empresa, indicador, parametro,userId ){

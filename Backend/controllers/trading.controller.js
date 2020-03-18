@@ -20,7 +20,8 @@ controller.postTrading = (req,res) => {
     rendimiento: req.body.rendimiento,
     periodo: req.body.periodo,
     precioObjetivo: 0,
-    precioPerdida: 0
+    precioPerdida: 0,
+    capitalEnUso: 0.56
   }).then(res => {
 
   })

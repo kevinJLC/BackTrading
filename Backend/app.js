@@ -139,11 +139,165 @@ async function TA() {
   if(hoy.getDay() > 0 && hoy.getDay() < 6){
     const usuarios = await Usuarios.find();
     usuarios.forEach(async function(value, index){
-      if(value['tradingActivo'] && value['capital']>=value['capitalInicial']){
+
+      if(value['tradingActivo'] && value['capital']>=value['capitalInicial']/4){
       empresa = await Empresa.findOne({simbolo: value['empresa']})
 
 
-        //NO es premium
+
+        //Es P9
+        if(value['capitalInicial']>=1001 && value['periodo']>=31){
+
+
+
+
+          if(value['diasOperacion'] == 0){
+            if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],value['parametro'] ) && (empresa['precios'][0]['open'] * (1+value['stoploss']))>= backtesting.calcularPrecioSoporte(empresa['precios'],value['periodo']) ){
+              await Usuarios.findByIdAndUpdate(value['_id'],{
+                diasOperacion: value['diasOperacion']+1,
+                precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
+                precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']))
+              })
+            }
+          }
+          else{
+
+            if(value['modoFicticio']){
+                    //Este es el de la operación fictica
+                    if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
+
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        diasOperacion: 0,
+                        modoFicticio: false,
+                        precioObjetivo: 0,
+                        precioPerdida: 0
+                      })
+                    }else{
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        diasOperacion: value['diasOperacion']+1
+                      })
+                      if(value['diasOperacion']+1 > value['periodo'] || empresa['precios'][0]['lower']<=value['precioPerdida']){
+
+                        await Usuarios.findByIdAndUpdate(value['_id'],{
+                          diasOperacion: 0,
+                          modoFicticio: true,
+                          precioObjetivo: 0,
+                          precioPerdida: 0
+                        })
+                      }
+
+
+                    }
+            }else{
+                    if(value['opEnCurso']==0){
+                      if(value['opUnoCapital']<=value['capital']){
+                        //aumenta un 2% hasta 90% máximo
+                        if(value['capitalEnUso'] < 0.90){
+                          await Usuarios.findByIdAndUpdate(value['_id'],{
+                            capitalEnUso: capitalEnUso+0.02
+                          })
+                        }
+                      }else{
+                        //disminuye un 2% hasta 30% mínimo
+                        if(value['capitalEnUso'] > 0.30){
+                          await Usuarios.findByIdAndUpdate(value['_id'],{
+                            capitalEnUso: capitalEnUso-0.02
+                          })
+                        }
+                      }
+
+
+
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        opUnoCapital: value['capital']
+                      })
+
+                    }
+
+                    //Este sí actualiza capital
+                    if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
+
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        diasOperacion: 0,
+                        opEnCurso: opEnCurso+1,
+                        capital: (value['capital']*value['capitalEnUso'] )* (1+(value['rendimiento']/100)),
+                        precioObjetivo: 0,
+                        precioPerdida: 0
+                      })
+                    }else{
+
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        diasOperacion: value['diasOperacion']+1
+                      })
+                      if(value['diasOperacion']+1 > value['periodo'] || empresa['precios'][0]['lower']<=value['precioPerdida']){
+
+                        await Usuarios.findByIdAndUpdate(value['_id'],{
+                          diasOperacion: 0,
+                          opEnCurso: opEnCurso+1,
+                          capital: (value['capital']*value['capitalEnUso'] ) * (1+(value['stoploss'])),
+                          precioObjetivo: 0,
+                          precioPerdida: 0
+                        })
+                      }
+
+
+                    }
+
+                    //Si ya hizo las 20 operaciones
+                    if(value['opEnCurso']+1>20){
+                      await Usuarios.findByIdAndUpdate(value['_id'],{
+                        modoFicticio: true,
+                        opEnCurso: 0
+                      })
+
+                    }
+
+            }
+          }
+
+        }
+        else{
+
+          if(value['diasOperacion'] == 0){
+            if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],value['parametro'] )){
+              await Usuarios.findByIdAndUpdate(value['_id'],{
+                diasOperacion: value['diasOperacion']+1,
+                precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
+                precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']))
+              })
+            }
+
+
+          } else{
+            if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
+
+              await Usuarios.findByIdAndUpdate(value['_id'],{
+                diasOperacion: 0,
+                capital: value['capital'] * (1+(value['rendimiento']/100)),
+                precioObjetivo: 0,
+                precioPerdida: 0
+              })
+            }else{
+
+              await Usuarios.findByIdAndUpdate(value['_id'],{
+                diasOperacion: value['diasOperacion']+1
+              })
+              if(value['diasOperacion']+1 > value['periodo'] || empresa['precios'][0]['lower']<=value['precioPerdida']){
+
+                await Usuarios.findByIdAndUpdate(value['_id'],{
+                  diasOperacion: 0,
+                  capital: value['capital'] * (1+(value['stoploss'])),
+                  precioObjetivo: 0,
+                  precioPerdida: 0
+                })
+              }
+
+
+            }
+          }
+
+
+        }
         // Si diasOperacion == 0
         // TRUE:
             //Si indicador == true
@@ -155,43 +309,7 @@ async function TA() {
                             //TRUE: recalcula capital, diasOperacion = 0
                             //FALSE:
 
-        if(value['diasOperacion'] == 0){
-          if(trading.indicador(value['indicador'],empresa['precios'],value['periodo'],value['parametro'] )){
-            await Usuarios.findByIdAndUpdate(value['_id'],{
-              diasOperacion: value['diasOperacion']+1,
-              precioObjetivo: empresa['precios'][0]['open']*(1 + (value['rendimiento']/100) ),
-              precioPerdida: empresa['precios'][0]['open']*(1 + (value['stoploss']))
-            })
-          }
 
-
-        } else{
-          if(empresa['precios'][0]['higher'] >= value['precioObjetivo']){
-
-            await Usuarios.findByIdAndUpdate(value['_id'],{
-              diasOperacion: 0,
-              capital: value['capital'] * (1+(value['rendimiento']/100)),
-              precioObjetivo: 0,
-              precioPerdida: 0
-            })
-          }else{
-
-            await Usuarios.findByIdAndUpdate(value['_id'],{
-              diasOperacion: value['diasOperacion']+1
-            })
-            if(value['diasOperacion']+1 > value['periodo'] || empresa['precios'][0]['lower']<=value['precioPerdida']){
-
-              await Usuarios.findByIdAndUpdate(value['_id'],{
-                diasOperacion: 0,
-                capital: value['capital'] * (1+(value['stoploss'])),
-                precioObjetivo: 0,
-                precioPerdida: 0
-              })
-            }
-
-
-          }
-        }
 
         //Es premium
       }

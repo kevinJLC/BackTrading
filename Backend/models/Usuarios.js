@@ -20,7 +20,12 @@ const UsuarioSchema=mongoose.Schema({
   parametro: {type: []},
   diasOperacion: {type: Number},
   precioObjetivo: {type: Number},
-  precioPerdida: {type: Number}
+  precioPerdida: {type: Number},
+
+  modoFicticio: {type: Boolean, default: true},
+  opEnCurso: {type: Number,default: 0},
+  opUnoCapital: {type: Number},
+  capitalEnUso: {type: Number}
 
 });
 
