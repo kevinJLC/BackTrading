@@ -60,14 +60,18 @@ export class TradingComponent implements OnInit {
     this.trading.stopTrading().subscribe(res => {
       console.log(res);
       this.cambiaAccion = !this.cambiaAccion;
-      this.cambiaAccion = 0;
-      this.statusCapital = 0;
-      this.statusCapitalInicial = 0;
-      this.statusRendimiento = 0;
-      this.statusPeriodo = 0;
-      this.statusEmpresa = 0;
-      this.statusIndicador = 0;
     });
+
+    if (this.cambiaAccion === true) {
+      this.trading.tradingStatus().subscribe(res => {
+        this.statusCapital = res['capital'];
+        this.statusCapitalInicial = res['capitalInicial'];
+        this.statusRendimiento = res['rendimiento'];
+        this.statusPeriodo = res['periodo'];
+        this.statusEmpresa = res['empresa'];
+        this.statusIndicador = res['indicador'];
+      });
+    }
 
   }
 
