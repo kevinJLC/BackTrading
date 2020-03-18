@@ -11,6 +11,15 @@ import { TradingautomaticoService } from 'src/app/servicios/Trading-Automatico/t
 export class TradingComponent implements OnInit {
   tradingForm: FormGroup;
   cambiaAccion;
+  // Variables
+  statusCapital;
+  statusCapitalInicial;
+  statusRendimiento;
+  statusPeriodo;
+  statusEmpresa;
+  statusIndicador;
+
+
   createFormGroup() {
     return new FormGroup({
       capital: new FormControl('', [Validators.required]),
@@ -23,6 +32,12 @@ export class TradingComponent implements OnInit {
     trading.tradingStatus().subscribe(res => {
       console.log(res['tradingActivo']);
       this.cambiaAccion = res['tradingActivo'];
+      this.statusCapital = res['capital'];
+      this.statusCapitalInicial = res['capitalInicial'];
+      this.statusRendimiento = res['rendimiento'];
+      this.statusPeriodo = res['periodo'];
+      this.statusEmpresa = res['empresa'];
+      this.statusIndicador = res['indicador'];
     });
    }
 
