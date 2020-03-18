@@ -42,12 +42,12 @@
       <mat-card-title> Ejecutando Trading automático </mat-card-title>
     <mat-card-subtitle><h4>Presione ELIMINAR para buscar un nuevo sistema</h4></mat-card-subtitle>
     <mat-card-content>
-        <p>Capital:  </p>
-        <p>Capital inicial:  </p>
-        <p>Rendimiento:  </p>
-        <p>Tiempo de operación:  </p>
-        <p>Empresa:  </p>
-        <p>Indicador:  </p>
+        <p>Capital:  {{statusCapital}}</p>
+        <p>Capital inicial:  {{statusCapitalInicial}}</p>
+        <p>Rendimiento:  {{statusRendimiento}}</p>
+        <p>Tiempo de operación:  {{statusPeriodo}}</p>
+        <p>Empresa:  {{statusEmpresa}}</p>
+        <p>Indicador:  {{statusIndicador}}</p>
         <button mat-button (click)='changeAction()'> Eliminar </button>
 
     </mat-card-content>
