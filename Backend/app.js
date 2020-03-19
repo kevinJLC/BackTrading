@@ -60,7 +60,6 @@ app.use((req,res,next)=>{
   res.sendFile(path.join(__dirname,"angular","index.html"))
 });
 
-
 (async function respaldo(){
   // get hoy y mañana date
   const hoy = new Date();
