@@ -66,7 +66,7 @@ app.use((req,res,next)=>{
   console.log(hoy)
   hoy = new Date(hoy.getTime()-21600000)
   console.log(hoy)
-  console.log(hoy.getUTCHours())
+  console.log(hoy.getHours())
   var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
   mañana = new Date(mañana.getTime()+60000);
 
