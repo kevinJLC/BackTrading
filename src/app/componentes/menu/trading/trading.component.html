@@ -40,14 +40,14 @@
 
     <div *ngIf="cambiaAccion">
       <mat-card-title> Ejecutando Trading automático </mat-card-title>
-    <mat-card-subtitle><h4>Presione ELIMINAR para buscar un nuevo sistema</h4></mat-card-subtitle>
+    <mat-card-subtitle><h4>El primer día, algunos campos estarán incompletos</h4></mat-card-subtitle>
     <mat-card-content>
         <p>Capital:  {{statusCapital}}</p>
         <p>Capital inicial:  {{statusCapitalInicial}}</p>
         <p>Rendimiento:  {{statusRendimiento}}</p>
         <p>Tiempo de operación:  {{statusPeriodo}}</p>
         <p>Empresa:  {{statusEmpresa}}</p>
-        <p>Indicador:  {{statusIndicador}}</p>
+        <p>Indicador:  {{statusIndicador}} </p>
         <button mat-button (click)='changeAction()'> Eliminar </button>
 
     </mat-card-content>

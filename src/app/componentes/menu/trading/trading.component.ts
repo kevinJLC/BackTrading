@@ -51,6 +51,12 @@ export class TradingComponent implements OnInit {
     this.trading.postTrading(form.value).subscribe(res => {
       console.log(res);
       this.cambiaAccion = !this.cambiaAccion;
+      this.statusCapital = form.value.capital;
+      this.statusCapitalInicial = form.value.capital;
+      this.statusRendimiento = form.value.rendimiento;
+      this.statusPeriodo = form.value.periodo;
+      this.statusEmpresa = " ";
+      this.statusIndicador = " ";
     });
 
 
