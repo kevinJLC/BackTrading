@@ -128,12 +128,15 @@ app.use((req,res,next)=>{
 
 async function TA() {
 
-  console.log('Trading Automático:');
-  const hoy = new Date();
-  var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
-  mañana = new Date(mañana.getTime()+3600000);
-  console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
-  console.log(mañana.getDate() +'/'+ mañana.getMonth() + '/' + mañana.getFullYear() + ' a las : '+ mañana.getHours()+':'+mañana.getMinutes()+':'+mañana.getSeconds());
+  var hoy = new Date();
+  hoy = new Date(hoy.getTime()-21600000)
+  console.log(hoy)
+  var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
+  mañana = new Date((mañana.getTime()+3600000));
+  console.log(mañana)
+
+  console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
+  console.log(mañana.getUTCDate() +'/'+ mañana.getUTCMonth() + '/' + mañana.getUTCFullYear() + ' a las : '+ mañana.getUTCHours()+':'+mañana.getUTCMinutes()+':'+mañana.getUTCSeconds());
 
   //Si es domingo o sábado
   //TRUE:
@@ -319,12 +322,11 @@ async function TA() {
     });
 
   }
-
   // TimeOut 1:00 am
   setTimeout(TA, mañana.getTime() - hoy.getTime());
 
 }
-//TA();
+TA();
 
 
 
