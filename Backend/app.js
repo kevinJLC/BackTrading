@@ -323,7 +323,7 @@ async function TA() {
   setTimeout(TA, mañana.getTime() - hoy.getTime());
 
 }
-TA();
+//TA();
 
 
 
