@@ -62,7 +62,11 @@ app.use((req,res,next)=>{
 
 (async function respaldo(){
   // get hoy y mañana date
-  const hoy = new Date();
+  var hoy = new Date();
+  console.log(hoy)
+  hoy = new Date(hoy.getTime()-21600000)
+  console.log(hoy)
+  console.log(hoy.getUTCHours())
   var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
   mañana = new Date(mañana.getTime()+60000);
 
@@ -92,13 +96,12 @@ app.use((req,res,next)=>{
             }else{
                console.log('Respaldo exitoso: ' + fechaUltimaActualizacion);
             }
-
           });
 
           //update fecha y status
           let fechaHoy = (hoy.getFullYear()+'-'+hoy.getMonth()+'-'+hoy.getDate()).toString();
           console.log(fechaHoy);
-          await ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: false})
+          await ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
           .then(() => {
              console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
           })
