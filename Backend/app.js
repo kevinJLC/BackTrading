@@ -65,8 +65,9 @@ app.use((req,res,next)=>{
   var hoy = new Date();
   hoy = new Date(hoy.getTime()-21600000)
   console.log(hoy)
-  var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
-  mañana = new Date((mañana.getTime()+60000)-21600000);
+  var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
+  console.log(mañana)
+  mañana = new Date((mañana.getTime()+60000));
   console.log(mañana)
 
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
