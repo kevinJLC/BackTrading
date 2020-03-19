@@ -68,9 +68,9 @@ app.use((req,res,next)=>{
   var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
   mañana = new Date((mañana.getTime()+60000)-21600000);
   console.log(mañana)
-  
-  console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
-  console.log(mañana.getUTCDate() +'/'+ mañana.getUTCMonth() + '/' + mañana.getUTCFullYear() + ' a las : '+ mañana.getUTCHours()+':'+mañana.getUTCMinutes()+':'+mañana.getUTCSeconds());
+
+  console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
+  console.log(mañana.getDate() +'/'+ mañana.getMonth() + '/' + mañana.getFullYear() + ' a las : '+ mañana.getHours()+':'+mañana.getMinutes()+':'+mañana.getSeconds());
 
   // verifica que sea sábado o domingo
   if(hoy.getDay() == 6 || hoy.getDay() == 0){
@@ -131,11 +131,11 @@ async function TA() {
   var hoy = new Date();
   hoy = new Date(hoy.getTime()-21600000)
   console.log(hoy)
-  var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
+  var mañana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate(),23,59,59);
   mañana = new Date((mañana.getTime()+3600000)-21600000);
   console.log(mañana)
-  console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
-  console.log(mañana.getUTCDate() +'/'+ mañana.getUTCMonth() + '/' + mañana.getUTCFullYear() + ' a las : '+ mañana.getUTCHours()+':'+mañana.getUTCMinutes()+':'+mañana.getUTCSeconds());
+  console.log(hoy.getDate() +'/'+ hoy.getMonth() + '/' + hoy.getFullYear() + ' a las : '+ hoy.getHours()+':'+hoy.getMinutes()+':'+hoy.getSeconds());
+  console.log(mañana.getDate() +'/'+ mañana.getMonth() + '/' + mañana.getFullYear() + ' a las : '+ mañana.getHours()+':'+mañana.getMinutes()+':'+mañana.getSeconds());
 
   //Si es domingo o sábado
   //TRUE:
