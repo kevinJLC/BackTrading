@@ -1,70 +1,78 @@
-<form  [formGroup]="registroForm" (submit)="addUser(registroForm)">
-      <div id="FormRegistro" >
-        <mat-card class="mat-card" style="text-align: center;">
+
+<div class="container-fluid">
+  <form  [formGroup]="registroForm" (submit)="addUser(registroForm)">
+      <div class="row" style="height: 4vh;"></div>
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-7">
+          LOGO
+        </div>
+        
+      <mat-card class="col-12 col-sm-5 col-md-4" style="background-color:lightblue; border-radius:0; text-align: center;" id="media" >
             <mat-card-title class="mat-card-title">Regístrate</mat-card-title>
-            <mat-card-content>
-                <p>
-                    <mat-form-field appearance="outline">
-                      <mat-label>Nombre usuario</mat-label>
-                      <input matInput placeholder="Kevin23" formControlName="nombre" >
-                      <mat-icon matSuffix>face</mat-icon>
-                      <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
-                          <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
-                          <mat-hint class="errores" *ngIf="nombre.errors.minlength"> nombre menor a 6 caracteres</mat-hint>
-                          <mat-hint class="errores" *ngIf="nombre.errors.maxlength"> nombre mayor a 20 caracteres</mat-hint>
-                      </mat-hint>
+            <mat-card-content style="padding: 0;">
 
-                    </mat-form-field>
-                  </p>
-                  <p>
-                      <mat-form-field appearance="outline">
-                        <mat-label>Correo electrónico</mat-label>
-                        <input matInput placeholder="example@example.com" formControlName="correo" >
-                        <mat-icon matSuffix>email</mat-icon>
-                        <mat-hint  *ngIf="correo.invalid && (correo.dirty || correo.touched)">
-                            <mat-hint class="errores" *ngIf="correo.errors.required"> Ingresa un correo</mat-hint>
-                            <mat-hint class="errores" *ngIf="correo.errors.pattern"> correo no valido</mat-hint>
-                        </mat-hint>
-                      </mat-form-field>
-                    </p>
+              <mat-form-field appearance="outline" style="padding-left: 0; padding-right: 0;">
+                <mat-label>Nombre usuario</mat-label>
+                <input matInput placeholder="Kevin23" formControlName="nombre" >
+                <mat-icon matSuffix>face</mat-icon>
+                <mat-hint  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                    <mat-hint class="errores" *ngIf="nombre.errors.required"> Ingresa un nombre</mat-hint>
+                    <mat-hint class="errores" *ngIf="nombre.errors.minlength"> nombre menor a 6 caracteres</mat-hint>
+                    <mat-hint class="errores" *ngIf="nombre.errors.maxlength"> nombre mayor a 20 caracteres</mat-hint>
+                </mat-hint>
 
+              </mat-form-field>
 
-                    <p>
-                        <mat-form-field appearance="outline">
-                          <mat-label>Contraseña</mat-label>
-                          <input matInput type="{{type}}" placeholder="password" formControlName="pass" >
-                          <mat-icon matSuffix (click)="muestra()" style ="cursor: pointer;">{{icon}}</mat-icon>
+              <mat-form-field appearance="outline" style="padding-left: 0; padding-right: 0;">
+                <mat-label>Correo electrónico</mat-label>
+                <input matInput placeholder="example@example.com" formControlName="correo" >
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-hint  *ngIf="correo.invalid && (correo.dirty || correo.touched)">
+                    <mat-hint class="errores" *ngIf="correo.errors.required"> Ingresa un correo</mat-hint>
+                    <mat-hint class="errores" *ngIf="correo.errors.pattern"> correo no valido</mat-hint>
+                </mat-hint>
+              </mat-form-field>
 
-                          <mat-hint  *ngIf="pass.invalid && (pass.dirty || pass.touched)">
-                              <mat-hint class="errores" *ngIf="pass.errors.required"> Ingresa una contraseña</mat-hint>
-                              <mat-hint class="errores" *ngIf="pass.errors.minlength"> contraseña menor a 7 caracteres</mat-hint>
-                              <mat-hint class="errores" *ngIf="pass.errors.maxlength"> contraseña mayor a 10 caracteres</mat-hint>
-                          </mat-hint>
+              <mat-form-field appearance="outline" style="padding-left: 0; padding-right: 0;">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="{{type}}" placeholder="password" formControlName="pass" >
+                <mat-icon matSuffix (click)="muestra()" style ="cursor: pointer;">{{icon}}</mat-icon>
 
-                        </mat-form-field>
+                <mat-hint  *ngIf="pass.invalid && (pass.dirty || pass.touched)">
+                    <mat-hint class="errores" *ngIf="pass.errors.required"> Ingresa una contraseña</mat-hint>
+                    <mat-hint class="errores" *ngIf="pass.errors.minlength"> contraseña menor a 7 caracteres</mat-hint>
+                    <mat-hint class="errores" *ngIf="pass.errors.maxlength"> contraseña mayor a 10 caracteres</mat-hint>
+                </mat-hint>
+              </mat-form-field>
 
-                      </p>
-                      <p>
-                          <mat-form-field appearance="outline">
-                            <mat-label>Fecha de nacimiento</mat-label>
-                            <input (click)="fechaValida()" matInput type="date" formControlName="fecha" >
-                            <mat-icon matSuffix>date_range</mat-icon>
-                            <mat-hint  *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="errores">
-                              Ingresa una fecha de nacimiento
-                            </mat-hint>
-                            <mat-hint *ngIf="!mayor_edad"  class= "errores">
-                               Eres menor
-                            </mat-hint>
-                          </mat-form-field>
-                        </p>
+              <mat-form-field appearance="outline" style="padding-left: 0; padding-right: 0;">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input (click)="fechaValida()" matInput type="date" formControlName="fecha" >
+                <mat-icon matSuffix>date_range</mat-icon>
+                <mat-hint  *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="errores">
+                  Ingresa una fecha de nacimiento
+                </mat-hint>
+                <mat-hint *ngIf="!mayor_edad"  class= "errores">
+                   Eres menor
+                </mat-hint>
+              </mat-form-field>
 
-                      <button mat-raised-button color="primary" type="submit">Registrarse</button>
+              <button mat-button class="registrarse" type="submit">Registrarse</button>
 
             </mat-card-content>
           </mat-card>
+      
+        <div class="col-12 col-sm-1 col-md-1">
+          
+        </div>
+      </div>
 
-    </div>
-</form>
+  </form>
+</div>
+
+
+
+
 
 <!--
 <footer>

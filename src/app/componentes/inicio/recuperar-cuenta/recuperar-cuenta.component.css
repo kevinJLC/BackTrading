@@ -40,8 +40,15 @@ mat-form-field{
 }
 
 .cancelar{
-  border-width: thin;
-  border-style: solid;
-  border-color: rgba(218, 0, 0, 0.959);
+  color: white;
+  background-color: crimson;
+  
 }
 
+@media screen and (max-width: 575px){
+  #media{
+    padding-left: 15%;
+    padding-right: 15% ;
+  }
+  
+  }
