@@ -1,46 +1,69 @@
-<img id="fondo" src="../../../../assets/fondo_Inicio.jpg" alt="fondo" >
-<img id="logo" src="../../../../assets/LogoBT.png" alt="LogoBT">
+
+<header>
+
+      <div class="container-fluid">
+          <div id="bHeader" class="row">
+              <div id="btitulo"  class="col-12 col-sm-4 col-md-6" style="background-color: rgb(0, 0, 0);">Backtrading</div>
+              <div id="bformulario" class="col-12 col-sm-8 col-md-6" style="background-color: rgb(0, 0, 0); ">
+                  <form class="formulario" [formGroup]="loginForm" (submit)="onLogin(loginForm)">
+
+                    <div id="brow" class="row">
+                      <div id="bCorreo" class="col-4">
+                        <div class="row">
+                          <mat-form-field class="col-12" appearance="fill" >
+
+                              <mat-label>Email</mat-label>
+                              <input matInput formControlName="email" type="email" >
+                              <mat-icon  matSuffix>account_circle</mat-icon>
+
+                              <mat-hint *ngIf="email.invalid && (email.dirty || email.touched)">
+                                  <!-- <mat-hint class="errores" *ngIf="email.errors.required"> Ingresa un correo</mat-hint> -->
+                                  <mat-hint class="errores" *ngIf="email.errors.pattern"> Correo no válido</mat-hint>
+                              </mat-hint>
+
+                            </mat-form-field>
+                      </div>
+                      </div>
+
+                      <div id="bContraseña" class="col-4">
+                          <div class="row">
+                              <mat-form-field class="col-12" appearance="fill">
+                                  <mat-label>Password</mat-label>
+                                  <input matInput formControlName="password" type="password" >
+                                  <mat-icon matSuffix>visibility_off</mat-icon>
+
+                                  <mat-hint class="recuperacion" (mouseover)='hola()' (click)='recuperarCuenta()' style ="cursor: pointer;">
+                                    ¿Olvidaste tu contraseña? <mat-icon> help </mat-icon>
+                                  </mat-hint>
+                              </mat-form-field>
+                          </div>
+                      </div>
+                      <button id="bBoton" class="col-2" >
+                        Iniciar Sesión
+                      </button>
+
+                    </div>
+                  </form>
+              </div>
 
 
 
-    <mat-toolbar id="toolbar" color="warm">
-          <mat-toolbar-row>
 
-          <span>BackTrading</span>
 
-              <span class="example-fill-remaining-space"></span>
+        </div>
+      </div>
 
-              <form class="formulario" [formGroup]="loginForm" (submit)="onLogin(loginForm)">
-                <!--Correo electrónico-->
+</header>
+<img id="fondo" src="../../../../assets/tading.jpeg" alt="fondo" >
 
-                  <mat-form-field appearance="fill" [style.fontSize.px]=12>
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" type="email"  >
-                    <mat-icon matSuffix>account_circle</mat-icon>
-                    <mat-hint  *ngIf="email.invalid && (email.dirty || email.touched)">
-                        <!-- <mat-hint class="errores" *ngIf="email.errors.required"> Ingresa un correo</mat-hint> -->
-                        <mat-hint class="errores" *ngIf="email.errors.pattern"> Correo no válido</mat-hint>
-                    </mat-hint>
-                  </mat-form-field>
-                <!--Contraseña-->
-                  <mat-form-field appearance="fill" [style.fontSize.px]=12>
-                    <mat-label>Password</mat-label>
-                    <input matInput formControlName="password" type="password" >
-                    <mat-icon matSuffix>visibility_off</mat-icon>
 
-                    <mat-hint class="recuperacion" (mouseover)='hola()' (click)='recuperarCuenta()' style ="cursor: pointer;">
-                      ¿Olvidaste tu contraseña? <mat-icon> help </mat-icon>
-                    </mat-hint>
 
-                  </mat-form-field>
 
-                  <button mat-button type="submit" [style.bottom.px]=6> Iniciar sesión </button>
-              </form>
-              <mat-progress-spinner diameter="40" strokeWidth="10"   class="mat-progress-spinner" mode="indeterminate" *ngIf="cargando"></mat-progress-spinner>
 
-            </mat-toolbar-row>
 
-          </mat-toolbar>
+
+
+
 
 
 

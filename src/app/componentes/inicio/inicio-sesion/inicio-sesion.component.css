@@ -2,21 +2,19 @@
   color: red;
 }
 .recuperacion{
-  color: navy;
-  font-size: x-small;
+  color: rgb(197, 197, 197);
+  font-size: .7vw;
 }
 .recuperacion:hover{
-  color: navy;
+  color: rgb(255, 255, 255);
   text-decoration: underline;
-  font-size: x-small;
+  font-size: .8vw;
 }
 
 
 #fondo{
-  z-index: 1;
-  position: absolute;
-  top: 0%;
-  left: 0%;
+
+
   width: 100%;
   height: 120%;
 
@@ -50,16 +48,10 @@
   flex: 1 1 auto;
 }
 
-mat-form-field{
-  margin-left: 2%;
-}
+
 mat-toolbar-row{
-  padding-top: 3%;
-  padding-bottom: 3%;
-  height: 100%;
 }
 .formulario{
-  margin-right: 2%;
 
 }
 
@@ -71,3 +63,119 @@ mat-toolbar-row{
 
 
 
+
+
+
+
+#brow{
+  height: 7vh;
+  margin-top: 4.5vh;
+}
+
+#bHeader{
+  height: 16vh;
+}
+#btitulo{
+   display: flex;
+   align-items: center;
+   color: white;
+   font-size: 3.2vh;
+
+}
+
+
+
+#bCorreo{
+  height: 7vh;
+  font-size: 2vh;
+}
+#bContraseña{
+  margin-left: 1vh;
+  height: 7vh;
+  font-size: 2vh;
+}
+#bBoton{
+  margin-left: 1vh;
+  margin-top: 1.5vh;
+  height: 4vh;
+  color: white;
+  background-color: black;
+  border: 1px solid rgb(199, 199, 199);
+  font-size: .7vw;
+}
+#borrar{
+}
+mat-form-field{
+
+   display: inline-block;
+   height: 7vh;
+   padding-left: 0;
+   padding-right: 0;
+   padding-bottom: 0;
+   background-color: rgb(228, 228, 228);
+}
+
+
+
+@media screen and (max-width: 575px){
+  #btitulo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 4vh;
+
+ }
+ #bformulario{
+  padding-left: 10vw;
+
+}
+#brow{
+  margin-top: .5vh;
+  height: 5vh;
+}
+.recuperacion{
+  color: rgb(197, 197, 197);
+  font-size: 2vw;
+}
+.recuperacion:hover{
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+  font-size: .8vw;
+}
+#bCorreo{
+  height: 5vh;
+  font-size: 1.4vh;
+}
+#bContraseña{
+  margin-left: 1vh;
+  height: 5vh;
+  font-size: 1.4vh;
+}
+#bBoton{
+  margin-left: 1vh;
+  margin-top: 1.5vh;
+  height: 2.5vh;
+  color: white;
+  background-color: black;
+  border: 1px solid rgb(199, 199, 199);
+  font-size: .7vw;
+}
+
+mat-form-field{
+
+  display: inline-block;
+  height: 5vh;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  background-color: rgb(228, 228, 228);
+}
+
+#bHeader{
+  height: 18vh;
+}
+
+
+
+}

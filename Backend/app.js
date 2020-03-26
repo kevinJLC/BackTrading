@@ -61,6 +61,18 @@ app.use((req,res,next)=>{
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+/*
 (async function respaldo(){
   // get hoy y mañana date
   const hoy = new Date();
@@ -146,7 +158,7 @@ app.use((req,res,next)=>{
 
 
 })();
-
+*/
 
 
 
