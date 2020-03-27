@@ -32,7 +32,7 @@ export class BacktestingComponent implements OnInit {
 
   // Modo Usuario
   modoUsuario: string = 'pro';
-  
+
 
   periodoInvalido = false
 
