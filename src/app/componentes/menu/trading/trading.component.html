@@ -4,7 +4,7 @@
     <mat-card-subtitle><h4>Encuentra un sistema rentable para tu estilo de trading</h4></mat-card-subtitle>
     <form [formGroup]="tradingForm" (submit)="onCreate(tradingForm)">
       <mat-card-content>
-        <p>
+
             <mat-form-field appearance="outline">
               <mat-label>Capital</mat-label>
               <input matInput placeholder="$2,000" formControlName='capital' type="number">
@@ -12,7 +12,7 @@
               <mat-hint>mayor a $300</mat-hint>
 
             </mat-form-field>
-          </p>
+
           <p>
               <mat-form-field appearance="outline">
                 <mat-label>Rendimiento</mat-label>
@@ -31,7 +31,7 @@
 
                 </mat-form-field>
               </p>
-                <button mat-raised-button color="primary" type="submit">Iniciar</button>
+                <button  mat-button style="background-color: rgb(34, 34, 37); color: white;" type="submit">Iniciar</button>
 
     </mat-card-content>
     </form>
@@ -48,7 +48,7 @@
         <p>Tiempo de operación:  {{statusPeriodo}}</p>
         <p>Empresa:  {{statusEmpresa}}</p>
         <p>Indicador:  {{statusIndicador}} </p>
-        <button mat-button (click)='changeAction()'> Eliminar </button>
+        <button  mat-button style="background-color: rgb(34, 34, 37); color: white;" (click)='changeAction()'> Eliminar </button>
 
     </mat-card-content>
     </div>
