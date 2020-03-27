@@ -40,7 +40,7 @@ button{
 }
 
 mat-form-field{
-  width: 27%;
+  width: 100%;
 }
 .errores{
   color: red;
@@ -52,4 +52,33 @@ mat-form-field{
   color: white;
   background-color: rgb(18, 27, 109);
   right: 4px;
+}
+mat-button-toggle{
+  font-size: 1vw;
+}
+
+.ejecutar{
+  color: white;
+  background-color: rgb(34, 34, 37);
+}
+
+@media screen and (max-width: 769px){
+  mat-button-toggle{
+    font-size: 1.6vw;
+  }
+  
+}
+
+@media screen and (max-width: 560px){
+  mat-button-toggle{
+    font-size: 2vw;
+  }
+  
+}
+
+@media screen and (max-width: 425px){
+  mat-button-toggle{
+    font-size: 3vw;
+  }
+  
 }
