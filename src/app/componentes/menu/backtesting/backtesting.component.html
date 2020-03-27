@@ -11,6 +11,12 @@
               </mat-select>
 
             </mat-form-field>
+            <br>
+            <mat-button-toggle-group [(value)]='modoUsuario'  name="fontStyle" aria-label="Font Style" appearance="Legacy" >
+          <mat-button-toggle value="aprendiz">Aprendiz</mat-button-toggle>
+          <mat-button-toggle value="novato">Novato</mat-button-toggle>
+          <mat-button-toggle value="pro">Pro</mat-button-toggle>
+            </mat-button-toggle-group>
           <p>
               <mat-form-field appearance="outline" >
                 <mat-label>Rendimiento</mat-label>

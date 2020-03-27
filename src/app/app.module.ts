@@ -18,7 +18,8 @@ import {
   MatSelectModule,
   MatPaginatorModule,
   MatSortModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatButtonToggleModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -90,7 +91,8 @@ import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.compon
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]

@@ -27,3 +27,19 @@ mat-toolbar{
   width: 100%;
   font-style: inherit;
 }
+
+#titulo{
+ 
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  color: white;
+  font-size: 3vh;
+}
+
+#logout{
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

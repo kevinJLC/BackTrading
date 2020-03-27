@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { ModousuarioService } from 'src/app/servicios/Modo-Usuario/modousuario.service';
 import { invalid } from '@angular/compiler/src/render3/view/util';
 import { BacktestingService } from 'src/app/servicios/Backtesting/backtesting.service';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 
 @Component({
   selector: 'app-backtesting',
@@ -30,7 +32,7 @@ export class BacktestingComponent implements OnInit {
 
   // Modo Usuario
   modoUsuario: string = 'pro';
-  modoUser$: Observable<string>;
+  
 
   periodoInvalido = false
 
@@ -88,10 +90,7 @@ export class BacktestingComponent implements OnInit {
 
 
   ngOnInit() {
-    this.modoUser$ = this.usermode.getModoUser$();
-    this.modoUser$.subscribe(modo => {this.modoUsuario = modo;
-      console.log(this.modoUsuario);
-    });
+
   }
 
   onCreate(form) {
