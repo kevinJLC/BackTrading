@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12 col-sm-6 col-md-6">
         <mat-card-title> Crear sistemas de trading </mat-card-title>
-        <mat-card-subtitle><h4>Configure fácilmente un nuevo sistema</h4></mat-card-subtitle>
+        <mat-card-subtitle ><h4>Configure fácilmente un nuevo sistema</h4></mat-card-subtitle>
       </div>
     </div>
 
@@ -66,14 +66,14 @@
       <mat-icon matSuffix></mat-icon>
     </mat-form-field>
     <br>
-            <button mat-raised-button color="primary" type="submit" *ngIf="!editando">Añadir</button>
-            <button mat-raised-button color="primary" type="submit" *ngIf="editando" >Guardar</button>
+            <button mat-button style="background-color: rgb(34, 34, 37); color: white;" type="submit" *ngIf="!editando">Añadir</button>
+            <button mat-button style="background-color: rgb(15, 77, 170); color: white;" type="submit" *ngIf="editando" >Guardar</button>
 
 
           </mat-card-content>
 
         </form>
-        <button mat-raised-button color="primary" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+        <button mat-button style="background-color: rgb(192, 27, 27); color: white;" (click)="cancelar()" *ngIf="editando">Cancelar</button>
 
       </div>
 
