@@ -22,9 +22,7 @@ mat-card{
   background-color: black;
 }
 mat-progress-spinner{
-  position: absolute;
-  top: 36%;
-  left: 60%;
+
 
 }
 
@@ -66,19 +64,34 @@ mat-button-toggle{
   mat-button-toggle{
     font-size: 1.6vw;
   }
-  
+  #card-principal{
+    height: 155vh;
+  }
+  #columnados{
+    height: 45vh;
+  }
+
 }
 
 @media screen and (max-width: 560px){
   mat-button-toggle{
     font-size: 2vw;
   }
-  
+
 }
 
 @media screen and (max-width: 425px){
   mat-button-toggle{
     font-size: 3vw;
   }
-  
+
 }
+
+@media screen and (max-width: 350px){
+
+  #card-principal{
+    height: 170vh;
+  }
+
+}
+

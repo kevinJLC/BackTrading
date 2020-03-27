@@ -1,5 +1,5 @@
 
-<mat-card style="text-align:justify">
+<mat-card  id= "card-principal"style=" text-align:justify;">
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12">
       <mat-card-title> Prueba tus sistemas de trading </mat-card-title>
@@ -26,7 +26,7 @@
               <mat-button-toggle value="novato">Novato</mat-button-toggle>
               <mat-button-toggle value="pro">Pro</mat-button-toggle>
             </mat-button-toggle-group>
-            
+
             <mat-form-field appearance="outline" style="padding-top: 1vh;">
               <mat-label>Rendimiento</mat-label>
               <input [(ngModel)]='ngRendimiento' name='rendimiento' matInput placeholder="2.3%" formControlName='rendimiento' type='number'>
@@ -97,20 +97,20 @@
 
       </form>
     </div>
-    <div class="col-12 col-sm-12 col-md-8">
-      <mat-progress-spinner diameter="100" strokeWidth="90"   class="mat-progress-spinner" mode="indeterminate" *ngIf="cargandoResultado"></mat-progress-spinner>
-      <mat-card class="empresaGanadora" *ngIf="muestraResultadoBacktesting == true">
+    <div id="columnados" class="col-12 col-sm-12 col-md-8" style=" display: flex; align-items: center; justify-content: center;">
+      <mat-progress-spinner diameter="100" strokeWidth="90"    mode="indeterminate" *ngIf="cargandoResultado" color="warn"></mat-progress-spinner>
+      <mat-card class="empresaGanadora" *ngIf="muestraResultadoBacktesting" style="top: 0; left: 2vh; width: 80%;  font-size: 1vw;">
         <mat-card-title> Resultado Backtesting</mat-card-title>
         <mat-card-subtitle> Tu mejor opcion para invertir es la siguiente empresa</mat-card-subtitle>
         <div>
-  
+
           <p matTooltip="Empresa del S&P100">Simbolo: {{empresaSimbolo}} </p>
           <p>Operaciones realizadas: {{empresaOpRealizadas}} </p>
           <p>Operaciones exitosas: {{empresaOpExitosas}} </p>
           <p>Operaciones fallidas: {{empresaOpFallidas}} </p>
           <p>Probabilidad de exito: {{empresaProbExito}} % </p>
           <p>Usabilidad: {{empresaUsabilidad}} </p>
-  
+
         </div>
         <button mat-button class = 'optimizar' (click)="muestraOptimizacion()"> Optimizar </button>
         <div class = 'optimizarCuadro' *ngIf="muestraOptimizar">
@@ -119,15 +119,15 @@
             <p matTooltip = "Sumatoria precios mínimos por operacion realizada/operaciones realizadas">Promedio de precio minimo: {{empresaPromedioPrecioMin}}  </p>
         </div>
         <a href="https://www.youtube.com/watch?v=-STMrKn4Ork&t=857s">¿Cómo interpretar estos resultados? <mat-icon> help </mat-icon></a>
-  
-  
-  
-  
-  
+
+
+
+
+
       </mat-card>
     </div>
   </div>
-        
+
 </mat-card>
 
 
