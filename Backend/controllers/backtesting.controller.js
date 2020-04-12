@@ -2525,7 +2525,7 @@ function VOLUMESauto(empresa,time,rendimiento){
       }
 
       function VOLUMES(volumesIndex){
-        if(listadoPrecios[volumesIndex]['volume']>preciosEmpresa[volumesIndex-1]['volume']){
+        if(listadoPrecios[volumesIndex]['volume']>listadoPrecios[volumesIndex-1]['volume']){
           return true;
         }else{
           return false;
