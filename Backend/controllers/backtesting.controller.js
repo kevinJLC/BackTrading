@@ -1571,7 +1571,7 @@ function sistemaP9(empresa,time,rendimiento){
   contExitosas = sistema[0]['predicExitosas']
   sistemaSeleccionado = sistema[0];
   sistema.forEach(function(indicador,index){
-    console.log(indicador['indicador'] + "\t"+indicador['predicExitosas'])
+    console.log(indicador['indicador'] + "------>"+indicador['predicExitosas'])
     if(index > 0 && indicador['predicExitosas'] > contExitosas){
       sistemaSeleccionado=indicador;
       contExitosas = indicador['predicExitosas']
