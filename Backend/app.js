@@ -63,7 +63,7 @@ app.use((req,res,next)=>{
 (async function respaldo(){
   // get hoy y mañana date
   var hoy = new Date();
-  hoy = new Date(hoy.getTime()-21600000)
+  hoy = new Date(hoy.getTime())
   console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
   console.log(mañana)
@@ -73,7 +73,9 @@ app.use((req,res,next)=>{
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
   console.log(mañana.getUTCDate() +'/'+ mañana.getUTCMonth() + '/' + mañana.getUTCFullYear() + ' a las : '+ mañana.getUTCHours()+':'+mañana.getUTCMinutes()+':'+mañana.getUTCSeconds());
 
+  console.log(mañana.getTime()-hoy.getTime())
   // verifica que sea sábado o domingo
+
   if(hoy.getDay() == 6 || hoy.getDay() == 0){
 
     setTimeout(respaldo, mañana.getTime()-hoy.getTime());
@@ -129,10 +131,10 @@ app.use((req,res,next)=>{
 async function TA() {
 
   var hoy = new Date();
-  hoy = new Date(hoy.getTime()-21600000)
+  hoy = new Date(hoy.getTime())
   console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
-  mañana = new Date((mañana.getTime()+3600000));
+  mañana = new Date((mañana.getTime()+300000));
   console.log(mañana)
 
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
@@ -323,6 +325,7 @@ async function TA() {
 
   }
   // TimeOut 1:00 am
+  console.log(mañana.getTime()-hoy.getTime())
   setTimeout(TA, mañana.getTime() - hoy.getTime());
 
 }
