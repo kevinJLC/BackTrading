@@ -67,7 +67,7 @@ app.use((req,res,next)=>{
   console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
   console.log(mañana)
-  mañana = new Date((mañana.getTime()+60000));
+  mañana = new Date((mañana.getTime()+18000000));
   console.log(mañana)
 
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
@@ -134,7 +134,7 @@ async function TA() {
   hoy = new Date(hoy.getTime())
   console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
-  mañana = new Date((mañana.getTime()+300000));
+  mañana = new Date((mañana.getTime()+18600000));
   console.log(mañana)
 
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
