@@ -61,26 +61,27 @@ app.use((req,res,next)=>{
 });
 
 (async function respaldo(){
+  console.log("/////////////////////////////////////// Respaldo")
   // get hoy y mañana date
   var hoy = new Date();
   hoy = new Date(hoy.getTime())
-  console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
-  console.log(mañana)
   mañana = new Date((mañana.getTime()+18000000));
-  console.log(mañana)
 
+  console.log("FECHA ACTUAL      " + hoy)
+  console.log("FECHA RESPALDO    "+ mañana)
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
   console.log(mañana.getUTCDate() +'/'+ mañana.getUTCMonth() + '/' + mañana.getUTCFullYear() + ' a las : '+ mañana.getUTCHours()+':'+mañana.getUTCMinutes()+':'+mañana.getUTCSeconds());
-
-  console.log(mañana.getTime()-hoy.getTime())
+  console.log("Faltan " + (mañana.getTime()-hoy.getTime())*0.00000027777777777 + " horas" )
+  console.log(" ")
   // verifica que sea sábado o domingo
 
   if(hoy.getDay() == 6 || hoy.getDay() == 0){
-
+    console.log("FIN DE SEMANA - Faltan " + (mañana.getTime()-hoy.getTime())*0.00000027777777777 + " horas" )
     setTimeout(respaldo, mañana.getTime()-hoy.getTime());
 
   } else {
+    console.log("¡¡¡¡¡¡ Respaldo !!!!!! ")
     ActualizacionApi.findById({_id: '5e1cc84962c70439c85680b5'}).then(async result => {
       let año = parseInt(result.fechaDeActualizacion.split('-')[0]);
       let mes = parseInt(result.fechaDeActualizacion.split('-')[1]); // 0 = Ene y 11 = Dic
@@ -88,24 +89,24 @@ app.use((req,res,next)=>{
       const fechaUltimaActualizacion = new Date(año, mes, dia);
 
       // verifica que sea la primera ejecución de esta función en el dia
-      console.log(hoy.getDay() + ' ' + fechaUltimaActualizacion.getDay());
+      console.log("Hoy: " + hoy.getDay() + ' Ultimo respaldo:' + fechaUltimaActualizacion.getDay());
       if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
-          console.log('Sin respaldo el ' + fechaUltimaActualizacion);
+          console.log('Respaldo iniciado el' + fechaUltimaActualizacion);
           //Respaldo de la BD
           await request('http://backtrading.com.mx/api/empresas', (err,res) => {
             if(err){
                console.log('Respaldo fallido!!!!! ' + err )
             }else{
-               console.log('Respaldo exitoso: ' + fechaUltimaActualizacion);
+               console.log('Respaldo exitoso el: ' + fechaUltimaActualizacion);
             }
           });
 
           //update fecha y status
           let fechaHoy = (hoy.getUTCFullYear()+'-'+hoy.getUTCMonth()+'-'+hoy.getUTCDate()).toString();
-          console.log(fechaHoy);
+          console.log("Actualizando fecha al "+fechaHoy);
           await ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
           .then(() => {
-             console.log('Fecha de actualizacion updateada por primera vez el ' + fechaHoy);
+             console.log('Fecha actualizada al ' + fechaHoy);
           })
           .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
 
