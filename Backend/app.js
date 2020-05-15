@@ -76,7 +76,7 @@ app.use((req,res,next)=>{
   console.log(" ")
   // verifica que sea sábado o domingo
 
-  if(hoy.getDay() == 6 || hoy.getDay() == 0){
+  if(hoy.getDay() !== 6 || hoy.getDay() == 0){
     console.log("FIN DE SEMANA - Faltan " + (mañana.getTime()-hoy.getTime())*0.00000027777777777 + " horas" )
     setTimeout(respaldo, mañana.getTime()-hoy.getTime());
 
