@@ -76,7 +76,7 @@ app.use((req,res,next)=>{
   console.log(" ")
   // verifica que sea sábado o domingo
 
-  if(hoy.getDay() !== 6 || hoy.getDay() == 0){
+  if(hoy.getDay() == 6 || hoy.getDay() == 0){
     console.log("FIN DE SEMANA - Faltan " + (mañana.getTime()-hoy.getTime())*0.00000027777777777 + " horas" )
     setTimeout(respaldo, mañana.getTime()-hoy.getTime());
 
@@ -90,7 +90,7 @@ app.use((req,res,next)=>{
 
       // verifica que sea la primera ejecución de esta función en el dia
       console.log("Hoy: " + hoy.getDay() + ' - Ultimo respaldo:' + fechaUltimaActualizacion.getDay());
-      if(hoy.getDay() == fechaUltimaActualizacion.getDay()){
+      if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
           console.log('Respaldo iniciado el' + fechaUltimaActualizacion);
           //Respaldo de la BD
           await request('http://backtrading.com.mx/api/empresas', (err,res) => {
