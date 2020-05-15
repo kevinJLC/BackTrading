@@ -16,6 +16,8 @@ import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/
 import { NosotrosComponent} from './componentes/inicio/nosotros/nosotros.component';
 import { ActivacionCuentaComponent } from './componentes/inicio/activacion-cuenta/activacion-cuenta.component';
 import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nuevapassword.component';
+//Materia de web
+import { Implement1Component } from './componentes/web/entregable1/implement1/implement1.component';
 
 
 const routes: Routes = [
@@ -28,6 +30,8 @@ const routes: Routes = [
   {path: 'recuperacion', component: RecuperarCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
 
   {path: 'nosotros', component: NosotrosComponent, canActivate: [NoAuthenticatedGuardService]},
+
+  {path: 'web/entregable1', component: Implement1Component, canActivate: [NoAuthenticatedGuardService]},
 
   {path: 'newPassword', component: HomeComponent, canActivate: [AuthenticatedGuardService],
   children: [{path: '', component: CambiarPasswordComponent }]},

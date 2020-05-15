@@ -31,6 +31,9 @@ import { InicioSesionComponent } from './componentes/inicio/inicio-sesion/inicio
 import { RegistroComponent} from './componentes/inicio/registro/registro.component';
 import { RecuperarCuentaComponent } from './componentes/inicio/recuperar-cuenta/recuperar-cuenta.component';
 
+//Componentes de la materia de web
+import { Implement1Component } from './componentes/web/entregable1/implement1/implement1.component';
+
 
 import { HomeModule} from './componentes/Home/home/home.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -52,6 +55,7 @@ import { NosotrosComponent } from './componentes/inicio/nosotros/nosotros.compon
 import { ActivacionCuentaComponent } from './componentes/inicio/activacion-cuenta/activacion-cuenta.component';
 import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nuevapassword.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +73,8 @@ import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nueva
     CambiarPasswordComponent,
     NosotrosComponent,
     ActivacionCuentaComponent,
-    NuevapasswordComponent
+    NuevapasswordComponent,
+    Implement1Component
   ],
   imports: [
     BrowserModule,
