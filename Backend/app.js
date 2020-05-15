@@ -89,8 +89,8 @@ app.use((req,res,next)=>{
       const fechaUltimaActualizacion = new Date(año, mes, dia);
 
       // verifica que sea la primera ejecución de esta función en el dia
-      console.log("Hoy: " + hoy.getDay() + ' Ultimo respaldo:' + fechaUltimaActualizacion.getDay());
-      if(hoy.getDay() !== fechaUltimaActualizacion.getDay()){
+      console.log("Hoy: " + hoy.getDay() + ' - Ultimo respaldo:' + fechaUltimaActualizacion.getDay());
+      if(hoy.getDay() == fechaUltimaActualizacion.getDay()){
           console.log('Respaldo iniciado el' + fechaUltimaActualizacion);
           //Respaldo de la BD
           await request('http://backtrading.com.mx/api/empresas', (err,res) => {
@@ -103,7 +103,6 @@ app.use((req,res,next)=>{
 
           //update fecha y status
           let fechaHoy = (hoy.getUTCFullYear()+'-'+hoy.getUTCMonth()+'-'+hoy.getUTCDate()).toString();
-          console.log("Actualizando fecha al "+fechaHoy);
           await ActualizacionApi.updateOne({_id: '5e1cc84962c70439c85680b5'},{fechaDeActualizacion: fechaHoy, EstadoDeActualizacion: true})
           .then(() => {
              console.log('Fecha actualizada al ' + fechaHoy);
@@ -114,7 +113,6 @@ app.use((req,res,next)=>{
 
       }
 
-      console.log(mañana.getTime()-hoy.getTime());
       setTimeout(respaldo, mañana.getTime()-hoy.getTime());
 
     });
@@ -133,9 +131,9 @@ async function TA() {
 
   var hoy = new Date();
   hoy = new Date(hoy.getTime())
-  console.log(hoy)
   var mañana = new Date(hoy.getUTCFullYear(),hoy.getUTCMonth(),hoy.getUTCDate(),23,59,59);
   mañana = new Date((mañana.getTime()+18600000));
+  console.log(hoy)
   console.log(mañana)
 
   console.log(hoy.getUTCDate() +'/'+ hoy.getUTCMonth() + '/' + hoy.getUTCFullYear() + ' a las : '+ hoy.getUTCHours()+':'+hoy.getUTCMinutes()+':'+hoy.getUTCSeconds());
@@ -326,7 +324,7 @@ async function TA() {
 
   }
   // TimeOut 1:00 am
-  console.log(mañana.getTime()-hoy.getTime())
+  console.log("TA - Faltan " + (mañana.getTime()-hoy.getTime())*0.00000027777777777 + " horas" )
   setTimeout(TA, mañana.getTime() - hoy.getTime());
 
 }
