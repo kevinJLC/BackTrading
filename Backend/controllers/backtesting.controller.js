@@ -23,7 +23,7 @@ controller.postBacktesting = (req,res) =>{
     console.log(inputInicio);
 
   Empresas.find().then(todasLasEmpresas => {
-  var  operaciones;
+  var operaciones;
   var procedeBacktesting = false;
   var listaComparacionEmpresas = [];
 
@@ -1587,8 +1587,6 @@ function AMAauto(empresa,time,rendimiento){
   Exitosas = 0;
   indicador = 'Adaptative Moving Average'+'| periodo:'+time;
 
-
-
   listadoPrecios = empresa['precios'];
   listadoPrecios.reverse();
 
@@ -2593,6 +2591,5 @@ function guardaSistema(stoploss, empresa, indicador, parametro,userId ){
   })
 
 }
-
 
 module.exports=controller;
