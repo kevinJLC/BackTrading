@@ -20,8 +20,6 @@ import {
 } from '@angular/material';
 
 import { DefaultHeaderComponent } from '../default-header/default-header.component';
-import { DefaultSidebarComponent } from '../default-sidebar/default-sidebar.component';
-import { DefaultFooterComponent } from '../default-footer/default-footer.component';
 import { Router, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 
@@ -30,9 +28,7 @@ import { HomeComponent } from './home.component';
 @NgModule({
   declarations: [
     HomeComponent,
-    DefaultHeaderComponent,
-    DefaultSidebarComponent,
-    DefaultFooterComponent
+    DefaultHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -55,9 +51,7 @@ import { HomeComponent } from './home.component';
     MatButtonToggleModule
   ],
   exports: [
-    DefaultHeaderComponent,
-    DefaultSidebarComponent,
-    DefaultFooterComponent
+    DefaultHeaderComponent
   ]
 
 })

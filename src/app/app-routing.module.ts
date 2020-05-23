@@ -1,61 +1,23 @@
+// tslint:disable-next-line: ordered-imports
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { HomeComponent } from './componentes/Home/home/home.component';
-import { SistemasComponent } from './componentes/menu/sistemas/sistemas.component';
-import { BacktestingComponent } from './componentes/menu/backtesting/backtesting.component';
-import { IntroduccionComponent } from './componentes/menu/introduccion/introduccion.component';
-import { IndicadoresComponent } from './componentes/menu/indicadores/indicadores.component';
-import { TutorialComponent } from './componentes/menu/tutorial/tutorial.component';
-import { GuiaComponent } from './componentes/menu/guia/guia.component';
-import { TradingComponent } from './componentes/menu/trading/trading.component';
 import { NoAuthenticatedGuardService} from './servicios/no-authenticated-guard.service';
 import { AuthenticatedGuardService} from './servicios/authenticated-guard.service';
-import { RecuperarCuentaComponent } from './componentes/inicio/recuperar-cuenta/recuperar-cuenta.component';
-import { CambiarPasswordComponent } from './componentes/inicio/cambiar-password/cambiar-password.component';
-import { NosotrosComponent} from './componentes/inicio/nosotros/nosotros.component';
-import { ActivacionCuentaComponent } from './componentes/inicio/activacion-cuenta/activacion-cuenta.component';
-import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nuevapassword.component';
-//Materia de web
-import { Implement1Component } from './componentes/web/entregable1/implement1/implement1.component';
-
+import { ClienteComponent } from './componentes/menu/cliente/cliente.component';
+import { AdministradorComponent } from './componentes/menu/administrador/administrador.component';
 
 const routes: Routes = [
   {path: '', component: InicioComponent, canActivate: [NoAuthenticatedGuardService]},
 
-  {path: 'activacion', component: ActivacionCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
+  {path: 'cliente', component: HomeComponent, canActivate: [AuthenticatedGuardService],
+  children: [{path: '', component: ClienteComponent }]},
 
-  {path: 'contraseña', component: NuevapasswordComponent, canActivate: [NoAuthenticatedGuardService]},
+  {path: 'administrador', component: HomeComponent, canActivate: [AuthenticatedGuardService],
+  children: [{path: '', component: AdministradorComponent}]}
 
-  {path: 'recuperacion', component: RecuperarCuentaComponent, canActivate: [NoAuthenticatedGuardService]},
 
-  {path: 'nosotros', component: NosotrosComponent, canActivate: [NoAuthenticatedGuardService]},
-
-  {path: 'web/entregable1', component: Implement1Component, canActivate: [NoAuthenticatedGuardService]},
-
-  {path: 'newPassword', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: CambiarPasswordComponent }]},
-
-  {path: 'sistemas', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: SistemasComponent }]},
-
-  {path: 'backtesting', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: BacktestingComponent }]},
-
-  {path: 'introduccion', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: IntroduccionComponent }]},
-
-  {path: 'indicadores', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: IndicadoresComponent }]},
-
-  {path: 'tutorial', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: TutorialComponent }]},
-
-  {path: 'guia', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: GuiaComponent }]},
-
-  {path: 'trading', component: HomeComponent, canActivate: [AuthenticatedGuardService],
-  children: [{path: '', component: TradingComponent }]}
 ];
 
 

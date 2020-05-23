@@ -52,8 +52,8 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
   onLogin(form: FormGroup) {
     if (form.valid) {
       this.cargando = true;
+      console.log(form.value)
       this.login.postUsuario(form.value);
-      this.loginForm.reset();
       this.cargando = false;
     } else {
       alert('complete el formulario');
@@ -65,10 +65,10 @@ export class InicioSesionComponent implements OnInit, OnDestroy {
   }
 
   hola(){
-    console.log('holas desde recuperar cuenta');
+
   }
   recuperarCuenta() {
-    this.router.navigate(['/recuperacion']);
+    window.location.replace('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQBMuZ9O6KD1hmafg0NYwLEhmMprfKo8TLX0Eb_AGLpqQggdbBB&usqp=CAU')
   }
 
   get email() {return this.loginForm.get('email'); }

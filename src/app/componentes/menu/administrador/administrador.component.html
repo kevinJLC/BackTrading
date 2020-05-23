@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row" style="background-color: rgb(0, 0, 0); height: 10vh;">
+
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row" style="background-color: rgb(255, 255, 255);">
+      <div class="col-12">{{adminData.rol}}</div>
+      <div class="col-12">{{adminData.nombre}}</div>
+      <div class="col-12">{{adminData.correo}}</div>
+      <br><br>
+      <div class="col-4">Agrega un nuevo producto</div>
+      <div class="col-4">
+           <form class="col-12"  [formGroup]="productoForm" (submit)="addProducto(productoForm)">
+              <mat-form-field class="col-12" appearance="outline">
+                  <mat-label>producto</mat-label>
+                  <input matInput formControlName='producto' placeholder="Arbol">
+                  <mat-hint  *ngIf="producto.invalid && (producto.dirty || producto.touched)">
+                    <mat-hint class="errores" *ngIf="producto.errors.required"> Ingresa un producto </mat-hint>
+                  </mat-hint>
+                </mat-form-field>
+
+              <mat-form-field class="col-12" appearance="outline">
+                <mat-label>Categoria</mat-label>
+                  <mat-select formControlName="categoria" >
+                  <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{categoria}}</mat-option>
+                </mat-select>
+              <mat-icon matSuffix></mat-icon>
+                </mat-form-field>
+
+              <mat-form-field class="col-12" appearance="outline">
+                  <mat-label>Precio en CoCoCoin</mat-label>
+                  <input type="number" matInput formControlName='precio' placeholder="$200 CCC">
+                  <mat-hint  *ngIf="producto.invalid && (producto.dirty || producto.touched)">
+                    <mat-hint class="errores" *ngIf="producto.errors.required"> Ingresa un precio </mat-hint>
+                  </mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-12" appearance="outline">
+                    <mat-label>Stock</mat-label>
+                    <input type="number" matInput formControlName='stock' placeholder="$200 CCC">
+                    <mat-hint  *ngIf="producto.invalid && (producto.dirty || producto.touched)">
+                      <mat-hint class="errores" *ngIf="producto.errors.required"> Ingresa la cantidad de producto disponible </mat-hint>
+                    </mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-12" appearance="outline">
+                      <mat-label>Url de la imagen</mat-label>
+                      <input matInput formControlName='url' placeholder="htts://imagen.com">
+                      <mat-hint  *ngIf="producto.invalid && (producto.dirty || producto.touched)">
+                        <mat-hint class="errores" *ngIf="producto.errors.required"> Ingresa un producto </mat-hint>
+                      </mat-hint>
+                    </mat-form-field>
+
+                    <button mat-button class="enviar" type="submit">Añadir</button> <br> <br>
+           </form>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-12" style="background-color: rgb(175, 170, 170);">Listado de productos:</div>
+
+      <div class="col-12" *ngFor="let producto of productos" style="margin-top: 2vh; margin-right: 2vh; background-color: rgb(255, 209, 209);">nombre: {{producto.producto}}  /stock:{{producto.stock}} /precio:{{producto.precio}}</div>
+    </div>
+  </div>
+</body>
+</html>

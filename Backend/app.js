@@ -109,7 +109,10 @@ app.use((req,res,next)=>{
           })
           .catch(err => { console.log('Fecha de actualizacion NO updateada por primera vez el ' + fechaHoy)});
 
-
+          await ActualizacionApi.find().then(async (res)=>{
+            console.log(res)
+          })
+          console.log("ahuevo")
 
       }
 
@@ -319,6 +322,7 @@ async function TA() {
 
 }
 TA();
+
 
 
 

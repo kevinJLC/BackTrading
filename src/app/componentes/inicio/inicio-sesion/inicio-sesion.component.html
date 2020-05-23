@@ -1,7 +1,7 @@
 <header>
   <div class="container-fluid">
       <div id="bHeader" class="row">
-          <div id="btitulo"  class="col-12 col-sm-4 col-md-6" style="background-color: rgb(0, 0, 0);">Backtrading</div>
+          <div id="btitulo"  class="col-12 col-sm-4 col-md-6" style="background-color: rgb(0, 0, 0);">8B1 Store</div>
           <div id="bformulario" class="col-12 col-sm-8 col-md-6" style="background-color: rgb(0, 0, 0); ">
               <form class="formulario" [formGroup]="loginForm" (submit)="onLogin(loginForm)">
 
@@ -30,7 +30,7 @@
                               <input matInput formControlName="password" type="password" >
                               <mat-icon matSuffix>visibility_off</mat-icon>
 
-                              <mat-hint class="recuperacion" (mouseover)='hola()' (click)='recuperarCuenta()' style ="cursor: pointer;">
+                              <mat-hint  class="recuperacion" (click)='recuperarCuenta()' style ="cursor: pointer;">
                                 ¿Olvidaste tu contraseña? <mat-icon> help </mat-icon>
                               </mat-hint>
                           </mat-form-field>

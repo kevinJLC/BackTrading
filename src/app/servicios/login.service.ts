@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  readonly URL_API = '/api/login';
+  readonly URL_API = 'https://st0re.herokuapp.com/api/usuario/login';
 
   private token: string;
   private tokenTimer: any;    // NodeJS.timer
@@ -20,26 +20,33 @@ export class LoginService {
 
 
   // borrar esta función
-  getUsuarios() {
-    return this.http.get(this.URL_API);
-  }
+
 
   // genera un inicio de sesión con un token
   postUsuario( user) {
-    return this.http.post<{token: string, expiresIn: number}>(this.URL_API, user).subscribe(res => {
-      const token = res.token;
+    return this.http.post(this.URL_API, {correo: user.email, contraseña: user.password}).subscribe(res => {
+      console.log(res)
+      const token = res['token'];
+      const nombre = res['nombre']
+      const correo = res['correo']
+      const rol = res['rol']
       this.token = token;
       if (token) {
-        const expiresInDuration = res.expiresIn;
+        const expiresInDuration = 3600;
 
         this.setAuthTimer(expiresInDuration);
         this.authStatusListener.next(true);
         this.isAuthenticated = true;
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-        console.log(expirationDate);
-        this.saveAuthData(token, expirationDate);
-        this.router.navigate(['/sistemas']);
+        console.log("La sesión expira " + expirationDate);
+        this.saveAuthData(token, expirationDate, nombre, correo, rol);
+        if(rol=="Cliente"){
+          this.router.navigate(['/cliente']);
+        }else{
+          this.router.navigate(['/administrador']);
+        }
+
       } else {
         //console.log('No se puede');
         alert('Correo o contraseña no existen');
@@ -85,26 +92,39 @@ export class LoginService {
     }
   }
 
-  private saveAuthData(token: string, expirationDate: Date) {
+  private saveAuthData(token: string, expirationDate: Date, nombre: string, correo: string, rol: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
+    localStorage.setItem('nombre', nombre);
+    localStorage.setItem('correo', correo);
+    localStorage.setItem('rol', rol);
 
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
+    localStorage.removeItem('nombre');
+    localStorage.removeItem('correo');
+    localStorage.removeItem('rol');
   }
 
-  private getAuthData() {
+  getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
+    const nombre = localStorage.getItem('nombre');
+    const correo = localStorage.getItem('correo');
+    const rol = localStorage.getItem('rol');
+
     if (!token || !expirationDate) {
       return;
     }
     return {
       token: token,
-      expirationDate: new Date(expirationDate)
+      expirationDate: new Date(expirationDate),
+      nombre: nombre,
+      correo: correo,
+      rol: rol
     };
   }
 

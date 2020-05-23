@@ -11,18 +11,11 @@ import { Usuario } from 'src/app/usuario';
 })
 export class RegistroComponent implements OnInit {
 
-  usuarios: Usuario[] = [];
-  user: Usuario = {
-    id: '',
-    nombre: 'sos12345',
-    correo: 'sos@gmail.com',
-    contraseña: 'asdasdas',
-    nacimiento: new Date()
+  toppingList: string[] =
+   [ 'Cliente',
+     'Administrador',
+    ]
 
-
-  };
-  listado;
-  mayor_edad=true;
 
  /*nombre: string;
   correo: string;
@@ -43,7 +36,7 @@ export class RegistroComponent implements OnInit {
       nombre: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       correo: new FormControl('', [Validators.required, Validators.pattern(this.correoTrue)]),
       pass: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]),
-      fecha: new FormControl('', [Validators.required])
+      rol: new FormControl('', [Validators.required]),
     });
   }
   constructor(public registro: RegistroService ) {
@@ -60,46 +53,21 @@ export class RegistroComponent implements OnInit {
 
   addUser(form) {
     if (form.valid) {
-    const año = parseInt(form.value.fecha.split('-')[0]);
-    const mes = parseInt(form.value.fecha.split('-')[1])-1; // 0 = Ene y 11 = Dic
-    const dia = parseInt(form.value.fecha.split('-')[2]);
-
-    const fechaDate = new Date(año, mes, dia);
-    const now = new Date();
-    if (fechaDate.getUTCFullYear() + 18 < now.getUTCFullYear()) {
-        form.value.fecha = new Date(año, mes, dia);
         this.registro.postUsuario(form.value).subscribe(res => {
           console.log(res);
-          if (res===true) {
-            alert('El correo está en uso');
+          if (res['operacion']) {
+            alert('Registrado con éxito');
           } else {
-            alert('Ve a tu correo y verifica tu cuenta');
+            alert('El correo ya está en uso');
           }
         });
-    } else {
-        this.mayor_edad = false;
-    }
-
-
 
     } else {
       alert('Formulario incompleto');
-
-      this.registroForm.reset();
     }
 
   }
 
-  fechaValida() {
-    this.mayor_edad = true;
-  }
-
-  get nombre() {return this.registroForm.get('nombre'); }
-  get correo() {return this.registroForm.get('correo'); }
-  get pass()   {return this.registroForm.get('pass'); }
-  get fecha()  {return this.registroForm.get('fecha'); }
-
-  // Función para visibilidad de contraseña
   muestra() {
     if (this.type === 'password') {
       this.type = 'text';
@@ -109,4 +77,12 @@ export class RegistroComponent implements OnInit {
       this.icon = 'visibility_off';
     }
   }
+
+  get nombre() {return this.registroForm.get('nombre'); }
+  get correo() {return this.registroForm.get('correo'); }
+  get pass()   {return this.registroForm.get('pass'); }
+  get rol()  {return this.registroForm.get('rol'); }
+
+  // Función para visibilidad de contraseña
+
 }

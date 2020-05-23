@@ -9,7 +9,7 @@ export class NoAuthenticatedGuardService implements CanActivate {
 
   canActivate() {
     if (this.login.getAuthentication()) {
-      this.router.navigate(['/sistemas']);
+      this.router.navigate(['/cliente']);
     }
     return true;
   }

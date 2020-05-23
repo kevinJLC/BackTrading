@@ -6,3 +6,6 @@ body {
 
   /*background-image: url(rc\assets\fondo_Inicio.jpg");*/
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
