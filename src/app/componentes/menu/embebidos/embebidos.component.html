@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <title>RGB app</title>
+</head>
+<body id="cuadro">
+<div class="container-fluid" style="background: white;">
+  <p style="color: rgb(0, 0, 0);"> Configure el RGB</p> <br> <br>
+R (red) <input type="number" max="255" min="0" [(ngModel)]="r" value="xd">
+G (green) <input type="number" max="255" min="0" [(ngModel)]="g">
+B (blue) <input type="number" max="255" min="0" [(ngModel)]="b"> <br> <br>
+
+<button (click)="updateRGB()">Cambiar color</button> <br> <br>
+
+
+</div>
+
+</body>
+</html>
+

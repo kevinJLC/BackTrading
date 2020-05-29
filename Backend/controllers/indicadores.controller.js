@@ -415,6 +415,9 @@ controller.indicador = (indicador,precios, time, parametros) =>{
     }
   }
 
+
+
+
   function MFI(mfiIndex,listadoPrecios,time,parametros){
     mfi1 = mfi(mfiIndex,time);
             if(mfi(mfiIndex+time, time) < mfi1 && listadoPrecios[mfiIndex+time]['close'] < listadoPrecios[mfiIndex]['close'] && mfi1<80){
@@ -438,13 +441,24 @@ controller.indicador = (indicador,precios, time, parametros) =>{
       var mfi = 100 - (100 / (1 + mr));
       return mfi;
     }
+
+
     function TP(tpIndex){
       return (listadoPrecios[tpIndex]['higher'] + listadoPrecios[tpIndex]['lower'] + listadoPrecios[tpIndex]['close'])/3;
     }
     function MF(mfIndex,tp){
       return tp*listadoPrecios[mfIndex]['volume'];
     }
+
+
+    
   }
+
+
+
+
+
+
 
   function OBV(obvIndex,listadoPrecios,time,parametros){
     obv1 = obv(obvIndex,time);

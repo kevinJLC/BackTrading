@@ -41,4 +41,10 @@ export class ClienteService {
     return this.http.post(this.URL_API, {producto: producto})
   }
 
+  postRGB(rgb){
+    this.URL_API='https://st0re.herokuapp.com/embebidos'
+    return this.http.post(this.URL_API, {r: rgb.r, g: rgb.g, b: rgb.b})
+
+  }
+
 }

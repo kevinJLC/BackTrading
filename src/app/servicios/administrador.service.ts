@@ -20,4 +20,6 @@ export class AdministradorService {
     return this.http.get(this.URL_API)
 
   }
+
+
 }

@@ -7,9 +7,11 @@ import { NoAuthenticatedGuardService} from './servicios/no-authenticated-guard.s
 import { AuthenticatedGuardService} from './servicios/authenticated-guard.service';
 import { ClienteComponent } from './componentes/menu/cliente/cliente.component';
 import { AdministradorComponent } from './componentes/menu/administrador/administrador.component';
-
+import { EmbebidosComponent } from './componentes/menu/embebidos/embebidos.component';
 const routes: Routes = [
   {path: '', component: InicioComponent, canActivate: [NoAuthenticatedGuardService]},
+
+  {path: 'embebidos', component: EmbebidosComponent, canActivate: [NoAuthenticatedGuardService]},
 
   {path: 'cliente', component: HomeComponent, canActivate: [AuthenticatedGuardService],
   children: [{path: '', component: ClienteComponent }]},

@@ -46,4 +46,7 @@ router.post('/api/trading',autorizacion,trading.postTrading);
 router.get('/api/trading',autorizacion,trading.getStopTrading);
 router.get('/api/trading/status',autorizacion,trading.getStatus);
 
+
+
+
 module.exports=router;

@@ -38,6 +38,7 @@ import { RegistroService } from './servicios/registro.service';
 import { TokenService } from './servicios/token.service';
 import { ClienteComponent } from './componentes/menu/cliente/cliente.component';
 import { AdministradorComponent } from './componentes/menu/administrador/administrador.component';
+import { EmbebidosComponent } from './componentes/menu/embebidos/embebidos.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { AdministradorComponent } from './componentes/menu/administrador/adminis
     RegistroComponent,
     ClienteComponent,
     AdministradorComponent,
+    EmbebidosComponent,
   ],
   imports: [
     BrowserModule,
