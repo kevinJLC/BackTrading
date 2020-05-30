@@ -197,14 +197,14 @@ async function TA() {
                           //aumenta un 2% hasta 90% máximo
                           if(value['capitalEnUso'] < 0.90){
                             await Usuarios.findByIdAndUpdate(value['_id'],{
-                              capitalEnUso: capitalEnUso+0.02
+                              capitalEnUso: value['capitalEnUso']+0.02
                             })
                           }
                         }else{
                           //disminuye un 2% hasta 30% mínimo
                           if(value['capitalEnUso'] > 0.30){
                             await Usuarios.findByIdAndUpdate(value['_id'],{
-                              capitalEnUso: capitalEnUso-0.02
+                              capitalEnUso: value['capitalEnUso']-0.02
                             })
                           }
                         }
