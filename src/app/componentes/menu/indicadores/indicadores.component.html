@@ -17,51 +17,54 @@
 
         Una de las desventajas que tienen los algoritmos para las series de precios consiste en que algunos saltos accidentales de los precios pueden provocar las señales falsas sobre la aparición de la tendencia. Por otro lado, el suavizado (smoothing) lleva a un retraso inevitable de la señal sobre la parada o el giro de la tendencia. Este indicador ha sido diseñado para superar estas dos desventajas.
         <br>
-        <img src="https://www.metatrader5.com/i/help/terminal/en/ama.png" alt="MA">
-
+        <div align="center">
+          <img  src="https://www.metatrader5.com/i/help/terminal/en/ama.png" alt="MA">
+        </div>
         <h2>Fórmula y valores</h2>
         <article>
             Para definir el estado actual del mercado, Kaufman introdujo el concepto del coeficiente de eficacia (Efficiency Ratio, ER) que se mide según la formula:
-
+          <br>
             ER(i) = Signal(i)/Noise(i)
-
+            <br>
             aquí:
-
+            <br>
             ER(i) – valor actual del coeficiente de eficacia
             Signal(i) = ABS(Price(i) - Price(i - N)) – valor actual de la señal, valor absoluto de la diferencia entre el precio actual y el precio de N períodos atrás;
             Noise(i) = Sum(ABS(Price(i) - Price(i-1)),N) – valor actual del ruido, suma de valores absolutos de la diferencia entre el precio del período actual y el precio del período anterior para N períodos.
-
+            <br>
             En caso de una tendencia fuerte, el coeficiente de eficacia (ER) va a tender al 1; en caso de no haber un movimiento con una dirección determinada, será un poco más del 0. El valor del ER obtenido se utiliza en la formula del suavizado exponencial:
-
+            <br>
             EMA(i) = Price(i) * SC + EMA(i-1) * (1 - SC)
-
+            <br>
             aquí:
-
+            <br>
             SC = 2/(n+1) – constante de suavizado de EMA (smoothing constant), n – período de la móvil exponencial;
             EMA(i–1) – valor anterior EMA.
-
+            <br>
             Es necesario que el coeficiente de suavizado para el mercado rápido sea como para la EMA con el período 2 (fast SC = 2/(2+1) = 0.6667), y para el período de falta de tendencia, el período de la EMA sea igual a 30 (slow SC = 2/(30+1) = 0.06452). De esta manera, se introduce una nueva constante variable de suavizado (scaled smoothing constant) SSC:
-
+            <br>
             SSC(i) = (ER(i) * ( fast SC - slow SC) + slow SC
-
+            <br>
             o
-
+            <br>
             SSC(i) = ER(i) * 0.60215 + 0.06425
-
+            <br>
             Para que la constante variable de suavizado que se ha obtenido tenga más efecto en el período de promedio, Kaufman recomienda elevarla al cuadrado.
-
+            <br>
             La fórmula final de cálculo:
-
+            <br>
             AMA(i) = Price(i) * (SSC(i)^2) + AMA(i-1)*(1-SSC(i)^2)
-
+            <br>
             o (tras la transformación):
-
+            <br>
             AMA(i) = AMA(i-1) + (SSC(i)^2) * (Price(i) - AMA(i-1))
-
+            <br>
             aquí:
-
+            <br>
             AMA(i) – valor actual de AMA;
+            <br>
             AMA(i–1) – valor anterior de AMA;
+            <br>
             SSC(i)  – valor actual de la constante de suavizado variable.</article>
       </mat-card-content>
 </mat-expansion-panel>
@@ -81,22 +84,30 @@
 
         Los Envelopes determinan los márgenes superiores e inferiores para un rango normal de fluctuaciones de los precios de títulos. La señal de venta aparece cuando el precio alcance el margen superior de la banda, y la señal de compra sale cuando llegue al margen inferior.
 
-        El uso del indicador técnico Envelopes se basa en la lógica natural del comportamiento de mercado: cuando los precios alcanzan los valores extremos debido a una presión por parte de unos compradores y vendedores sumamente activos (es decir, llegan al margen superior o inferior de la banda), muy a menudo se estabilizan volviendo a unos niveles más realistas. El mismo principio se utiliza para la interpretación de las Bandas de Bollinger (Bollinger Bands®, BB).
-      <img src="https://www.metatrader5.com/i/help/terminal/en/envelopes.png" alt="Envelopes">
-
+        El uso del indicador técnico Envelopes se basa en la lógica natural del comportamiento de mercado: cuando los precios alcanzan los valores extremos debido a una presión por parte de unos compradores y vendedores sumamente activos (es decir, llegan al margen superior o inferior de la banda), muy a menudo se estabilizan volviendo a unos niveles más realistas. El mismo principio se utiliza para la interpretación de las Bandas de Bollinger (Bollinger Bands®, BB).<br>
+        <div align="center">
+        <img src="https://www.metatrader5.com/i/help/terminal/en/envelopes.png" alt="Envelopes">
+        </div>
         <h2>Fórmula y valores</h2>
         <article>
             UPPER BAND = SMA (CLOSE, N) * [1 + K / 1000]
-
+          <br>
             LOWER BAND = SMA (CLOSE, N) * [1 - K / 1000]
-
+            <br>
+            <br>
             Aquí:
-
+            <br>
+            <br>
             UPPER BAND – línea superior del indicador;
+             <br>
             LOWER BAND – línea inferior del indicador;
+            <br>
             SMA – media móvil simple;
+            <br>
             CLOSE – precio de cierre;
+            <br>
             N – período de promediación;
+            <br>
             K / 1000 – valor de desviación del promedio (en décimas partes del por ciento).
         </article>
       </mat-card-content>
@@ -113,90 +124,135 @@
     </mat-expansion-panel-header>
     <mat-card-content>
         El indicador técnico "Media Móvil" (Moving Average, MA) muestra el valor medio del precio de un instrumento durante un determinado período de tiempo. Cuando se calcula Moving Average, se promedia matemáticamente el precio del instrumento durante un período de tiempo dado. En función del cambio del precio, su valor medio va aumentando o disminuyendo.
-
+        <br>
         Hay varios tipos de medias móviles: simple (también se llama aritmética), exponencial, suavizada y ponderada. La Moving Average puede ser calculada para cualquier conjunto secuencial de datos, incluyendo los precios de apertura y cierre, mínimos y máximos, volumen de trading o valores de otros indicadores. A menudo se utilizan las medias móviles de las mismas medias móviles.
-
+        <br>
         Lo único en que se diferencian sustancialmente las Medias Móviles de diferentes tipos son diferentes coeficientes ponderales que se asignan a los últimos datos. En caso de la Media Móvil Simple (Simple Moving Average), todos los precios del período considerado tienen el mismo peso. La Media Móvil Exponencial y la Pondera (Exponential Moving Average y Linear Weighted Moving Average) asignan más valor a los últimos precios.
-
+        <br>
         El modo más común de interpretar la media móvil del precio consiste en la comparación de su dinámica con la dinámica del mismo precio. Cuando el precio del instrumento financiero sube por encima del valor de la Media Móvil, aparece la señal de compra, cuando baja de la línea del indicador – salta la señal de venta.
-
+        <br>
         Este sistema de trading utilizando la Moving Average no está diseñado en absoluto para garantizar la entrada al mercado estrictamente en su punto más bajo, y la salida de él – justamente en su pico. Permite actuar según la tendencia actual: comprar después de que los precios hayan tocado fondo, y vender después de que se haya formado el pico.
-
+        <br>
         También se puede aplicarlas a los indicadores. La interpretación de las medias móviles de los indicadores es igual que la interpretación de las medias móviles de los precios: si el indicador sube por encima de su Moving Average, significa que el movimiento alcista del indicador continuará, pero si el indicador va por debajo de su Moving Average, significa que la continuación de su movimiento bajista.
-
+        <br>
+        <br>
         Tipos de medias móviles:
-
+        <br>
+        <br>
         Simple Moving Average (SMA) – Media Móvil Simple
+        <br>
         Exponential Moving Average (EMA) – Media Móvil Exponencial
+        <br>
         Smoothed Moving Average (SMMA) – Media Móvil Suavizada
+        <br>
         Linear Weighted Moving Average (LWMA) – Media Móvil Ponderada Lineal
-
+        <br>
+        <div align="center">
         <img src="https://www.metatrader5.com/i/help/terminal/en/ma.png" alt="Moving Average">
-
+        </div>
         <h2>Fórmula y valores</h2>
         <article>
             La media móvil simple o aritmética se calcula mediante la suma de los precios de cierre de un instrumento durante un determinado número de períodos simples (por ejemplo, durante 12 horas), dividiendo a continuación la suma por el número de estos períodos.
-
+            <br>
             SMA = SUM (CLOSE (i), N) / N
-
+            <br>
+            <br>
             aquí:
-
+            <br>
+            <br>
             SUM – suma;
+            <br>
             CLOSE (i) – precio de cierre del período actual;
+            <br>
             N – número de períodos calculados.
+            <br>
 
             Media Móvil Exponencial (Exponential Moving Average, EMA)
             La media móvil suavizada exponencialmente se calcula mediante la adición de una cierta parte del precio de cierre actual al valor anterior de la media móvil. A la hora de usar las medias móviles exponenciales, el mayor valor tienen los últimos precios de cierre. La media móvil exponencial de Р% será la siguiente:
-
+            <br>
             EMA = (CLOSE (i) * P) + (EMA (i - 1) * (1 - P))
-
+            <br>
+            <br>
             aquí:
 
+            <br>
+            <br>
             CLOSE (i) – precio de cierre del período actual;
+            <br>
             EMA (i - 1) – valor de la media móvil para el período anterior;
+            <br>
             P – parte de uso del valor de precios.
+            <br>
 
             Media Móvil Suavizada (Smoothed Moving Average, SMMA)
+            <br>
             El primer valor de la media móvil suavizada se calcula como la media móvil simple (SMA):
-
+            <br>
             SUM1 = SUM (CLOSE (i), N)
+            <br>
 
             SMMA1 = SUM1 / N
+            <br>
+            <br>
 
             Para obtener el segundo valor se utiliza la siguiente fórmula:
+            <br>
+            <br>
 
             SMMA (i) = (SMMA1*(N-1) + CLOSE (i)) / N
+            <br>
 
             Las medias móviles subsecuentes se calculan según el formula siguiente:
+            <br>
 
             PREVSUM = SMMA (i - 1) * N
+            <br>
 
             SMMA (i) = (PREVSUM - SMMA (i - 1) + CLOSE (i)) / N
+            <br>
+            <br>
 
             aquí:
+            <br>
+            <br>
 
             SUM – suma;
+            <br>
             SUM1 – suma de precios de cierre para períodos N; se calcula a partir de la barra anterior;
+            <br>
             PREVSUM – suma suavizada de la barra anterior;
+            <br>
             SMMA (i-1) – media móvil suavizada de la barra anterior;
+            <br>
             SMMA (i) – media móvil suavizada de la barra actual (salvo la primera barra);
+            <br>
             CLOSE (i) – precio de cierre actual;
+            <br>
             N – período de suavizado.
+            <br>
 
-            Se puede simplificar esta fórmula mediante algunas transformaciones aritméticas:
+            Se puede simplificar esta fórmula mediante algunas transformaciones aritméticas:\
+            <br>
 
             SMMA (i) = (SMMA (i - 1) * (N - 1) + CLOSE (i)) / N
+            <br>
 
             Media Móvil Ponderada Lineal (Linear Weighted Moving Average, LWMA)
+            <br>
             En una media móvil ponderada los últimos datos tienen más valor que los datos iniciales. La media móvil ponderada se calcula multiplicando cada uno de los precios de cierre en la serie a considerar por un coeficiente ponderal determinado:
-
+            <br>
             LWMA = SUM (CLOSE (i) * i, N) / SUM (i, N)
-
+            <br>
+            <br>
             aquí:
-
+            <br>
+            <br>
             SUM – suma;
+            <br>
             CLOSE(i) – precio de cierre actual;
+            <br>
             SUM (i, N) – suma de coeficientes ponderales;
+            <br>
             N – período de suavizado.
         </article>
       </mat-card-content>

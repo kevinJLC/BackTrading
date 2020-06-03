@@ -33,7 +33,7 @@
               <mat-hint  *ngIf="rendimiento.invalid && (rendimiento.dirty || rendimiento.touched)" class="errores">
                   Ingresa un rendimiento
                 </mat-hint>
-              <mat-hint *ngIf="rendimiento.value >= 3 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el rendimiento por debajo del 3% para que más operaciones se cumplan con éxito"> Rendimiento muy alto <mat-icon>help</mat-icon> </mat-hint>
+              <mat-hint *ngIf="rendimiento.value >= 3 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el rendimiento por debajo del 3% para que más operaciones se cumplan con éxito, esto porque es muy raro que una operacion llegue a tal rendimiento, si estas en modo aprendiz no se ejecutara el backtesting"> Rendimiento muy alto <mat-icon>help</mat-icon> </mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -43,18 +43,19 @@
               <mat-hint  *ngIf="stoploss.invalid && (stoploss.dirty || stoploss.touched)">
                 <mat-hint class="errores" *ngIf="stoploss.errors.required"> Ingresa un stoploss </mat-hint>
               </mat-hint>
-              <mat-hint *ngIf="stoploss.value >= 1.5 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el stoploss por debajo de 1.5% para evitar que pierdas el capital en pocas operaciones"> Stoploss muy alto <mat-icon>help</mat-icon> </mat-hint>
+              <mat-hint *ngIf="stoploss.value >= 1.5 && (modoUsuario === 'aprendiz' || modoUsuario === 'novato') " class="recomendacion"  matTooltip=" Sugerimos reducir el stoploss por debajo de 1.5% para evitar que pierdas el capital en pocas operaciones, el objetivo del stoploss es terminar una operacion con una perdida menor al rendimiento en caso de que el precio decaiga"> Stoploss muy alto <mat-icon>help</mat-icon> </mat-hint>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Rango de operación</mat-label>
                 <input [(ngModel)]='ngRango' [(value)]='ngRango' name='rango' matInput type="number" placeholder="3 días" formControlName='periodo' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
-                <mat-icon matSuffix> date_range</mat-icon>
+                
                 <mat-hint  *ngIf="periodo.invalid && (periodo.dirty || periodo.touched); else elseBlock">
                   <mat-hint class="errores" *ngIf="periodo.errors.required"> Ingresa un rango de operación </mat-hint>
                 </mat-hint>
                 <ng-template #elseBlock >
-                  <mat-hint *ngIf="2 > periodo.value  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
+                  <mat-hint *ngIf="2 > periodo.value  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ) " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días, porque se esta dejando soloun dia para verificar una perdida o una ganancia, lo ideal es tener minimo dos dias para dejar el primero de entrada y los demas para verificar las perdidas y ganancias"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
+                  <mat-hint *ngIf="2 > periodo.value  && (modoUsuario === 'pro') " class="errores"  matTooltip="Los periodos de operación no pueden ser menores a 2 días"> Periodo de operación muy corto <mat-icon>help</mat-icon> </mat-hint>
                 </ng-template>
                 <mat-hint *ngIf="periodo.value > 50  && (modoUsuario === 'aprendiz' || modoUsuario === 'novato' ||  modoUsuario === 'pro') " class="errores"  matTooltip="El sistema aun no soporta backtesting mayor a 50 días"> Periodo de operación muy largo <mat-icon>help</mat-icon> </mat-hint>
 
@@ -65,7 +66,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Día de inicio</mat-label>
                 <input matInput type="date" formControlName='fechaInicio' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
-                <mat-icon matSuffix>calendar_today</mat-icon>
+                
                 <mat-hint  *ngIf="fechaInicio.invalid && (fechaInicio.dirty || fechaInicio.touched)">
                   <mat-hint class="errores" *ngIf="fechaInicio.errors.required"> Ingresa un día de inicio </mat-hint>
                 </mat-hint>
@@ -75,7 +76,7 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Día de Finalización</mat-label>
                   <input matInput  type="date" formControlName='fechaFinalizacion' (input) = 'enTiempo(fechaFinalizacion.value, fechaInicio.value, periodo.value)'>
-                  <mat-icon matSuffix>calendar_today</mat-icon>
+                  
                   <mat-hint  *ngIf="fechaFinalizacion.invalid && (fechaFinalizacion.dirty || fechaFinalizacion.touched) ; else errorFecha">
                     <mat-hint class="errores" *ngIf="fechaFinalizacion.errors.required"> Ingresa un día de finalizacion </mat-hint>
                   </mat-hint>
@@ -98,7 +99,7 @@
     </div>
     <div id="columnados" class="col-12 col-sm-12 col-md-8" style=" display: flex; align-items: center; justify-content: center;">
       <mat-progress-spinner diameter="100" strokeWidth="90"    mode="indeterminate" *ngIf="cargandoResultado" color="warn"></mat-progress-spinner>
-      <mat-card class="empresaGanadora" *ngIf="muestraResultadoBacktesting" style="top: 0; left: 2vh; width: 80%;  font-size: 1vw;">
+      <mat-card class="empresaGanadora" *ngIf="true" style="top: 0; left: 2vh; width: 80%;  font-size: 1vw;">
         <mat-card-title> Resultado Backtesting</mat-card-title>
         <mat-card-subtitle> Tu mejor opcion para invertir es la siguiente empresa</mat-card-subtitle>
         <div>
@@ -111,17 +112,17 @@
           <p>Usabilidad: {{empresaUsabilidad}} </p>
 
         </div>
+        <div style="font-size: .9vw; color: rgb(10, 80, 172);">
+          <strong>Comentario:</strong> Si el resultado de tu backtesting se muestra en ceros es porque no se realizo una operacion, esto es porque posiblemente los parametros ingresados son desequilibrados e inclusive extremos, pruebe cambiar al modo novato o aprendiz para obtener mas sugerencias.
+        </div>
+   
         <button mat-button class = 'optimizar' (click)="muestraOptimizacion()"> Optimizar </button>
         <div class = 'optimizarCuadro' *ngIf="muestraOptimizar">
            <!-- <p matTooltip="Sumatoria de dias en operacion/operaciones realizadas">Promedio de dias por operacion: {{empresaPromedioTiempo}}  </p> -->
             <p matTooltip = "Sumatoria precios máximos por operacion realizada/operaciones realizadas">Promedio de precio maximo: {{empresaPromedioPrecioMaximo}}  </p>
             <p matTooltip = "Sumatoria precios mínimos por operacion realizada/operaciones realizadas">Promedio de precio minimo: {{empresaPromedioPrecioMin}}  </p>
         </div>
-        <a href="https://www.youtube.com/watch?v=-STMrKn4Ork&t=857s">¿Cómo interpretar estos resultados? <mat-icon> help </mat-icon></a>
-
-
-
-
+        <a href="https://www.youtube.com/watch?v=-STMrKn4Ork&t=857s" target="_blank">¿Cómo interpretar estos resultados? <mat-icon> help </mat-icon></a>
 
       </mat-card>
     </div>
