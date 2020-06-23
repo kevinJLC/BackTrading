@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
-  readonly URL_API = 'https://st0re.herokuapp.com/api/usuario/login';
+  readonly URL_API = 'https://st0repc2.herokuapp.com/api/usuario/login';
 
   private token: string;
   private tokenTimer: any;    // NodeJS.timer
