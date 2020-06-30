@@ -79,8 +79,9 @@
 
 
       <div class="col-12 col-sm-12 col-md-9" style="padding-left: 0;">
+
         <table id="table" mat-table [dataSource]="listaDeSistemas" matSort class="mat-elevation-z8">
-  
+
           <!--- Note that these columns can be defined in any order.
                 The actual rendered columns are set as a property on the row definition" -->
 
@@ -131,6 +132,12 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
+        <button mat-button style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">PDF</button>
+        <button mat-button style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">Excel</button>
+        <button mat-button style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">Copiar</button>
+        <button mat-button style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">Copiar</button>
+
+
       </div>
 
 
