@@ -6,7 +6,7 @@ import { Sistema } from '../../../sistema';
 import { SistemasService } from '../../../servicios/Sistemas-Trading/sistemas.service';
 import { DataSource } from '@angular/cdk/table';
 import { MatSort } from '@angular/material';
-import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import { PdfMakeWrapper, Table } from 'pdfmake-wrapper';
 
 
 
@@ -168,6 +168,13 @@ export class SistemasComponent implements OnInit {
     const pdf = new PdfMakeWrapper();
 
     pdf.add('Backtrading: ');
+    pdf.add(
+      new Table([
+        this.listaDeSistemas.forEach(element => {
+          [element.nombre, element.rendimiento, element.stopLoss]
+        })
+      ]).end
+    );
 
     pdf.create().open();
   }
