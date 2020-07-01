@@ -25,7 +25,7 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import { PdfMakeWrapper } from '../../node_modules/pdfmake-wrapper';
 import pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 PdfMakeWrapper.setFonts(pdfFonts);
 
