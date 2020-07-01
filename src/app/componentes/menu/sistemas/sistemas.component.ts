@@ -186,6 +186,22 @@ export class SistemasComponent implements OnInit {
       this.excelService.exportAsExcelFile(this.dataSource, 'myExcelFile')
   }
 
+  genRespaldo(){
+    this.sistema.getSistemas().subscribe( res => {
+      alert("Respaldo finalizado")
+      const pdf = new PdfMakeWrapper();
+
+    pdf.add('Respaldo: ');
+    pdf.add(
+      new Txt([
+        res.toString()
+    ]).end
+    );
+
+    pdf.create().download();
+    });
+  }
+
 
 
   get nombre() {return this.sistemaForm.get('nombre'); }
