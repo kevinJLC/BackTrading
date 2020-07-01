@@ -105,9 +105,7 @@ import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nueva
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonToggleModule,
-    PdfMakeWrapper,
-    pdfFonts
+    MatButtonToggleModule
   ],
   providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]
