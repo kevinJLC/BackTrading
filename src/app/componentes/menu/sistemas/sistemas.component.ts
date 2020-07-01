@@ -6,6 +6,8 @@ import { Sistema } from '../../../sistema';
 import { SistemasService } from '../../../servicios/Sistemas-Trading/sistemas.service';
 import { DataSource } from '@angular/cdk/table';
 import { MatSort } from '@angular/material';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
+
 
 
 @Component({
@@ -161,6 +163,17 @@ export class SistemasComponent implements OnInit {
     this.sistemaForm.reset();
     this.selectedvalue = [];
   }
+
+  genPDF(){
+    const pdf = new PdfMakeWrapper();
+
+    pdf.add('Backtrading: ');
+
+    pdf.create().open();
+  }
+
+
+
   get nombre() {return this.sistemaForm.get('nombre'); }
   get rendimiento() {return this.sistemaForm.get('rendimiento'); }
   get stoploss() { return this.sistemaForm.get('stoploss'); }

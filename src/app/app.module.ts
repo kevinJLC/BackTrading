@@ -25,6 +25,10 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PdfMakeWrapper } from 'pdfmake-wrapper';
+import pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
+PdfMakeWrapper.setFonts(pdfFonts);
+
 // componentes antes de logearse
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { InicioSesionComponent } from './componentes/inicio/inicio-sesion/inicio-sesion.component';
@@ -101,7 +105,9 @@ import { NuevapasswordComponent } from './componentes/inicio/nuevapassword/nueva
     ReactiveFormsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    PdfMakeWrapper,
+    pdfFonts
   ],
   providers: [LoginService, RegistroService, {provide: HTTP_INTERCEPTORS, useClass: TokenService , multi: true}],
   bootstrap: [AppComponent]
