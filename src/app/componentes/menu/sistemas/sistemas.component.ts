@@ -170,15 +170,11 @@ export class SistemasComponent implements OnInit {
     pdf.add('Backtrading: ');
     pdf.add(
       new Ul([
-        this.dataSource[0],
-        this.dataSource[1],
-        this.dataSource[2],
-        this.dataSource[3],
-    ]).end
-    );
-    pdf.add(
-      new Txt([
-        this.dataSource
+
+        this.dataSource[0].nombre,
+        this.dataSource[1].nombre,
+        this.dataSource[2].nombre,
+        this.dataSource[3].nombre
     ]).end
     );
 
