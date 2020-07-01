@@ -7,6 +7,7 @@ import { SistemasService } from '../../../servicios/Sistemas-Trading/sistemas.se
 import { DataSource } from '@angular/cdk/table';
 import { MatSort } from '@angular/material';
 import { PdfMakeWrapper, Table, Ul, Txt } from 'pdfmake-wrapper';
+import {ExcelService} from '../../../servicios/excel.service';
 
 
 
@@ -69,7 +70,7 @@ export class SistemasComponent implements OnInit {
       rango: new FormControl('', Validators.required),
     });
   }
-  constructor(private sistema: SistemasService) {
+  constructor(private sistema: SistemasService, private excelService: ExcelService) {
     this.sistemaForm = this.createFormGroup();
   }
   ngOnInit() {
@@ -179,6 +180,10 @@ export class SistemasComponent implements OnInit {
     );
 
     pdf.create().open();
+  }
+  genExcel(){
+      console.log(this.dataSource)
+      this.excelService.exportAsExcelFile(this.dataSource, 'myExcelFile')
   }
 
 
